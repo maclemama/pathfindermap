@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="64" height="64" viewBox="0 0 512 512" xml:space="preserve">
+  <desc>Created with Fabric.js 4.6.0</desc>
+  <defs></defs>
+  <g transform="matrix(1 0 0 1 256 256)">
+    <g style="" vector-effect="non-scaling-stroke">
+      <g transform="matrix(1 0 0 1 0 0)">
+        <rect style="stroke: rgb(151,151,151); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;mix-blend-mode: source-over; " vector-effect="non-scaling-stroke" x="-125" y="-170" rx="0" ry="0" width="256" height="280" />
+      </g>
+      <g transform="matrix(1 0 0 1 0.7064 0.8388)">
+        <g style="" vector-effect="non-scaling-stroke">
+          <g transform="matrix(18.8824 0 0 18.8824 0 0)">
+            <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(112,249,226); fill-rule: nonzero; opacity: 1;mix-blend-mode: source-over; " vector-effect="non-scaling-stroke" transform=" translate(-15, -15.4961)" d="M 15 2 C 8.925 2 4 6.925 4 13 C 4 20.234 11.152828 23.697906 12.048828 24.503906 C 12.963828 25.326906 13.718437 27.170797 14.023438 28.216797 C 14.171437 28.724797 14.588 28.981188 15 28.992188 C 15.413 28.980187 15.828563 28.723797 15.976562 28.216797 C 16.281562 27.170797 17.036172 25.327906 17.951172 24.503906 C 18.847172 23.697906 26 20.234 26 13 C 26 6.925 21.075 2 15 2 z M 14.470703 7.0175781 C 14.723047 6.9845508 15 7.1565625 15 7.4765625 L 15 12 L 18.390625 12 C 18.804625 12 19.090406 12.414781 18.941406 12.800781 L 15.892578 20.689453 C 15.707578 21.167453 15 21.035437 15 20.523438 L 15 16 L 11.609375 16 C 11.195375 16 10.911547 15.585219 11.060547 15.199219 L 14.107422 7.3105469 C 14.176422 7.1312969 14.319297 7.0373945 14.470703 7.0175781 z" stroke-linecap="round" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
