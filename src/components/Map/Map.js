@@ -3,6 +3,7 @@ import {
 	MarkerF,
 	useLoadScript,
 	DirectionsRenderer,
+	CircleF,
 } from "@react-google-maps/api";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
@@ -56,8 +57,26 @@ function Map() {
 	const mapOptions = useMemo(
 		() => ({
 			mapId: "f6ca3c1a38d4ecfa",
-			disableDefaultUI: true,
+			disableDefaultUI: false,
 			clickableIcons: false,
+			zoom: 17,
+			tilt: 30,
+		}),
+		[]
+	);
+
+	const circleOptions = useMemo(
+		() => ({
+			strokeOpacity: 0.5,
+			strokeWeight: 2,
+			clickable: false,
+			draggable: false,
+			editable: false,
+			visible: true,
+			zIndex: 3,
+			fillOpacity: 0.05,
+			strokeColor: "#8BC34A",
+			fillColor: "#8BC34A",
 		}),
 		[]
 	);
@@ -70,6 +89,10 @@ function Map() {
 	const fetchDirections = (origin, destination) => {
 		console.log(destination);
 		/* eslint-disable */
+		// setWaypoints([
+		// 	...waypoints,
+		// 	{ location: new google.maps.LatLng(destination.lat, destination.lng) },
+		// ]);
 		setWaypoints([
 			...waypoints,
 			{ location: new google.maps.LatLng(destination.lat, destination.lng) },
@@ -106,7 +129,6 @@ function Map() {
 			<GoogleMap
 				mapContainerClassName="map__container"
 				center={currentLocation}
-				zoom={17}
 				onLoad={onLoad}
 				options={mapOptions}
 			>
@@ -132,9 +154,18 @@ function Map() {
 								strokeColor: "#1976D2",
 								strokeWeight: 5,
 							},
+							markerOptions: {
+								visible: false,
+							},
 						}}
 					/>
 				)}
+
+				<CircleF
+					center={currentLocation}
+					radius={1000}
+					options={circleOptions}
+				/>
 			</GoogleMap>
 		</>
 	);
