@@ -1,13 +1,15 @@
 import {
 	GoogleMap,
-	Marker,
+	MarkerF,
 	useLoadScript,
 	DirectionsRenderer,
 } from "@react-google-maps/api";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
-import markerIcon from "../../assets/icons/marker-primary.svg";
+import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
+import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
 import getUserLocation from "../../scripts/locationUtilis";
-import "./Map.scss"
+import "./Map.scss";
+import axios from "axios";
 
 function Map() {
 	const mapRef = useRef();
@@ -15,10 +17,12 @@ function Map() {
 
 	const [currentLocation, SetCurrentLocation] = useState();
 	const [isLoading, setIsLoading] = useState(true);
-    const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
-        libraries,
-    });
+	const { isLoaded, loadError } = useLoadScript({
+		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+		libraries,
+	});
+
+	const [places, setPlaces] = useState();
 
 	useEffect(() => {
 		// get user current location
@@ -26,8 +30,25 @@ function Map() {
 			.then((location) => {
 				const { latitude, longitude } = location.coords;
 				SetCurrentLocation({ lat: latitude, lng: longitude });
-				setIsLoading(false);
-                console.log(loadError)
+				console.log(process.env.REACT_APP_SERVER_URL);
+				axios
+					.post(`${process.env.REACT_APP_SERVER_URL}/query`, {
+						// input with token header for logged in users
+						query_mode: "mood", // either mood, random, objective
+						query_mood: "Relax",
+						query_purpose: ["shopping", "lunch", "park visit"],
+						duration: "01:00:00",
+						radius: 1500,
+						longitude: longitude,
+						latitude: latitude,
+					})
+					.then((res) => {
+						console.log(res.data);
+						setPlaces(res.data);
+						// setGoogleMapService( new google.maps);
+						setIsLoading(false);
+						console.log(loadError);
+					});
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -43,24 +64,34 @@ function Map() {
 
 	const onLoad = useCallback((map) => (mapRef.current = map), []);
 
-	// const [directions, setDirections] = useState();
+	const [directions, setDirections] = useState();
+	const [waypoints, setWaypoints] = useState([]);
 
-	// const fetchDirections = (place) => {
-	// 	const service = new window.google.maps.DirectionsService();
-	// 	service.route(
-	// 		{
-	// 			origin: place,
-	// 			destination: markerPositions[0],
-	// 			travelMode: "WALKING",
-	// 		},
-	// 		(result, status) => {
-	// 			if (status === "OK" && result) {
-	// 				console.log(result);
-	// 				setDirections(result);
-	// 			}
-	// 		}
-	// 	);
-	// };
+	const fetchDirections = (origin, destination) => {
+		console.log(destination);
+		/* eslint-disable */
+		setWaypoints([
+			...waypoints,
+			{ location: new google.maps.LatLng(destination.lat, destination.lng) },
+		]);
+		const service = new google.maps.DirectionsService();
+		/* eslint-enable */
+		service.route(
+			{
+				origin: origin,
+				destination: destination,
+				travelMode: "WALKING",
+				waypoints: waypoints,
+				optimizeWaypoints: true,
+			},
+			(result, status) => {
+				if (status === "OK" && result) {
+					console.log(result);
+					setDirections(result);
+				}
+			}
+		);
+	};
 
 	if (loadError) {
 		return <div>Error loading map</div>;
@@ -79,13 +110,20 @@ function Map() {
 				onLoad={onLoad}
 				options={mapOptions}
 			>
-				<Marker
-					position={currentLocation}
-					// onClick={() => fetchDirections(position)}
-					icon={markerIcon}
-				/>
+				<MarkerF position={currentLocation} icon={markerPrimaryIcon} />
 
-				{/* {directions && (
+				{places &&
+					places.map((place) => (
+						<MarkerF
+							position={place.geometry.location}
+							onClick={() =>
+								fetchDirections(currentLocation, place.geometry.location)
+							}
+							icon={markerSecondaryIcon}
+						/>
+					))}
+
+				{directions && (
 					<DirectionsRenderer
 						directions={directions}
 						options={{
@@ -96,7 +134,7 @@ function Map() {
 							},
 						}}
 					/>
-				)} */}
+				)}
 			</GoogleMap>
 		</>
 	);
