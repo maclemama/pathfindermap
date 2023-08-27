@@ -7,15 +7,18 @@
 
     &__group{
         background-color: $primary-placeholder-light-color;
+        padding: $mobile-row-gap $mobile-col-gap;
         margin: 1rem;
         border-radius: $section-radius;
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        row-gap: $mobile-row-gap;
     }
 }
 
 .tab-content{
     width: 100%;
-    padding: $mobile-row-gap $mobile-col-gap;
 
     &__wrapper{
         height: 100%;

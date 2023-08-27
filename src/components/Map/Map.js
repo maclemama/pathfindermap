@@ -1,7 +1,6 @@
 import {
 	GoogleMap,
 	MarkerF,
-	useLoadScript,
 	DirectionsRenderer,
 	CircleF,
 	InfoWindowF,
@@ -9,51 +8,35 @@ import {
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
 import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
-import getUserLocation from "../../scripts/locationUtilis";
 import "./Map.scss";
 import axios from "axios";
 
-function Map() {
+function Map({startingPoint, setStartingPoint }) {
 	const mapRef = useRef();
-	const libraries = ["places"];
-
-	const [currentLocation, SetCurrentLocation] = useState();
-	const [isLoading, setIsLoading] = useState(true);
-	const { isLoaded, loadError } = useLoadScript({
-		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
-		libraries,
-	});
-
 	const [places, setPlaces] = useState();
 
-	useEffect(() => {
-		// get user current location
-		getUserLocation()
-			.then((location) => {
-				const { latitude, longitude } = location.coords;
-				SetCurrentLocation({ lat: latitude, lng: longitude });
-				console.log(process.env.REACT_APP_SERVER_URL);
-				axios
-					.post(`${process.env.REACT_APP_SERVER_URL}/query`, {
-						// input with token header for logged in users
-						query_mode: "mood", // either mood, random, objective
-						query_mood: "Relax",
-						query_purpose: ["shopping", "lunch", "park visit"],
-						duration: "01:00:00",
-						radius: 1500,
-						longitude: longitude,
-						latitude: latitude,
-					})
-					.then((res) => {
-						console.log(res.data);
-						setPlaces(res.data);
-						// setGoogleMapService( new google.maps);
-						setIsLoading(false);
-						console.log(loadError);
-					});
-			})
-			.catch((err) => console.log(err));
-	}, []);
+	// useEffect(() => {
+	// 	axios
+	// 		.post(`${process.env.REACT_APP_SERVER_URL}/query`, {
+	// 			// input with token header for logged in users
+	// 			query_mode: "mood", // either mood, random, objective
+	// 			query_mood: "Relax",
+	// 			query_purpose: ["shopping", "lunch", "park visit"],
+	// 			duration: "01:00:00",
+	// 			radius: 1500,
+	// 			longitude: longitude,
+	// 			latitude: latitude,
+	// 		})
+	// 		.then((res) => {
+	// 			console.log(res.data);
+	// 			setPlaces(res.data);
+	// 		});
+	// }, []);
+
+	// const handleCenterChange = ()=>{
+	// 	console.log(mapRef.current.center.lat())
+	// 	console.log(mapRef.current.center.lng())
+	// }
 
 	const mapOptions = useMemo(
 		() => ({
@@ -113,30 +96,24 @@ function Map() {
 		);
 	};
 
-	if (loadError) {
-		return <div>Error loading map</div>;
-	}
-
-	if (isLoading && !isLoaded) {
-		return <h1>loading </h1>;
-	}
 
 	return (
 		<section className="map">
 			<GoogleMap
 				mapContainerClassName="map__container"
-				center={currentLocation}
+				center={startingPoint}
 				onLoad={onLoad}
 				options={mapOptions}
+				// onCenterChanged={handleCenterChange}
 			>
-				<MarkerF position={currentLocation} icon={markerPrimaryIcon} />
+				<MarkerF position={startingPoint} icon={markerPrimaryIcon} />
 
 				{places &&
 					places.map((place) => (
 						<MarkerF
 							position={place.geometry.location}
 							onClick={() =>
-								fetchDirections(currentLocation, place.geometry.location)
+								fetchDirections(startingPoint, place.geometry.location)
 							}
 							icon={markerSecondaryIcon}
 						>
@@ -163,7 +140,7 @@ function Map() {
 				)}
 
 				<CircleF
-					center={currentLocation}
+					center={startingPoint}
 					radius={1000}
 					options={circleOptions}
 				/>
