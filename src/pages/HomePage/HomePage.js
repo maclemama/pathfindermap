@@ -1,12 +1,12 @@
 import Map from "../../components/Map/Map";
-import SideMenu from "../../components/SideMenu/SideMenu";
+import ControlMenu from "../../components/ControlMenu/ControlMenu";
 import "./HomePage.scss";
 
 function HomePage() {
 	return (
 		<>
 			<Map />
-			<SideMenu/>
+			<ControlMenu/>
 		</>
 	);
 }
