@@ -3,17 +3,7 @@
 
 .tabs{
     display: flex;
-}
-
-.tab{
-    background-color: $primary-bg-heavy-color;
-    border-top-left-radius: $element-radius;
-    border-top-right-radius: $element-radius;
-    padding: 0rem 0.8rem;
-    margin-left: 0.4rem;
-    font-size: 1.4rem;
-
-    &--active{
-        color: $primary-bg-light-color;
-    }
+    justify-content: center;
+    column-gap: 2rem;
+    padding: $mobile-row-gap $mobile-col-gap;
 }
