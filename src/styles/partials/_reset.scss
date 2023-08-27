@@ -1,0 +1,52 @@
+@use "./mixin" as *;
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+body {
+	font-size: 1.6rem;
+	margin: 0;
+}
+
+// Page Header
+h1 {
+	margin: 0;
+}
+
+// SECTION HEADER
+h2 {
+	margin: 0;
+}
+
+// Subheader
+h3 {
+	margin: 0;
+}
+
+// LABELS & BUTTONS
+h4 {
+	margin: 0;
+}
+
+p {
+	margin: 0;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+a,
+a:visited {
+	text-decoration: none;
+	color: inherit;
+}

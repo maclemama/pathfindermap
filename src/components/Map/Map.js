@@ -4,6 +4,7 @@ import {
 	useLoadScript,
 	DirectionsRenderer,
 	CircleF,
+	InfoWindowF,
 } from "@react-google-maps/api";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
@@ -125,49 +126,47 @@ function Map() {
 	}
 
 	return (
-		<>
-			<GoogleMap
-				mapContainerClassName="map__container"
-				center={currentLocation}
-				onLoad={onLoad}
-				options={mapOptions}
-			>
-				<MarkerF position={currentLocation} icon={markerPrimaryIcon} />
+		<GoogleMap
+			mapContainerClassName="map__container"
+			center={currentLocation}
+			onLoad={onLoad}
+			options={mapOptions}
+		>
+			<MarkerF position={currentLocation} icon={markerPrimaryIcon} />
 
-				{places &&
-					places.map((place) => (
-						<MarkerF
-							position={place.geometry.location}
-							onClick={() =>
-								fetchDirections(currentLocation, place.geometry.location)
-							}
-							icon={markerSecondaryIcon}
-						/>
-					))}
+			{places &&
+				places.map((place) => (
+					<MarkerF
+						position={place.geometry.location}
+						onClick={() =>
+							fetchDirections(currentLocation, place.geometry.location)
+						}
+						icon={markerSecondaryIcon}
+					>
+						<InfoWindowF position={place.geometry.location}>
+							<div>{place.name}</div>
+						</InfoWindowF>
+					</MarkerF>
+				))}
 
-				{directions && (
-					<DirectionsRenderer
-						directions={directions}
-						options={{
-							polylineOptions: {
-								zIndex: 50,
-								strokeColor: "#1976D2",
-								strokeWeight: 5,
-							},
-							markerOptions: {
-								visible: false,
-							},
-						}}
-					/>
-				)}
-
-				<CircleF
-					center={currentLocation}
-					radius={1000}
-					options={circleOptions}
+			{directions && (
+				<DirectionsRenderer
+					directions={directions}
+					options={{
+						polylineOptions: {
+							zIndex: 50,
+							strokeColor: "#1976D2",
+							strokeWeight: 5,
+						},
+						markerOptions: {
+							visible: false,
+						},
+					}}
 				/>
-			</GoogleMap>
-		</>
+			)}
+
+			<CircleF center={currentLocation} radius={1000} options={circleOptions} />
+		</GoogleMap>
 	);
 }
 
