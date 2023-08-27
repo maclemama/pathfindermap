@@ -1,15 +1,23 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixin" as *;
 
-.control-button{
-    background-color: $primary-bg-heavy-color;
-    border-radius: $element-radius;
-    padding: 0.8rem 0.8rem;
-    font-size: 1.4rem;
-    min-width: 6.5rem;
+.control-button {
+	background-color: $primary-bg-heavy-color;
+	border-radius: $element-radius;
+	padding: 0.8rem 0.8rem;
+	font-size: 1.4rem;
+	min-width: 6.5rem;
 
-
-    &--active{
-        color: $primary-text-light-color;
+    &__icon{
+        height: 2.4rem;
+        width: 2.4rem;
     }
+
+	&--active {
+		color: $primary-text-light-color;
+
+		& .control-button__icon-path {
+			fill: $primary-text-light-color;
+		}
+	}
 }
