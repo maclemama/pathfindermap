@@ -7,22 +7,29 @@ function ControlMenu() {
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
 	return (
 		<section className="control-menu">
-			<article className="tab-content">
-				<div className="tab-content__wrapper">
-					{activeTab === tabNames[0] && (
-						<h1>this is {activeTab}, the second tab</h1>
-					)}
+			<div className="control-menu__group">
+				<article className="tab-content">
+					<div className="tab-content__wrapper">
+						{activeTab === tabNames[0] && (
+							<h1>this is {activeTab}, the second tab</h1>
+						)}
 
-					{activeTab === tabNames[1] && (
-						<h1>this is {activeTab}, the second tab</h1>
-					)}
+						{activeTab === tabNames[1] && (
+							<h1>this is {activeTab}, the second tab</h1>
+						)}
 
-					{activeTab === tabNames[2] && (
-						<h1>this is {activeTab}, the third tab</h1>
-					)}
-				</div>
-			</article>
-			<ControlTabs tabNames={tabNames} setActiveTag={setActiveTag} activeTab={activeTab}/>
+						{activeTab === tabNames[2] && (
+							<h1>this is {activeTab}, the third tab</h1>
+						)}
+					</div>
+				</article>
+				<ControlTabs
+					tabNames={tabNames}
+					setActiveTag={setActiveTag}
+					activeTab={activeTab}
+				/>
+			</div>
+			{/* <div className="control-menu__group"></div> */}
 		</section>
 	);
 }

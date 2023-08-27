@@ -4,10 +4,10 @@ import "./HomePage.scss";
 
 function HomePage() {
 	return (
-		<>
+		<div className="home">
 			<Map />
-			<ControlMenu/>
-		</>
+			<ControlMenu />
+		</div>
 	);
 }
 
