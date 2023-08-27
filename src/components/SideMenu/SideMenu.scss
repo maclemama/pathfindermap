@@ -1,0 +1,8 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.menu {
+    background-color: $primary-bg-light-color;
+    height: 30vh;
+    width: 100vh;
+}
