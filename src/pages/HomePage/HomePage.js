@@ -6,7 +6,7 @@ import {
 	getUserLocation,
 	getGoogleGeocoder,
 } from "../../scripts/locationUtilis";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 function HomePage() {
 	const [startingPoint, setStartingPoint] = useState(null);
@@ -19,7 +19,7 @@ function HomePage() {
 		libraries,
 	});
 
-	useEffect(() => {
+	const setCurrentLocationAsStart = useCallback(()=>{
 		// get user current location
 		getUserLocation()
 			.then((location) => {
@@ -33,11 +33,16 @@ function HomePage() {
 							placeId: matchedPlace.place_id,
 							address: matchedPlace.formatted_address,
 						});
+						setIsCurrentLoaction(true)
 						setIsLoading(false);
 					})
 					.catch((e) => console.log("Geocoder failed due to: " + e));
 			})
 			.catch((err) => console.log(err));
+	})
+
+	useEffect(() => {
+		setCurrentLocationAsStart();
 	}, []);
 
 	if (loadError) {
@@ -56,6 +61,7 @@ function HomePage() {
 				setStartingPoint={setStartingPoint}
 				isCurrentLocation={isCurrentLocation}
 				setIsCurrentLoaction={setIsCurrentLoaction}
+				setCurrentLocationAsStart={setCurrentLocationAsStart}
 			/>
 		</div>
 	);

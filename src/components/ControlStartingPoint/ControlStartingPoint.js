@@ -10,6 +10,7 @@ function ControlStartingPoint({
 	setStartingPoint,
 	isCurrentLocation,
 	setIsCurrentLoaction,
+	setCurrentLocationAsStart
 }) {
 	const {
 		ready,
@@ -65,7 +66,7 @@ function ControlStartingPoint({
 	return (
 		<section className="starting-point">
 			<div className="starting-point__selected">
-				<MapButton buttonText="Use current" iconName="near_me"/>
+				<MapButton buttonText="Use current" iconName="near_me" onClickFunc={setCurrentLocationAsStart}/>
 
 				{isCurrentLocation && (
 					<p className="starting-point__current-text">

@@ -8,6 +8,7 @@ function ControlMenu({
 	setStartingPoint,
 	isCurrentLocation,
 	setIsCurrentLoaction,
+	setCurrentLocationAsStart
 }) {
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
@@ -19,6 +20,7 @@ function ControlMenu({
 					setStartingPoint={setStartingPoint}
 					isCurrentLocation={isCurrentLocation}
 					setIsCurrentLoaction={setIsCurrentLoaction}
+					setCurrentLocationAsStart={setCurrentLocationAsStart}
 				/>
 			</div>
 			<div className="control-menu__group">
