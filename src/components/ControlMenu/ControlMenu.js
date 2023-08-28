@@ -3,7 +3,12 @@ import "./ControlMenu.scss";
 import ControlTabs from "../ControlTabs/ControlTabs";
 import ControlStartingPoint from "../ControlStartingPoint/ControlStartingPoint";
 
-function ControlMenu({ startingPoint, setStartingPoint }) {
+function ControlMenu({
+	startingPoint,
+	setStartingPoint,
+	isCurrentLocation,
+	setIsCurrentLoaction,
+}) {
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
 	return (
@@ -12,6 +17,8 @@ function ControlMenu({ startingPoint, setStartingPoint }) {
 				<ControlStartingPoint
 					startingPoint={startingPoint}
 					setStartingPoint={setStartingPoint}
+					isCurrentLocation={isCurrentLocation}
+					setIsCurrentLoaction={setIsCurrentLoaction}
 				/>
 			</div>
 			<div className="control-menu__group">

@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 
 function HomePage() {
 	const [startingPoint, setStartingPoint] = useState(null);
+	const [isCurrentLocation, setIsCurrentLoaction] = useState(true);
 	const [isLoading, setIsLoading] = useState(true);
 
 	const libraries = ["places"];
@@ -23,7 +24,7 @@ function HomePage() {
 		getUserLocation()
 			.then((location) => {
 				const { latitude, longitude } = location.coords;
-				setStartingPoint({ lat: latitude, lng: longitude });
+				// setStartingPoint({ lat: latitude, lng: longitude });
 				getGoogleGeocoder({ location: { lat: latitude, lng: longitude } })
 					.then((matchedPlace) => {
 						setStartingPoint({
@@ -32,9 +33,9 @@ function HomePage() {
 							placeId: matchedPlace.place_id,
 							address: matchedPlace.formatted_address,
 						});
+						setIsLoading(false);
 					})
 					.catch((e) => console.log("Geocoder failed due to: " + e));
-				setIsLoading(false);
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -43,7 +44,7 @@ function HomePage() {
 		return <div>Error loading map</div>;
 	}
 
-	if (isLoading && !isLoaded) {
+	if (isLoading || !isLoaded) {
 		return <h1>loading </h1>;
 	}
 
@@ -53,6 +54,8 @@ function HomePage() {
 			<ControlMenu
 				startingPoint={startingPoint}
 				setStartingPoint={setStartingPoint}
+				isCurrentLocation={isCurrentLocation}
+				setIsCurrentLoaction={setIsCurrentLoaction}
 			/>
 		</div>
 	);

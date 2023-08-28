@@ -4,7 +4,12 @@ import { AutoComplete, Input } from "antd";
 import { useEffect, useState } from "react";
 import "./ControlStartingPoint.scss";
 
-function ControlStartingPoint({ startingPoint, setStartingPoint }) {
+function ControlStartingPoint({
+	startingPoint,
+	setStartingPoint,
+	isCurrentLocation,
+	setIsCurrentLoaction,
+}) {
 	const {
 		ready,
 		value,
@@ -12,7 +17,6 @@ function ControlStartingPoint({ startingPoint, setStartingPoint }) {
 		setValue,
 		clearSuggestions,
 	} = usePlacesAutocomplete();
-
 	const [searchOptions, setSearchOptions] = useState([]);
 
 	const onSearchChange = (val) => {
@@ -24,16 +28,19 @@ function ControlStartingPoint({ startingPoint, setStartingPoint }) {
 		clearSuggestions();
 		console.log(option);
 
-		getGoogleGeocoder({ placeId: val })
-			.then((matchedPlace) => {
-				setStartingPoint({
-					lat: matchedPlace.geometry.location.lat(),
-					lng: matchedPlace.geometry.location.lng(),
-					placeId: matchedPlace.place_id,
-					address: matchedPlace.formatted_address,
-				});
-			})
-			.catch((e) => console.log("Geocoder failed due to: " + e));
+		if (val) {
+			getGoogleGeocoder({ placeId: val })
+				.then((matchedPlace) => {
+					setStartingPoint({
+						lat: matchedPlace.geometry.location.lat(),
+						lng: matchedPlace.geometry.location.lng(),
+						placeId: matchedPlace.place_id,
+						address: matchedPlace.formatted_address,
+					});
+					setIsCurrentLoaction(false);
+				})
+				.catch((e) => console.log("Geocoder failed due to: " + e));
+		}
 	};
 
 	const renderSearchOption = (place) => ({
@@ -56,6 +63,17 @@ function ControlStartingPoint({ startingPoint, setStartingPoint }) {
 
 	return (
 		<section className="starting-point">
+			<div className="starting-point__selected">
+				
+				{isCurrentLocation && (
+					<p className="starting-point__current-text">
+						Using Current Location
+					</p>
+				)}
+				<p className="starting-point__selected-address">
+					{startingPoint.address}
+				</p>
+			</div>
 			<AutoComplete
 				value={value}
 				options={searchOptions}
@@ -64,7 +82,6 @@ function ControlStartingPoint({ startingPoint, setStartingPoint }) {
 				}}
 				onSelect={onSearchSelect}
 				onChange={onSearchChange}
-				defaultValue={"hahahahah"}
 			>
 				<Input.Search
 					size="large"
