@@ -2,13 +2,7 @@ import "./RouteControls.scss";
 import { Col, InputNumber, Row, Slider, Switch  } from "antd";
 import { useState } from "react";
 
-// price range maxprice, minprice 0-4
-// radius
-// opennow
-
 function RouteControls({formValues, setFormValues}) {
-	const [value, setValue] = useState();
-    const [inputValue, setInputValue] = useState(1);
 	const marks = {
 		0: "Cheapest",
 		4: "Expensive",
