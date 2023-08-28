@@ -1,0 +1,23 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.map-button {
+	background-color: $primary-bg-heavy-color;
+	border-radius: 100%;
+	padding: 0.8rem 0.8rem;
+	font-size: 1rem;
+	min-width: 6.5rem;
+
+    &__icon{
+        height: 2rem;
+        width: 2rem;
+    }
+
+	&--active {
+		color: $primary-text-light-color;
+
+		& .control-button__icon-path {
+			fill: $primary-text-light-color;
+		}
+	}
+}

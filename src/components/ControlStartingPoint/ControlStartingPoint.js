@@ -3,6 +3,7 @@ import { getGoogleGeocoder } from "../../scripts/locationUtilis";
 import { AutoComplete, Input } from "antd";
 import { useEffect, useState } from "react";
 import "./ControlStartingPoint.scss";
+import MapButton from "../MapButton/MapButton";
 
 function ControlStartingPoint({
 	startingPoint,
@@ -64,7 +65,8 @@ function ControlStartingPoint({
 	return (
 		<section className="starting-point">
 			<div className="starting-point__selected">
-				
+				<MapButton buttonText="Use current" iconName="near_me"/>
+
 				{isCurrentLocation && (
 					<p className="starting-point__current-text">
 						Using Current Location
