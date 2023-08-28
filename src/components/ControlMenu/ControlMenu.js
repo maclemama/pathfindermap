@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import "./ControlMenu.scss";
 import ControlTabs from "../ControlTabs/ControlTabs";
 import ControlStartingPoint from "../ControlStartingPoint/ControlStartingPoint";
+import RouteSearchPanel from "../RouteSearchPanel/RouteSearchPanel";
 
 function ControlMenu({
 	startingPoint,
@@ -24,10 +25,9 @@ function ControlMenu({
 				/>
 			</div>
 			<div className="control-menu__group">
-				<article className="tab-content">
-					<div className="tab-content__wrapper">
+				<div className="control-menu__tab">
 						{activeTab === tabNames[0] && (
-							<h1>this is {activeTab}, the first tab</h1>
+							<RouteSearchPanel/>
 						)}
 
 						{activeTab === tabNames[1] && (
@@ -37,8 +37,7 @@ function ControlMenu({
 						{activeTab === tabNames[2] && (
 							<h1>this is {activeTab}, the third tab</h1>
 						)}
-					</div>
-				</article>
+				</div>
 				<ControlTabs
 					tabNames={tabNames}
 					setActiveTag={setActiveTag}
