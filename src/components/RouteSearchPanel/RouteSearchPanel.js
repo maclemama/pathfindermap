@@ -1,19 +1,26 @@
 import { useEffect, useState } from "react";
 import "./RouteSearchPanel.scss";
+import RouteControls from "../RouteControls/RouteControls";
 
 function RouteSearchPanel() {
 	const maxNumberOfSearch = 10;
 	const [numberOfSearch, setNumberOfSearch] = useState(1);
 	const [searchQuery, setSearchQuery] = useState([]);
-	const [searchInputStore, setSearchInputStore] = useState({});
+    const defaultFormValue = {
+        searchText:{},
+        radius:1500,
+        price_range:[0,4],
+        include_indoor: true,
+        include_outdoor: true,
+        opennow_only:false
+    }
+    const [formValues, setFormValues] = useState(defaultFormValue)
 
 	const handleSearchInputChange = (e) => {
 		const { name, value } = e.target;
-		console.log(name + ":" + value);
-		setSearchInputStore({
-			...searchInputStore,
-			[name]: value,
-		});
+        const newFormValus = {...formValues};
+        newFormValus.searchText[name] = value;
+        setFormValues(newFormValus);
 	};
 
 	const createSearch = (number) => {
@@ -42,7 +49,7 @@ function RouteSearchPanel() {
 
 	const handleSearchSubmit = (e) => {
         e.preventDefault();
-		console.log(e.target);
+		console.log(formValues);
 	};
 
 	return (
@@ -58,6 +65,7 @@ function RouteSearchPanel() {
 				>
 					add
 				</button>
+                <RouteControls formValues={formValues} setFormValues={setFormValues}/>
 				<button type="submit">
 					submit
 				</button>

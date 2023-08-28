@@ -1,0 +1,11 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.route-controls{
+    display: flex;
+    flex-direction: column;
+    row-gap: $mobile-row-gap;
+    background-color: $primary-bg-light-color;
+    padding: 1rem;
+    border-radius: $element-radius;
+}
