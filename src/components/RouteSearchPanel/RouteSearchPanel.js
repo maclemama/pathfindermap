@@ -3,14 +3,13 @@ import "./RouteSearchPanel.scss";
 import RouteControls from "../RouteControls/RouteControls";
 import axios from "axios";
 
-
-function RouteSearchPanel({handleQuerySubmit}) {
+function RouteSearchPanel({ handleQuerySubmit, setMapRadius }) {
 	const maxNumberOfSearch = 10;
 	const [numberOfSearch, setNumberOfSearch] = useState(1);
 	const [searchQuery, setSearchQuery] = useState([]);
 	const defaultFormValue = {
 		query_keyword: {},
-		radius: 1500,
+		radius: 3000,
 		price_range: [0, 4],
 		duration: 60,
 		opennow_only: false,
@@ -48,8 +47,6 @@ function RouteSearchPanel({handleQuerySubmit}) {
 		setNumberOfSearch(numberOfSearch + 1);
 	}, []);
 
-
-
 	return (
 		<section className="route-search">
 			<h2 className="route-search__title">
@@ -63,8 +60,17 @@ function RouteSearchPanel({handleQuerySubmit}) {
 				>
 					add
 				</button>
-				<RouteControls formValues={formValues} setFormValues={setFormValues} />
-				<button type="submit" onClick={(e)=>handleQuerySubmit(e, formValues, "keyword")}>submit</button>
+				<RouteControls
+					formValues={formValues}
+					setFormValues={setFormValues}
+					setMapRadius={setMapRadius}
+				/>
+				<button
+					type="submit"
+					onClick={(e) => handleQuerySubmit(e, formValues, "keyword")}
+				>
+					submit
+				</button>
 			</div>
 		</section>
 	);

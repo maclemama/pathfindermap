@@ -13,6 +13,7 @@ function HomePage() {
 	const [isCurrentLocation, setIsCurrentLoaction] = useState(true);
 	const [isLoading, setIsLoading] = useState(true);
 	const [routes, setRoutes] = useState(null);
+	const [mapRadius, setMapRadius] = useState(3000);
 
 	const libraries = ["places"];
 	const { isLoaded, loadError } = useLoadScript({
@@ -60,6 +61,7 @@ function HomePage() {
 				startingPoint={startingPoint}
 				setStartingPoint={setStartingPoint}
 				routes={routes}
+				mapRadius={mapRadius}
 			/>
 			<ControlMenu
 				startingPoint={startingPoint}
@@ -68,6 +70,7 @@ function HomePage() {
 				setIsCurrentLoaction={setIsCurrentLoaction}
 				setCurrentLocationAsStart={setCurrentLocationAsStart}
 				setRoutes={setRoutes}
+				setMapRadius={setMapRadius}
 			/>
 		</div>
 	);

@@ -11,7 +11,8 @@ function ControlMenu({
 	isCurrentLocation,
 	setIsCurrentLoaction,
 	setCurrentLocationAsStart,
-	setRoutes
+	setRoutes,
+	setMapRadius,
 }) {
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
@@ -28,13 +29,13 @@ function ControlMenu({
 		};
 		if (mode === "keyword") {
 			const keyword = Object.values(formValues.query_keyword);
-			if(!keyword[0]){
+			if (!keyword[0]) {
 				return;
 			}
 			payload.query_keyword = keyword;
 		}
 
-		console.log(payload)
+		console.log(payload);
 		axios
 			.post(process.env.REACT_APP_SERVER_URL + "/query", payload)
 			.then((res) => {
@@ -56,7 +57,10 @@ function ControlMenu({
 			<div className="control-menu__group">
 				<div className="control-menu__tab">
 					{activeTab === tabNames[0] && (
-						<RouteSearchPanel handleQuerySubmit={handleQuerySubmit} />
+						<RouteSearchPanel
+							handleQuerySubmit={handleQuerySubmit}
+							setMapRadius={setMapRadius}
+						/>
 					)}
 
 					{activeTab === tabNames[1] && (

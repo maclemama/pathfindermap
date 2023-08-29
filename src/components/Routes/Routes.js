@@ -24,13 +24,11 @@ function Routes({ routes, startingPoint }) {
 	];
 
 	useEffect(() => {
-		console.log("starting point");
-		console.log(startingPoint);
 		if (routes) {
 			if (routes[0]) {
 				let newPlaces = [];
 				let newDirections = [];
-				routes.forEach((route, index) => {
+				routes.forEach((route) => {
 					const thisWaypoints = route.route_waypoints;
 					const waypointsLatLng = [];
 					let destination;
@@ -104,8 +102,6 @@ function Routes({ routes, startingPoint }) {
 			{directions &&
 				directions[0] &&
 				directions.map((direction, index) => {
-					console.log("here");
-					console.log(directions.length);
 					return (
 						<DirectionsRenderer
 							directions={direction}
