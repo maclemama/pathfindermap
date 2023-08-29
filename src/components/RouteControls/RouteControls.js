@@ -1,6 +1,5 @@
 import "./RouteControls.scss";
 import { Col, InputNumber, Row, Slider, Switch  } from "antd";
-import { useState } from "react";
 
 function RouteControls({formValues, setFormValues}) {
 	const marks = {
@@ -45,13 +44,32 @@ function RouteControls({formValues, setFormValues}) {
 						style={{
 							margin: "0 16px",
 						}}
-						value={`${formValues.radius}m`}
+						value={`${formValues.radius}meters`}
 						onChange={(value)=>handleChange(value, "radius")}
 					/>
 				</Col>
 			</Row>
-            <Switch checkedChildren="Include Outdoor" unCheckedChildren="Exclude Outdoor" onChange={(value)=>handleChange(value, "include_indoor")} defaultChecked />
-            <Switch checkedChildren="Include Indoor" unCheckedChildren="Exclude Indoor" onChange={(value)=>handleChange(value, "include_outdoor")} defaultChecked />
+            <Row>
+				<Col span={16}>
+					<Slider
+						min={10}
+						max={480}
+						onChange={(value)=>handleChange(value, "duration")}
+						value={typeof formValues.duration === "number" ? formValues.duration : 0}
+					/>
+				</Col>
+				<Col span={6}>
+					<InputNumber
+						min={10}
+						max={480}
+						style={{
+							margin: "0 16px",
+						}}
+						value={`${formValues.duration}minute`}
+						onChange={(value)=>handleChange(value, "duration")}
+					/>
+				</Col>
+			</Row>
             <Switch checkedChildren="Include Closed" unCheckedChildren="Exclude Closed" onChange={(value)=>handleChange(value, "opennow_only")}/>
 		</div>
 	);

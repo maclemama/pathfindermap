@@ -1,37 +1,15 @@
 import {
 	GoogleMap,
 	MarkerF,
-	DirectionsRenderer,
 	CircleF,
-	InfoWindowF,
 } from "@react-google-maps/api";
-import { useCallback, useMemo, useRef, useState, useEffect } from "react";
+import { useCallback, useMemo, useRef} from "react";
 import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
-import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
+import Routes from "../Routes/Routes";
 import "./Map.scss";
-import axios from "axios";
 
-function Map({startingPoint, setStartingPoint }) {
+function Map({startingPoint, setStartingPoint, routes }) {
 	const mapRef = useRef();
-	const [places, setPlaces] = useState();
-
-	// useEffect(() => {
-	// 	axios
-	// 		.post(`${process.env.REACT_APP_SERVER_URL}/query`, {
-	// 			// input with token header for logged in users
-	// 			query_mode: "mood", // either mood, random, objective
-	// 			query_mood: "Relax",
-	// 			query_purpose: ["shopping", "lunch", "park visit"],
-	// 			duration: "01:00:00",
-	// 			radius: 1500,
-	// 			longitude: longitude,
-	// 			latitude: latitude,
-	// 		})
-	// 		.then((res) => {
-	// 			console.log(res.data);
-	// 			setPlaces(res.data);
-	// 		});
-	// }, []);
 
 	// const handleCenterChange = ()=>{
 	// 	console.log(mapRef.current.center.lat())
@@ -67,35 +45,6 @@ function Map({startingPoint, setStartingPoint }) {
 
 	const onLoad = useCallback((map) => (mapRef.current = map), []);
 
-	const [directions, setDirections] = useState();
-	const [waypoints, setWaypoints] = useState([]);
-
-	const fetchDirections = (origin, destination) => {
-		console.log(destination);
-		/* eslint-disable */
-		setWaypoints([
-			...waypoints,
-			{ location: new google.maps.LatLng(destination.lat, destination.lng) },
-		]);
-		const service = new google.maps.DirectionsService();
-		/* eslint-enable */
-		service.route(
-			{
-				origin: origin,
-				destination: destination,
-				travelMode: "WALKING",
-				waypoints: waypoints,
-				optimizeWaypoints: true,
-			},
-			(result, status) => {
-				if (status === "OK" && result) {
-					console.log(result);
-					setDirections(result);
-				}
-			}
-		);
-	};
-
 
 	return (
 		<section className="map">
@@ -108,36 +57,7 @@ function Map({startingPoint, setStartingPoint }) {
 			>
 				<MarkerF position={startingPoint} icon={markerPrimaryIcon} />
 
-				{places &&
-					places.map((place) => (
-						<MarkerF
-							position={place.geometry.location}
-							onClick={() =>
-								fetchDirections(startingPoint, place.geometry.location)
-							}
-							icon={markerSecondaryIcon}
-						>
-							<InfoWindowF position={place.geometry.location}>
-								<div>{place.name}</div>
-							</InfoWindowF>
-						</MarkerF>
-					))}
-
-				{directions && (
-					<DirectionsRenderer
-						directions={directions}
-						options={{
-							polylineOptions: {
-								zIndex: 50,
-								strokeColor: "#1976D2",
-								strokeWeight: 5,
-							},
-							markerOptions: {
-								visible: false,
-							},
-						}}
-					/>
-				)}
+				<Routes routes={routes} startingPoint={startingPoint}/>
 
 				<CircleF
 					center={startingPoint}

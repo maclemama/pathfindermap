@@ -12,6 +12,7 @@ function HomePage() {
 	const [startingPoint, setStartingPoint] = useState(null);
 	const [isCurrentLocation, setIsCurrentLoaction] = useState(true);
 	const [isLoading, setIsLoading] = useState(true);
+	const [routes, setRoutes] = useState(null);
 
 	const libraries = ["places"];
 	const { isLoaded, loadError } = useLoadScript({
@@ -19,7 +20,7 @@ function HomePage() {
 		libraries,
 	});
 
-	const setCurrentLocationAsStart = useCallback(()=>{
+	const setCurrentLocationAsStart = useCallback(() => {
 		// get user current location
 		getUserLocation()
 			.then((location) => {
@@ -33,13 +34,13 @@ function HomePage() {
 							placeId: matchedPlace.place_id,
 							address: matchedPlace.formatted_address,
 						});
-						setIsCurrentLoaction(true)
+						setIsCurrentLoaction(true);
 						setIsLoading(false);
 					})
 					.catch((e) => console.log("Geocoder failed due to: " + e));
 			})
 			.catch((err) => console.log(err));
-	})
+	});
 
 	useEffect(() => {
 		setCurrentLocationAsStart();
@@ -55,13 +56,18 @@ function HomePage() {
 
 	return (
 		<div className="home">
-			<Map startingPoint={startingPoint} setStartingPoint={setStartingPoint} />
+			<Map
+				startingPoint={startingPoint}
+				setStartingPoint={setStartingPoint}
+				routes={routes}
+			/>
 			<ControlMenu
 				startingPoint={startingPoint}
 				setStartingPoint={setStartingPoint}
 				isCurrentLocation={isCurrentLocation}
 				setIsCurrentLoaction={setIsCurrentLoaction}
 				setCurrentLocationAsStart={setCurrentLocationAsStart}
+				setRoutes={setRoutes}
 			/>
 		</div>
 	);

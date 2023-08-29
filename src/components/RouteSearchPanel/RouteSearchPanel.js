@@ -1,26 +1,27 @@
 import { useEffect, useState } from "react";
 import "./RouteSearchPanel.scss";
 import RouteControls from "../RouteControls/RouteControls";
+import axios from "axios";
 
-function RouteSearchPanel() {
+
+function RouteSearchPanel({handleQuerySubmit}) {
 	const maxNumberOfSearch = 10;
 	const [numberOfSearch, setNumberOfSearch] = useState(1);
 	const [searchQuery, setSearchQuery] = useState([]);
-    const defaultFormValue = {
-        searchText:{},
-        radius:1500,
-        price_range:[0,4],
-        include_indoor: true,
-        include_outdoor: true,
-        opennow_only:false
-    }
-    const [formValues, setFormValues] = useState(defaultFormValue)
+	const defaultFormValue = {
+		query_keyword: {},
+		radius: 1500,
+		price_range: [0, 4],
+		duration: 60,
+		opennow_only: false,
+	};
+	const [formValues, setFormValues] = useState(defaultFormValue);
 
 	const handleSearchInputChange = (e) => {
 		const { name, value } = e.target;
-        const newFormValus = {...formValues};
-        newFormValus.searchText[name] = value;
-        setFormValues(newFormValus);
+		const newFormValus = { ...formValues };
+		newFormValus.query_keyword[name] = value;
+		setFormValues(newFormValus);
 	};
 
 	const createSearch = (number) => {
@@ -47,17 +48,14 @@ function RouteSearchPanel() {
 		setNumberOfSearch(numberOfSearch + 1);
 	}, []);
 
-	const handleSearchSubmit = (e) => {
-        e.preventDefault();
-		console.log(formValues);
-	};
+
 
 	return (
 		<section className="route-search">
 			<h2 className="route-search__title">
 				Search for places you want to go in sequence.
 			</h2>
-			<form className="route-search__form" onSubmit={handleSearchSubmit}>
+			<div className="route-search__form">
 				{searchQuery && searchQuery[0] && searchQuery.map((query) => query)}
 				<button
 					onClick={addNewSearch}
@@ -65,11 +63,9 @@ function RouteSearchPanel() {
 				>
 					add
 				</button>
-                <RouteControls formValues={formValues} setFormValues={setFormValues}/>
-				<button type="submit">
-					submit
-				</button>
-			</form>
+				<RouteControls formValues={formValues} setFormValues={setFormValues} />
+				<button type="submit" onClick={(e)=>handleQuerySubmit(e, formValues, "keyword")}>submit</button>
+			</div>
 		</section>
 	);
 }
