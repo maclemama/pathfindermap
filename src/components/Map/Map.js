@@ -19,7 +19,7 @@ function Map({startingPoint, setStartingPoint, routes, mapRadius }) {
 	const mapOptions = useMemo(
 		() => ({
 			mapId: "f6ca3c1a38d4ecfa",
-			disableDefaultUI: false,
+			disableDefaultUI: true,
 			clickableIcons: false,
 			zoom: 17,
 			tilt: 30,
@@ -67,7 +67,6 @@ function Map({startingPoint, setStartingPoint, routes, mapRadius }) {
 					center={startingPoint}
 					radius={mapRadius}
 					options={circleOptions}
-					editable={true}
 				/>
 			</GoogleMap>
 		</section>

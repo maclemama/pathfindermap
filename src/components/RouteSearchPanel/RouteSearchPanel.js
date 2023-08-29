@@ -10,7 +10,6 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius }) {
 	const defaultFormValue = {
 		query_keyword: {},
 		radius: 3000,
-		price_range: [0, 4],
 		duration: 60,
 		opennow_only: false,
 	};

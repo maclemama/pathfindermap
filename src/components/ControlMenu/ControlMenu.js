@@ -24,7 +24,6 @@ function ControlMenu({
 			longitude: startingPoint.lng,
 			latitude: startingPoint.lat,
 			radius: formValues.radius,
-			price_range: formValues.price_range,
 			opennow_only: formValues.opennow_only,
 		};
 		if (mode === "keyword") {

@@ -2,10 +2,6 @@ import "./RouteControls.scss";
 import { Col, InputNumber, Row, Slider, Switch } from "antd";
 
 function RouteControls({ formValues, setFormValues, setMapRadius }) {
-	const marks = {
-		0: "Cheapest",
-		4: "Expensive",
-	};
 
 	const handleChange = (value, name) => {
 		const newFormValues = { ...formValues };
@@ -19,19 +15,6 @@ function RouteControls({ formValues, setFormValues, setMapRadius }) {
 
 	return (
 		<div className="route-controls">
-			<Slider
-				range={{ draggableTrack: true }}
-				defaultValue={[0, 4]}
-				step={1}
-				max={4}
-				marks={marks}
-				onChange={(value) => handleChange(value, "price_range")}
-				value={formValues.price_range}
-				style={{
-					width: "80%",
-					margin: "1rem auto 1rem auto",
-				}}
-			/>
 			<Row>
 				<Col span={16}>
 					<Slider
