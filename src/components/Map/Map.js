@@ -1,14 +1,10 @@
-import {
-	GoogleMap,
-	MarkerF,
-	CircleF,
-} from "@react-google-maps/api";
-import { useCallback, useEffect, useMemo, useRef} from "react";
+import { GoogleMap, MarkerF, CircleF } from "@react-google-maps/api";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
 import Routes from "../Routes/Routes";
 import "./Map.scss";
 
-function Map({startingPoint, setStartingPoint, routes, mapRadius }) {
+function Map({ startingPoint, setStartingPoint, routes, mapRadius }) {
 	const mapRef = useRef();
 
 	// const handleCenterChange = ()=>{
@@ -44,11 +40,6 @@ function Map({startingPoint, setStartingPoint, routes, mapRadius }) {
 	);
 
 	const onLoad = useCallback((map) => (mapRef.current = map), []);
-	
-
-	useEffect(()=>{
-		console.log(mapRadius)
-	},[mapRadius])
 
 	return (
 		<section className="map">
@@ -61,7 +52,11 @@ function Map({startingPoint, setStartingPoint, routes, mapRadius }) {
 			>
 				<MarkerF position={startingPoint} icon={markerPrimaryIcon} />
 
-				<Routes routes={routes} startingPoint={startingPoint}/>
+				<Routes
+					routes={routes}
+					startingPoint={startingPoint}
+					mapRef={mapRef}
+				/>
 
 				<CircleF
 					center={startingPoint}
