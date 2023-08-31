@@ -20,11 +20,13 @@ function ControlMenu({
 	const handleQuerySubmit = (e, formValues, mode) => {
 		e.preventDefault();
 		const payload = {
+			query_mode: formValues.query_mode,
 			duration: formValues.duration,
 			longitude: startingPoint.lng,
 			latitude: startingPoint.lat,
 			radius: formValues.radius,
 			opennow_only: formValues.opennow_only,
+			max_route: formValues.max_route,
 		};
 		if (mode === "keyword") {
 			const keyword = Object.values(formValues.query_keyword);

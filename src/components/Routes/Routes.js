@@ -4,19 +4,14 @@ import {
 	InfoWindowF,
 	PolylineF,
 } from "@react-google-maps/api";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
 import "./Routes.scss";
 
 function Routes({ routes, startingPoint, mapRef }) {
 	const [directions, setDirections] = useState([]);
 	const [places, setPlaces] = useState(null);
-	const routeRef = useRef([]);
-
-	const onLoad = useCallback((route) => {
-		console.log(route);
-		routeRef.current.push(route);
-	}, []);
+	const [showMarker, setShowMarker] = useState([]);
 
 	const defaultPolyLineColors = [
 		"#FF5733",
@@ -31,10 +26,11 @@ function Routes({ routes, startingPoint, mapRef }) {
 		"#4B0082",
 	];
 
-	const defaultZIndex = [50, 50, 50, 50, 50, 50, 50, 50, 50, 50];
 	const [polyLineColors, setPolyLineColors] = useState(defaultPolyLineColors);
+
+	const defaultZIndex = [50, 50, 50, 50, 50, 50, 50, 50, 50, 50];
 	const [polyLineZIndex, setPolyLineZIndex] = useState(defaultZIndex);
-	const [showMarker, setShowMarker] = useState([]);
+
 	const centerMap = (markers) => {
 		/* eslint-disable */
 		const bounds = new google.maps.LatLngBounds();
@@ -146,18 +142,19 @@ function Routes({ routes, startingPoint, mapRef }) {
 				}
 			})
 		);
-
 	};
 
 	const handleRouteMouseOut = (e) => {
 		setPolyLineColors(defaultPolyLineColors);
 		setPolyLineZIndex(defaultZIndex);
 		setShowMarker(showMarker.map((show) => true));
+	};
+
+	const handleRouteDoubleClick = (e) => {
 		centerMap(places);
 	};
 
 	const handleRouteClick = (e, direction) => {
-
 		const directionBounds = direction.routes[0].bounds;
 
 		/* eslint-disable */
@@ -201,12 +198,10 @@ function Routes({ routes, startingPoint, mapRef }) {
 			{directions &&
 				directions[0] &&
 				directions.map((direction, index) => {
-					console.log(direction.routes[0].overview_path);
 					return (
 						<>
 							<DirectionsRenderer
 								directions={direction}
-								onLoad={onLoad}
 								options={{
 									markerOptions: {
 										visible: false,
@@ -225,8 +220,9 @@ function Routes({ routes, startingPoint, mapRef }) {
 									zIndex: polyLineZIndex[index],
 								}}
 								onMouseOver={(e) => handleRouteMouseOver(e, index, direction)}
-								onMouseOut={(e) => handleRouteMouseOut(e)}
+								onMouseOut={handleRouteMouseOut}
 								onClick={(e) => handleRouteClick(e, direction)}
+								onDblClick={handleRouteDoubleClick}
 							/>
 						</>
 					);

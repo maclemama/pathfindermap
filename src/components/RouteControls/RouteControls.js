@@ -61,6 +61,29 @@ function RouteControls({ formValues, setFormValues, setMapRadius }) {
 					/>
 				</Col>
 			</Row>
+			<Row>
+				<Col span={16}>
+					<Slider
+						min={1}
+						max={10}
+						onChange={(value) => handleChange(value, "max_route")}
+						value={
+							typeof formValues.max_route === "number" ? formValues.max_route : 0
+						}
+					/>
+				</Col>
+				<Col span={6}>
+					<InputNumber
+						min={1}
+						max={10}
+						style={{
+							margin: "0 16px",
+						}}
+						value={`${formValues.max_route}route`}
+						onChange={(value) => handleChange(value, "max_route")}
+					/>
+				</Col>
+			</Row>
 			<Switch
 				checkedChildren="Include Closed"
 				unCheckedChildren="Exclude Closed"

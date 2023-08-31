@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import "./RouteSearchPanel.scss";
 import RouteControls from "../RouteControls/RouteControls";
-import axios from "axios";
 
 function RouteSearchPanel({ handleQuerySubmit, setMapRadius }) {
 	const maxNumberOfSearch = 10;
 	const [numberOfSearch, setNumberOfSearch] = useState(1);
 	const [searchQuery, setSearchQuery] = useState([]);
 	const defaultFormValue = {
+		query_mode:"keyword",
 		query_keyword: {},
 		radius: 3000,
 		duration: 60,
 		opennow_only: false,
+		max_route:5
 	};
 	const [formValues, setFormValues] = useState(defaultFormValue);
 
