@@ -1,12 +1,11 @@
 import "./RouteControls.scss";
-import { Col, InputNumber, Row, Slider, Switch } from "antd";
+import { InputNumber, Slider, Switch } from "antd";
 
 function RouteControls({ formValues, setFormValues, setMapRadius }) {
 	const handleChange = (value, name) => {
 		const newFormValues = { ...formValues };
 		newFormValues[name] = value;
 		setFormValues(newFormValues);
-		console.log(name);
 		if (name === "radius") {
 			setMapRadius(value);
 		}

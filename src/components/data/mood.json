@@ -1,152 +1,152 @@
 [
 	{
-		"mood": "Relaxation",
+		"text": "Relaxation",
 		"likelihood": "High likelihood",
-		"percentage": 80,
+		"value": 80,
 		"reason": "Stress relief"
 	},
 	{
-		"mood": "Happiness",
+		"text": "Happiness",
 		"likelihood": "High likelihood",
-		"percentage": 85,
-		"reason": "Mood boost"
+		"value": 85,
+		"reason": "text boost"
 	},
 	{
-		"mood": "Contentment",
+		"text": "Contentment",
 		"likelihood": "High likelihood",
-		"percentage": 75,
+		"value": 75,
 		"reason": "Peaceful feeling"
 	},
 	{
-		"mood": "Energized",
+		"text": "Energized",
 		"likelihood": "High likelihood",
-		"percentage": 90,
+		"value": 90,
 		"reason": "Increased vitality"
 	},
 	{
-		"mood": "Reflection",
+		"text": "Reflection",
 		"likelihood": "Moderate likelihood",
-		"percentage": 50,
+		"value": 50,
 		"reason": "Contemplation"
 	},
 	{
-		"mood": "Inspiration",
+		"text": "Inspiration",
 		"likelihood": "Moderate likelihood",
-		"percentage": 55,
+		"value": 55,
 		"reason": "Creative sparks"
 	},
 	{
-		"mood": "Productivity",
+		"text": "Productivity",
 		"likelihood": "Moderate likelihood",
-		"percentage": 60,
+		"value": 60,
 		"reason": "Task planning"
 	},
 	{
-		"mood": "Connection",
+		"text": "Connection",
 		"likelihood": "Moderate likelihood",
-		"percentage": 65,
+		"value": 65,
 		"reason": "Socializing"
 	},
 	{
-		"mood": "Adventure",
+		"text": "Adventure",
 		"likelihood": "Low likelihood",
-		"percentage": 25,
+		"value": 25,
 		"reason": "Seeking excitement"
 	},
 	{
-		"mood": "Mindfulness",
+		"text": "Mindfulness",
 		"likelihood": "Low likelihood",
-		"percentage": 20,
+		"value": 20,
 		"reason": "Being present"
 	},
 	{
-		"mood": "Empowerment",
+		"text": "Empowerment",
 		"likelihood": "Low likelihood",
-		"percentage": 15,
+		"value": 15,
 		"reason": "Self-care"
 	},
 	{
-		"mood": "Solitude",
+		"text": "Solitude",
 		"likelihood": "Low likelihood",
-		"percentage": 10,
+		"value": 10,
 		"reason": "Alone time"
 	},
 	{
-		"mood": "Nostalgia",
+		"text": "Nostalgia",
 		"likelihood": "Low likelihood",
-		"percentage": 10,
+		"value": 10,
 		"reason": "Sentimental"
 	},
 	{
-		"mood": "Curiosity",
+		"text": "Curiosity",
 		"likelihood": "Low likelihood",
-		"percentage": 5,
+		"value": 5,
 		"reason": "Exploration"
 	},
 	{
-		"mood": "Adventure",
+		"text": "Adventure",
 		"likelihood": "Low likelihood",
-		"percentage": 20,
+		"value": 20,
 		"reason": "Seeking excitement"
 	},
 	{
-		"mood": "Tranquility",
+		"text": "Tranquility",
 		"likelihood": "Moderate likelihood",
-		"percentage": 70,
+		"value": 70,
 		"reason": "Calming the mind"
 	},
 	{
-		"mood": "Motivation",
+		"text": "Motivation",
 		"likelihood": "Moderate likelihood",
-		"percentage": 55,
+		"value": 55,
 		"reason": "Achieving goals"
 	},
 	{
-		"mood": "Creativity",
+		"text": "Creativity",
 		"likelihood": "Moderate likelihood",
-		"percentage": 60,
+		"value": 60,
 		"reason": "Idea generation"
 	},
 	{
-		"mood": "Serenity",
+		"text": "Serenity",
 		"likelihood": "High likelihood",
-		"percentage": 75,
+		"value": 75,
 		"reason": "Inner peace"
 	},
 	{
-		"mood": "Adventurous",
+		"text": "Adventurous",
 		"likelihood": "Low likelihood",
-		"percentage": 30,
+		"value": 30,
 		"reason": "Thrill-seeking"
 	},
 	{
-		"mood": "Self-Reflection",
+		"text": "Self-Reflection",
 		"likelihood": "Moderate likelihood",
-		"percentage": 45,
+		"value": 45,
 		"reason": "Personal growth"
 	},
 	{
-		"mood": "Calmness",
+		"text": "Calmness",
 		"likelihood": "High likelihood",
-		"percentage": 70,
+		"value": 70,
 		"reason": "Stress reduction"
 	},
 	{
-		"mood": "Joy",
+		"text": "Joy",
 		"likelihood": "High likelihood",
-		"percentage": 80,
+		"value": 80,
 		"reason": "Spreading happiness"
 	},
 	{
-		"mood": "Appreciation",
+		"text": "Appreciation",
 		"likelihood": "Moderate likelihood",
-		"percentage": 55,
+		"value": 55,
 		"reason": "Gratitude"
 	},
 	{
-		"mood": "Adventure",
+		"text": "Adventure",
 		"likelihood": "Low likelihood",
-		"percentage": 20,
+		"value": 20,
 		"reason": "Exploration"
 	}
 ]

@@ -4,10 +4,9 @@ import RouteControls from "../RouteControls/RouteControls";
 import FormInput from "../FormInput/FormInput";
 import SVGIcons from "../SVGIcons/SVGIcons";
 import FormInputPrefix from "../FormInputPrefix/FormInputPrefix";
-import FormInputSubfix from "../FormInputSubfix/FormInputSubfix";
 import RouteSubmitButton from "../RouteSubmitButton/RouteSubmitButton";
 
-function RouteSearchPanel({ handleQuerySubmit, setMapRadius }) {
+function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 	const maxNumberOfSearch = 10;
 	const [numberOfSearch, setNumberOfSearch] = useState(1);
 	const [searchQuery, setSearchQuery] = useState([]);
@@ -21,21 +20,12 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius }) {
 	};
 	const [formValues, setFormValues] = useState(defaultFormValue);
 
-	const [stopNumbers, setStepNumbers] = useState([]);
-
 	const handleSearchInputChange = (e) => {
 		const { name, value } = e.target;
 		const newFormValus = { ...formValues };
 		newFormValus.query_keyword[name] = value;
 		setFormValues(newFormValus);
 	};
-
-	// const handleInputClose = (searchInputNumber) => {
-	// 	let newSearchQuery = [...searchQuery];
-	// 	console.log(searchInputNumber)
-	// 	newSearchQuery.splice(searchInputNumber-1,1)
-	// 	setSearchQuery(newSearchQuery)
-	// };
 
 	const createSearch = (searchInputNumber) => {
 		const inputPrefix = [
@@ -55,12 +45,6 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius }) {
 						prefixComponent={inputPrefix}
 						inputPreflixWidth={65}
 						inputPlaceHolder={"Places you want to go or things to do..."}
-						// subfixComponent={[
-						// 	<FormInputSubfix
-						// 		svgName={"cancel"}
-						// 		onClickfunc={() => handleInputClose(searchInputNumber)}
-						// 	/>,
-						// ]}
 					/>
 				</div>
 			</div>
@@ -77,6 +61,14 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius }) {
 		setSearchQuery([createSearch(numberOfSearch)]);
 		setNumberOfSearch(numberOfSearch + 1);
 	}, []);
+
+	useEffect(()=>{
+		if(allFormReset > 0){
+			setNumberOfSearch(1)
+			setFormValues(defaultFormValue);
+			setSearchQuery([createSearch(numberOfSearch)]);
+		}
+	},[allFormReset])
 
 	return (
 		<section className="route-search">

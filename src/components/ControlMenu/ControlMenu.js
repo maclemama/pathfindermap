@@ -6,6 +6,7 @@ import ControlStartingPoint from "../ControlStartingPoint/ControlStartingPoint";
 import RouteSearchPanel from "../RouteSearchPanel/RouteSearchPanel";
 import axios from "axios";
 import SVGIcons from "../SVGIcons/SVGIcons";
+import RouteMoodPanel from "../RouteMoodPanel/RouteMoodPanel";
 
 function ControlMenu({
 	startingPoint,
@@ -17,6 +18,7 @@ function ControlMenu({
 }) {
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
+	const [allFormReset, setAllFormReset] = useState(0)
 
 	const handleQuerySubmit = (e, formValues, mode) => {
 		e.preventDefault();
@@ -36,6 +38,13 @@ function ControlMenu({
 			}
 			payload.query_keyword = keyword;
 		}
+		
+		if (mode === "mood") {
+			if (formValues.query_mood === "") {
+				return;
+			}
+			payload.query_mood = formValues.query_mood;
+		}
 
 		console.log(payload);
 		axios
@@ -43,6 +52,7 @@ function ControlMenu({
 			.then((res) => {
 				console.log(res.data);
 				setRoutes(res.data);
+				setAllFormReset(allFormReset + 1)
 			});
 	};
 
@@ -109,11 +119,16 @@ function ControlMenu({
 							<RouteSearchPanel
 								handleQuerySubmit={handleQuerySubmit}
 								setMapRadius={setMapRadius}
+								allFormReset={allFormReset}
 							/>
 						)}
 
 						{activeTab === tabNames[1] && (
-							<h1>this is {activeTab}, the second tab</h1>
+							<RouteMoodPanel
+								handleQuerySubmit={handleQuerySubmit}
+								setMapRadius={setMapRadius}
+								allFormReset={allFormReset}
+							/>
 						)}
 
 						{activeTab === tabNames[2] && (
