@@ -37,17 +37,17 @@ function RouteMoodPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 	},[allFormReset])
 
 	return (
-		<section className="route-search">
-			<h2 className="route-search__title">
+		<section className="route-mood">
+			<h2 className="route-mood__title">
 				Search or select mood you want in the journey
 			</h2>
-			<div className="route-search__form">
-				<div className="route-search__stop">
+			<div className="route-mood__form">
+				<div className="route-mood__stop">
 					<SVGIcons
 						iconName={"down"}
-						cssClassName={"route-search__next-stop-icon"}
+						cssClassName={"route-mood__next-stop-icon"}
 					/>
-					<div className="route-search__input-wrapper">
+					<div className="route-mood__input-wrapper">
 						<FormInput
 							inputType={"text"}
 							inputName={`route-mood__input`}

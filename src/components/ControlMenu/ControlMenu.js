@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { motion, useDragControls } from "framer-motion";
 import "./ControlMenu.scss";
 import ControlTabs from "../ControlTabs/ControlTabs";
@@ -18,7 +18,37 @@ function ControlMenu({
 }) {
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
-	const [allFormReset, setAllFormReset] = useState(0)
+	const [allFormReset, setAllFormReset] = useState(0);
+
+	const [positionY, setPositionY] = useState(0);
+	const [maxPositionY, setMaxPositionY] = useState(0);
+	const [isCollapse, setIsCollapse] = useState(true);
+	const controls = useDragControls();
+	const sectionRef = useRef(null);
+
+	useEffect(() => {
+		if (!sectionRef.current) return;
+		const resizeObserver = new ResizeObserver(() => {
+			const newMaxPositionY = sectionRef.current.offsetHeight - 50;
+			setMaxPositionY(newMaxPositionY);
+		});
+		resizeObserver.observe(sectionRef.current);
+		return () => resizeObserver.disconnect();
+	}, []);
+
+	const toggleShowHide = () => {
+		if (positionY === 0) {
+			setPositionY(maxPositionY);
+			setIsCollapse(true);
+		} else {
+			setPositionY(0);
+			setIsCollapse(false);
+		}
+	};
+
+	const handleDrag = () => {
+		setIsCollapse(true);
+	};
 
 	const handleQuerySubmit = (e, formValues, mode) => {
 		e.preventDefault();
@@ -38,7 +68,7 @@ function ControlMenu({
 			}
 			payload.query_keyword = keyword;
 		}
-		
+
 		if (mode === "mood") {
 			if (formValues.query_mood === "") {
 				return;
@@ -52,39 +82,19 @@ function ControlMenu({
 			.then((res) => {
 				console.log(res.data);
 				setRoutes(res.data);
-				setAllFormReset(allFormReset + 1)
+				setAllFormReset(allFormReset + 1);
 			});
 	};
 
-	const [positionY, setPositionY] = useState("0%");
-	// const [positionY, setPositionY] = useState(500);
-	const [isCollapse, setIsCollapse] = useState(true);
-	const controls = useDragControls();
-
-	const toggleShowHide = () => {
-		if (positionY === "0%") {
-			// setPositionY(500);
-			setIsCollapse(true);
-			setPositionY("90%");
-		} else {
-			// setPositionY(0);
-			setPositionY("0%");
-			setIsCollapse(false);
-		}
-	};
-
-	const handleDrag = () => {
-		setIsCollapse(true);
-	};
 	return (
-		<section className="control-menu">
+		<section className="control-menu" ref={sectionRef}>
 			<motion.div
 				className="box"
 				animate={{ y: positionY }}
 				transition={{ type: "spring", damping: 15 }}
 				drag="y"
 				dragControls={controls}
-				dragConstraints={{ top: 0, bottom: 450 }}
+				dragConstraints={{ top: 0, bottom: maxPositionY }}
 				onDrag={handleDrag}
 			>
 				<div className="control-menu__group">

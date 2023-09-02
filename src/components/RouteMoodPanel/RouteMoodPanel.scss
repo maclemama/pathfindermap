@@ -1,2 +1,30 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixin" as *;
+
+.route-mood{
+    width: 100%;
+
+    &__title{
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    &__form{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 1.5rem;
+    }
+
+    &__stop{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &__next-stop-icon{
+        width: 2rem;
+        height: 2rem;
+        margin: 0.5rem auto;
+    }
+}
