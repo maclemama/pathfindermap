@@ -1,0 +1,30 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.header {
+	background-color: $primary-bg-light-color;
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem 2rem;
+	border: $el-border;
+	border-bottom-left-radius: $section-radius;
+	border-bottom-right-radius: $section-radius;
+
+	@include el-shadow;
+
+	&__logo {
+		height: 3rem;
+	}
+
+	&__signin-button{
+        border-radius: $el-border;
+        &-text {
+            font-size: 1.6rem;
+            font-family: "Poppins";
+            font-weight: 300;
+            text-decoration: underline;
+            text-decoration-color: blue;
+            line-height: 1rem;
+        }
+    }
+}

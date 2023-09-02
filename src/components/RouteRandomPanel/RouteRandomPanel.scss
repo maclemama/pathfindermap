@@ -1,19 +1,21 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixin" as *;
 
-.route-random{
-    width: 100%;
+.route-random {
+	width: 100%;
 
-    &__title{
-        font-size: 1.5rem;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
+	&__title {
+		font-size: 1.5rem;
+		text-align: center;
+		margin-bottom: 2rem;
+		text-decoration: underline;
+		text-decoration-color: #5dda5d;
+	}
 
-    &__form{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        row-gap: 1.5rem;
-    }
+	&__form {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		row-gap: 1.5rem;
+	}
 }

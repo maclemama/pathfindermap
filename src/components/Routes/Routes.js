@@ -178,7 +178,7 @@ function Routes({ routes, startingPoint, mapRef }) {
 	return (
 		<>
 			{places &&
-				places.map((place) => {
+				places.map((place, index) => {
 					const location = {
 						lat: place.latitude,
 						lng: place.longitude,
@@ -188,6 +188,7 @@ function Routes({ routes, startingPoint, mapRef }) {
 							position={location}
 							icon={markerSecondaryIcon}
 							visible={showMarker[place.route_number]}
+							key={index}
 						>
 							<InfoWindowF position={location}>
 								<div>{place.name}</div>
@@ -199,7 +200,7 @@ function Routes({ routes, startingPoint, mapRef }) {
 				directions[0] &&
 				directions.map((direction, index) => {
 					return (
-						<>
+						<div className="routes-wrapper" key={index}>
 							<DirectionsRenderer
 								directions={direction}
 								options={{
@@ -224,7 +225,7 @@ function Routes({ routes, startingPoint, mapRef }) {
 								onClick={(e) => handleRouteClick(e, direction)}
 								onDblClick={handleRouteDoubleClick}
 							/>
-						</>
+						</div>
 					);
 				})}
 		</>

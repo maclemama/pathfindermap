@@ -1,11 +1,16 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixin" as *;
 
+.route-submit-button {
+	background-color: white;
+	height: 4rem;
+	border-radius: $element-radius;
+	font-size: 1.8rem;
+	color: #455eed;
+    border: 1px solid #455eed;
 
-.route-submit-button{
-    background-color:#455eed;;
-    height: 4rem;
-    border-radius: $element-radius;
-    font-size: 1.8rem;
-    color: white;
+	&:hover {
+		background-color: #455eed;
+		color: white;
+	}
 }

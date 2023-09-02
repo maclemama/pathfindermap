@@ -21,7 +21,7 @@ function ControlMenu({
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
 	const [allFormReset, setAllFormReset] = useState(0);
 
-	const [positionY, setPositionY] = useState(0);
+	const [positionY, setPositionY] = useState(-50);
 	const [maxPositionY, setMaxPositionY] = useState(0);
 	const [isCollapse, setIsCollapse] = useState(true);
 	const controls = useDragControls();
@@ -30,7 +30,7 @@ function ControlMenu({
 	useEffect(() => {
 		if (!sectionRef.current) return;
 		const resizeObserver = new ResizeObserver(() => {
-			const newMaxPositionY = sectionRef.current.offsetHeight - 50;
+			const newMaxPositionY = sectionRef.current.offsetHeight - 100;
 			setMaxPositionY(newMaxPositionY);
 		});
 		resizeObserver.observe(sectionRef.current);
@@ -38,11 +38,11 @@ function ControlMenu({
 	}, []);
 
 	const toggleShowHide = () => {
-		if (positionY === 0) {
+		if (positionY === -50) {
 			setPositionY(maxPositionY);
 			setIsCollapse(true);
 		} else {
-			setPositionY(0);
+			setPositionY(-50);
 			setIsCollapse(false);
 		}
 	};
@@ -90,7 +90,7 @@ function ControlMenu({
 	return (
 		<section className="control-menu" ref={sectionRef}>
 			<motion.div
-				className="box"
+				className="control-menu__dragable-box"
 				animate={{ y: positionY }}
 				transition={{ type: "spring", damping: 15 }}
 				drag="y"
