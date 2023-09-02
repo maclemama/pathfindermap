@@ -7,6 +7,7 @@ import RouteSearchPanel from "../RouteSearchPanel/RouteSearchPanel";
 import axios from "axios";
 import SVGIcons from "../SVGIcons/SVGIcons";
 import RouteMoodPanel from "../RouteMoodPanel/RouteMoodPanel";
+import RouteRandomPanel from "../RouteRandomPanel/RouteRandomPanel";
 
 function ControlMenu({
 	startingPoint,
@@ -142,7 +143,10 @@ function ControlMenu({
 						)}
 
 						{activeTab === tabNames[2] && (
-							<h1>this is {activeTab}, the third tab</h1>
+							<RouteRandomPanel
+								handleQuerySubmit={handleQuerySubmit}
+								setMapRadius={setMapRadius}
+							/>
 						)}
 					</div>
 					<ControlTabs
