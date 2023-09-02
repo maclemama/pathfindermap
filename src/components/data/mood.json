@@ -1,0 +1,152 @@
+[
+	{
+		"mood": "Relaxation",
+		"likelihood": "High likelihood",
+		"percentage": 80,
+		"reason": "Stress relief"
+	},
+	{
+		"mood": "Happiness",
+		"likelihood": "High likelihood",
+		"percentage": 85,
+		"reason": "Mood boost"
+	},
+	{
+		"mood": "Contentment",
+		"likelihood": "High likelihood",
+		"percentage": 75,
+		"reason": "Peaceful feeling"
+	},
+	{
+		"mood": "Energized",
+		"likelihood": "High likelihood",
+		"percentage": 90,
+		"reason": "Increased vitality"
+	},
+	{
+		"mood": "Reflection",
+		"likelihood": "Moderate likelihood",
+		"percentage": 50,
+		"reason": "Contemplation"
+	},
+	{
+		"mood": "Inspiration",
+		"likelihood": "Moderate likelihood",
+		"percentage": 55,
+		"reason": "Creative sparks"
+	},
+	{
+		"mood": "Productivity",
+		"likelihood": "Moderate likelihood",
+		"percentage": 60,
+		"reason": "Task planning"
+	},
+	{
+		"mood": "Connection",
+		"likelihood": "Moderate likelihood",
+		"percentage": 65,
+		"reason": "Socializing"
+	},
+	{
+		"mood": "Adventure",
+		"likelihood": "Low likelihood",
+		"percentage": 25,
+		"reason": "Seeking excitement"
+	},
+	{
+		"mood": "Mindfulness",
+		"likelihood": "Low likelihood",
+		"percentage": 20,
+		"reason": "Being present"
+	},
+	{
+		"mood": "Empowerment",
+		"likelihood": "Low likelihood",
+		"percentage": 15,
+		"reason": "Self-care"
+	},
+	{
+		"mood": "Solitude",
+		"likelihood": "Low likelihood",
+		"percentage": 10,
+		"reason": "Alone time"
+	},
+	{
+		"mood": "Nostalgia",
+		"likelihood": "Low likelihood",
+		"percentage": 10,
+		"reason": "Sentimental"
+	},
+	{
+		"mood": "Curiosity",
+		"likelihood": "Low likelihood",
+		"percentage": 5,
+		"reason": "Exploration"
+	},
+	{
+		"mood": "Adventure",
+		"likelihood": "Low likelihood",
+		"percentage": 20,
+		"reason": "Seeking excitement"
+	},
+	{
+		"mood": "Tranquility",
+		"likelihood": "Moderate likelihood",
+		"percentage": 70,
+		"reason": "Calming the mind"
+	},
+	{
+		"mood": "Motivation",
+		"likelihood": "Moderate likelihood",
+		"percentage": 55,
+		"reason": "Achieving goals"
+	},
+	{
+		"mood": "Creativity",
+		"likelihood": "Moderate likelihood",
+		"percentage": 60,
+		"reason": "Idea generation"
+	},
+	{
+		"mood": "Serenity",
+		"likelihood": "High likelihood",
+		"percentage": 75,
+		"reason": "Inner peace"
+	},
+	{
+		"mood": "Adventurous",
+		"likelihood": "Low likelihood",
+		"percentage": 30,
+		"reason": "Thrill-seeking"
+	},
+	{
+		"mood": "Self-Reflection",
+		"likelihood": "Moderate likelihood",
+		"percentage": 45,
+		"reason": "Personal growth"
+	},
+	{
+		"mood": "Calmness",
+		"likelihood": "High likelihood",
+		"percentage": 70,
+		"reason": "Stress reduction"
+	},
+	{
+		"mood": "Joy",
+		"likelihood": "High likelihood",
+		"percentage": 80,
+		"reason": "Spreading happiness"
+	},
+	{
+		"mood": "Appreciation",
+		"likelihood": "Moderate likelihood",
+		"percentage": 55,
+		"reason": "Gratitude"
+	},
+	{
+		"mood": "Adventure",
+		"likelihood": "Low likelihood",
+		"percentage": 20,
+		"reason": "Exploration"
+	}
+]

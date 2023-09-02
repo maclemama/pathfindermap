@@ -8,4 +8,8 @@
 	padding: 1rem 1.2rem 1rem var(--prefix-width);
 	background-color: white;
 	border: $form-el-border;
+
+	&__wrapper{
+		position: relative;
+	}
 }

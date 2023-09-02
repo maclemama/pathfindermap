@@ -9,7 +9,8 @@ function FormInput({
 	inputOnBlur,
 	inputOnFocus,
 	prefixComponent,
-	inputPreflixWidth
+	inputPreflixWidth,
+	subfixComponent
 }) {
 	return (
 		<div className="form-input__wrapper">
@@ -25,6 +26,7 @@ function FormInput({
 				onBlur={inputOnBlur}
 				style={{"--prefix-width": `${inputPreflixWidth ? inputPreflixWidth + 10 : 12}px`}}
 			/>
+			{subfixComponent && subfixComponent[0]}
 		</div>
 	);
 }
