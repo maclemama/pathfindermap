@@ -1,14 +1,15 @@
 import { useMemo, useState } from "react";
+import { motion, useDragControls } from "framer-motion";
 import "./ControlMenu.scss";
 import ControlTabs from "../ControlTabs/ControlTabs";
 import ControlStartingPoint from "../ControlStartingPoint/ControlStartingPoint";
 import RouteSearchPanel from "../RouteSearchPanel/RouteSearchPanel";
 import axios from "axios";
+import SVGIcons from "../SVGIcons/SVGIcons";
 
 function ControlMenu({
 	startingPoint,
 	setStartingPoint,
-	isCurrentLocation,
 	setIsCurrentLoaction,
 	setCurrentLocationAsStart,
 	setRoutes,
@@ -44,40 +45,88 @@ function ControlMenu({
 				setRoutes(res.data);
 			});
 	};
+
+	const [positionY, setPositionY] = useState("0%");
+	// const [positionY, setPositionY] = useState(500);
+	const [isCollapse, setIsCollapse] = useState(true);
+	const controls = useDragControls();
+
+	const toggleShowHide = () => {
+		if (positionY === "0%") {
+			// setPositionY(500);
+			setIsCollapse(true);
+			setPositionY("90%");
+		} else {
+			// setPositionY(0);
+			setPositionY("0%");
+			setIsCollapse(false);
+		}
+	};
+
+	const handleDrag = () => {
+		setIsCollapse(true);
+	};
 	return (
 		<section className="control-menu">
-			<div className="control-menu__group">
-				<ControlStartingPoint
-					startingPoint={startingPoint}
-					setStartingPoint={setStartingPoint}
-					isCurrentLocation={isCurrentLocation}
-					setIsCurrentLoaction={setIsCurrentLoaction}
-					setCurrentLocationAsStart={setCurrentLocationAsStart}
-				/>
-			</div>
-			<div className="control-menu__group">
-				<div className="control-menu__tab">
-					{activeTab === tabNames[0] && (
-						<RouteSearchPanel
-							handleQuerySubmit={handleQuerySubmit}
-							setMapRadius={setMapRadius}
+			<motion.div
+				className="box"
+				animate={{ y: positionY }}
+				transition={{ type: "spring", damping: 15 }}
+				drag="y"
+				dragControls={controls}
+				dragConstraints={{ top: 0, bottom: 450 }}
+				onDrag={handleDrag}
+			>
+				<div className="control-menu__group">
+					<motion.button
+						whileHover={{
+							scale: 1.4,
+							transition: { duration: 1 },
+						}}
+						whileTap={{ scale: 0.8 }}
+						onClick={toggleShowHide}
+					>
+						<SVGIcons
+							iconName="expand"
+							cssClassName={`control-menu__icon ${
+								isCollapse ? "control-menu__icon--active" : ""
+							} `}
 						/>
-					)}
+						<SVGIcons
+							iconName="collapse"
+							cssClassName={`control-menu__icon ${
+								isCollapse ? "" : "control-menu__icon--active"
+							} `}
+						/>
+					</motion.button>
+					<ControlStartingPoint
+						setStartingPoint={setStartingPoint}
+						setIsCurrentLoaction={setIsCurrentLoaction}
+						setCurrentLocationAsStart={setCurrentLocationAsStart}
+					/>
+					<div className="control-menu__tab">
+						{activeTab === tabNames[0] && (
+							<RouteSearchPanel
+								handleQuerySubmit={handleQuerySubmit}
+								setMapRadius={setMapRadius}
+							/>
+						)}
 
-					{activeTab === tabNames[1] && (
-						<h1>this is {activeTab}, the second tab</h1>
-					)}
+						{activeTab === tabNames[1] && (
+							<h1>this is {activeTab}, the second tab</h1>
+						)}
 
-					{activeTab === tabNames[2] && (
-						<h1>this is {activeTab}, the third tab</h1>
-					)}
+						{activeTab === tabNames[2] && (
+							<h1>this is {activeTab}, the third tab</h1>
+						)}
+					</div>
+					<ControlTabs
+						tabNames={tabNames}
+						setActiveTag={setActiveTag}
+						activeTab={activeTab}
+					/>
 				</div>
-				<ControlTabs
-					tabNames={tabNames}
-					setActiveTag={setActiveTag}
-					activeTab={activeTab}
-				/>
-			</div>
+			</motion.div>
 		</section>
 	);
 }

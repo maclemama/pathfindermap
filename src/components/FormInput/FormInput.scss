@@ -1,0 +1,11 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.form-input {
+	width: 100%;
+	height: 4rem;
+	border-radius: $element-radius;
+	padding: 1rem 1.2rem 1rem var(--prefix-width);
+	background-color: white;
+	border: $form-el-border;
+}

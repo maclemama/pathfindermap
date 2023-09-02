@@ -2,19 +2,33 @@
 @use "../../styles/partials/mixin" as *;
 
 .control-menu {
+    max-width: 100vw;
     position: fixed;
-    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+
 
     &__group{
-        background-color: $primary-placeholder-light-color;
+        background-color:rgb(252, 252, 253);
         padding: $mobile-row-gap $mobile-col-gap;
-        margin: 1rem;
+        // margin: 1rem;
         border-radius: $section-radius;
-        // width: 100%;
-        max-width: 100vw;
+        width: 100vw;
         display: flex;
         flex-direction: column;
+        align-items: center;
         row-gap: $mobile-row-gap;
+        @include el-shadow;
+    }
+
+    &__icon{
+        width: 2rem;
+        height: 2rem;
+        display: none;
+        
+        &--active{
+            display: block;
+        }
     }
 }
 

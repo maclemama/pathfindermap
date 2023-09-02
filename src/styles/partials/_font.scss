@@ -28,6 +28,19 @@
 	font-weight: light;
 }
 
+@font-face {
+	font-family: "Lato";
+	src: url(../../assets/fonts/Lato-Bold.ttf) format("truetype");
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "Lato";
+	src: url(../../assets/fonts/Lato-Regular.ttf) format("truetype");
+	font-weight: normal;
+}
+
 body {
-	font-family: "Poppins";
+	font-family: "Lato";
+	font-weight: normal;
 }

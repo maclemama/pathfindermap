@@ -14,7 +14,7 @@ function Map({ startingPoint, setStartingPoint, routes, mapRadius }) {
 
 	const mapOptions = useMemo(
 		() => ({
-			mapId: "f6ca3c1a38d4ecfa",
+			// mapId: "f6ca3c1a38d4ecfa",
 			disableDefaultUI: true,
 			clickableIcons: false,
 			zoom: 17,

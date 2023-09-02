@@ -10,12 +10,11 @@ import { useState, useEffect, useCallback } from "react";
 
 function HomePage() {
 	const [startingPoint, setStartingPoint] = useState(null);
-	const [isCurrentLocation, setIsCurrentLoaction] = useState(true);
 	const [isLoading, setIsLoading] = useState(true);
 	const [routes, setRoutes] = useState(null);
 	const [mapRadius, setMapRadius] = useState(3000);
 
-	const libraries = ["places"];
+	const [ libraries ] = useState(['places']); // remove map library warning by holding it in state
 	const { isLoaded, loadError } = useLoadScript({
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
 		libraries,
@@ -35,13 +34,12 @@ function HomePage() {
 							placeId: matchedPlace.place_id,
 							address: matchedPlace.formatted_address,
 						});
-						setIsCurrentLoaction(true);
 						setIsLoading(false);
 					})
 					.catch((e) => console.log("Geocoder failed due to: " + e));
 			})
 			.catch((err) => console.log(err));
-	});
+	},[]);
 
 	useEffect(() => {
 		setCurrentLocationAsStart();
@@ -66,8 +64,6 @@ function HomePage() {
 			<ControlMenu
 				startingPoint={startingPoint}
 				setStartingPoint={setStartingPoint}
-				isCurrentLocation={isCurrentLocation}
-				setIsCurrentLoaction={setIsCurrentLoaction}
 				setCurrentLocationAsStart={setCurrentLocationAsStart}
 				setRoutes={setRoutes}
 				setMapRadius={setMapRadius}

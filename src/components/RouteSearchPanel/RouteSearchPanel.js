@@ -25,7 +25,7 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius }) {
 
 	const createSearch = (number) => {
 		return (
-			<div>
+			<div key={number}>
 				<p className="route-search__text-prefix">Stop {number}: </p>
 				<input
 					type="text"

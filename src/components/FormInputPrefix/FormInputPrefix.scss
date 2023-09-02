@@ -1,0 +1,19 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.input-prefix{
+    position: absolute;
+    top:0rem;
+    left:0rem;
+    padding: 1rem 1rem;
+    border-right: $form-el-border;
+    display: flex;
+
+    &__text{
+        font-weight: bold;
+    }
+    &__icon{
+        height: 2rem;
+        width: 2rem;
+    }
+}
