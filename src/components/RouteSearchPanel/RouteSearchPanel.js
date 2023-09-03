@@ -4,71 +4,56 @@ import RouteControls from "../RouteControls/RouteControls";
 import FormInput from "../FormInput/FormInput";
 import SVGIcons from "../SVGIcons/SVGIcons";
 import FormInputPrefix from "../FormInputPrefix/FormInputPrefix";
+import FormInputSubfix from "../FormInputSubfix/FormInputSubfix";
 import RouteSubmitButton from "../RouteSubmitButton/RouteSubmitButton";
 
 function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
-	const maxNumberOfSearch = 10;
-	const [numberOfSearch, setNumberOfSearch] = useState(1);
-	const [searchQuery, setSearchQuery] = useState([]);
 	const defaultFormValue = {
 		query_mode: "keyword",
-		query_keyword: {},
+		query_keyword: [""],
 		radius: 3000,
 		duration: 60,
 		opennow_only: false,
 		max_route: 5,
 	};
 	const [formValues, setFormValues] = useState(defaultFormValue);
+	const [searchQuery, setSearchQuery] = useState([{}]);
+	const maxNumberOfSearch = 9;
+	const numberOfSearch = formValues.query_keyword.length;
 
-	const handleSearchInputChange = (e) => {
-		const { name, value } = e.target;
+	const handleSearchInputChange = (e, index) => {
+		const { value } = e.target;
 		const newFormValus = { ...formValues };
-		newFormValus.query_keyword[name] = value;
+		newFormValus.query_keyword[index] = value;
 		setFormValues(newFormValus);
 	};
 
-	const createSearch = (searchInputNumber) => {
-		const inputPrefix = [
-			<FormInputPrefix text={`Stop ${searchInputNumber}`} />,
-		];
-		return (
-			<div className="route-search__stop" key={searchInputNumber}>
-				<SVGIcons
-					iconName={"down"}
-					cssClassName={"route-search__next-stop-icon"}
-				/>
-				<div className="route-search__input-wrapper" key={searchInputNumber}>
-					<FormInput
-						inputType={"text"}
-						inputName={`route-search__input-${searchInputNumber}`}
-						inputOnChange={(e) => handleSearchInputChange(e, searchInputNumber)}
-						prefixComponent={inputPrefix}
-						inputPreflixWidth={65}
-						inputPlaceHolder={"Places you want to go or things to do..."}
-					/>
-				</div>
-			</div>
-		);
+	const handleCloseSearchInput = (index) => {
+		if (formValues.query_keyword.length > 1) {
+			let newSearch = [...searchQuery];
+			newSearch.splice(index, 1);
+			setSearchQuery(newSearch);
+
+			let newFormValues = { ...formValues };
+			newFormValues.query_keyword.splice(index, 1);
+			setFormValues(newFormValues);
+		}
 	};
 
 	const addNewSearch = () => {
-		const newSearch = [...searchQuery, createSearch(numberOfSearch)];
+		const newSearch = [...searchQuery, {}];
 		setSearchQuery(newSearch);
-		setNumberOfSearch(numberOfSearch + 1);
+		let newFormValues = { ...formValues };
+		newFormValues.query_keyword.push("");
+		setFormValues(newFormValues);
 	};
 
 	useEffect(() => {
-		setSearchQuery([createSearch(numberOfSearch)]);
-		setNumberOfSearch(numberOfSearch + 1);
-	}, []);
-
-	useEffect(()=>{
-		if(allFormReset > 0){
-			setNumberOfSearch(1)
+		if (allFormReset > 0) {
 			setFormValues(defaultFormValue);
-			setSearchQuery([createSearch(numberOfSearch)]);
+			setSearchQuery([{}]);
 		}
-	},[allFormReset])
+	}, [allFormReset]);
 
 	return (
 		<section className="route-search">
@@ -77,7 +62,41 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 			</h2>
 			<div className="route-search__form">
 				<div className="route-search__stop-wrapper">
-					{searchQuery && searchQuery[0] && searchQuery.map((query) => query)}
+					{/* {searchQuery && searchQuery[0] && searchQuery.map((query) => query)} */}
+					{searchQuery &&
+						searchQuery[0] &&
+						searchQuery.map((query, index) => {
+							const inputPrefix = [
+								<FormInputPrefix text={`Stop ${index + 1}`} />,
+							];
+							const inputSubfix = [
+								<FormInputSubfix
+									svgName={"cancel"}
+									onClickfunc={() => handleCloseSearchInput(index)}
+								/>,
+							];
+							return (
+								<div className="route-search__stop" key={index}>
+									<SVGIcons
+										iconName={"down"}
+										cssClassName={"route-search__next-stop-icon"}
+									/>
+									<div className="route-search__input-wrapper">
+										<FormInput
+											inputType={"text"}
+											inputName={`route-search__input-${index}`}
+											inputOnChange={(e) => handleSearchInputChange(e, index)}
+											prefixComponent={inputPrefix}
+											subfixComponent={formValues.query_keyword.length > 1 || index !== 0 ? inputSubfix : []}
+											inputPreflixWidth={65}
+											inputPlaceHolder={
+												"Places you want to go or things to do..."
+											}
+										/>
+									</div>
+								</div>
+							);
+						})}
 				</div>
 				<button
 					className="route-search__button"

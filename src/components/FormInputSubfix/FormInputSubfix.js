@@ -9,7 +9,7 @@ function FormInputSubfix({ svgName , onClickfunc}) {
 			onClick={onClickfunc}
 			whileHover={{
 				scale: 1.2,
-				transition: { duration: 1 },
+				transition: { duration: 0.3 },
 			}}
 			whileTap={{ scale: 0.9 }}
 		>
