@@ -4,8 +4,8 @@ import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
 import Routes from "../Routes/Routes";
 import "./Map.scss";
 
-function Map({ startingPoint, setStartingPoint, routes, mapRadius }) {
-	const mapRef = useRef();
+function Map({ startingPoint, setStartingPoint, routes, mapRadius, setSelectedRoute, mapRef }) {
+	// const mapRef = useRef();
 
 	// const handleCenterChange = ()=>{
 	// 	console.log(mapRef.current.center.lat())
@@ -56,6 +56,7 @@ function Map({ startingPoint, setStartingPoint, routes, mapRadius }) {
 					routes={routes}
 					startingPoint={startingPoint}
 					mapRef={mapRef}
+					setSelectedRoute={setSelectedRoute}
 				/>
 
 				<CircleF

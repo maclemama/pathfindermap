@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
 import "./Routes.scss";
 
-function Routes({ routes, startingPoint, mapRef }) {
+function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 	const [directions, setDirections] = useState([]);
 	const [places, setPlaces] = useState(null);
 	const [showMarker, setShowMarker] = useState([]);
@@ -51,14 +51,14 @@ function Routes({ routes, startingPoint, mapRef }) {
 				const markerVisibility = [];
 
 				// loop over routes and get all and set places and direction config data
-				routes.forEach((route, routeNumber) => {
+				routes.forEach((route) => {
 					const thisWaypoints = route.route_waypoints;
 					const waypointsLatLng = [];
 					let destination;
 					markerVisibility.push(true);
 
 					thisWaypoints.forEach((place, index) => {
-						place.route_number = routeNumber;
+						place.route_id = route.route_id;
 						newPlaces.push(place);
 						const latLng = { lat: place.latitude, lng: place.longitude };
 						if (index + 1 === thisWaypoints.length) {
@@ -74,6 +74,7 @@ function Routes({ routes, startingPoint, mapRef }) {
 						origin: startingPoint,
 						destination: destination,
 						waypoints: waypointsLatLng,
+						route_id:route.route_id
 					};
 					newDirections.push(routeConfig);
 				});
@@ -97,7 +98,7 @@ function Routes({ routes, startingPoint, mapRef }) {
 								waypoints: route.waypoints,
 								optimizeWaypoints: false,
 							});
-							result.route_number = index;
+							result.route_id = route.route_id
 							return result;
 						})
 					);
@@ -135,7 +136,7 @@ function Routes({ routes, startingPoint, mapRef }) {
 
 		setShowMarker(
 			showMarker.map((marker, i) => {
-				if (direction.route_number !== i) {
+				if (direction.route_id !== i) {
 					return false;
 				} else {
 					return marker;
@@ -155,6 +156,10 @@ function Routes({ routes, startingPoint, mapRef }) {
 	};
 
 	const handleRouteClick = (e, direction) => {
+		// set selected route to display route details in route details panel
+		setSelectedRoute(direction.route_id);
+
+		// handle map bound
 		const directionBounds = direction.routes[0].bounds;
 
 		/* eslint-disable */
@@ -187,7 +192,7 @@ function Routes({ routes, startingPoint, mapRef }) {
 						<MarkerF
 							position={location}
 							icon={markerSecondaryIcon}
-							visible={showMarker[place.route_number]}
+							visible={showMarker[place.route_id]}
 							key={index}
 						>
 							<InfoWindowF position={location}>

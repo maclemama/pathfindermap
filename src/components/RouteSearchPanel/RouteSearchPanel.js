@@ -25,6 +25,7 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 		const { value } = e.target;
 		const newFormValus = { ...formValues };
 		newFormValus.query_keyword[index] = value;
+		console.log(newFormValus)
 		setFormValues(newFormValus);
 	};
 
@@ -33,9 +34,12 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 			let newSearch = [...searchQuery];
 			newSearch.splice(index, 1);
 			setSearchQuery(newSearch);
+			console.log(formValues.query_keyword)
 
+			//BUG on close form value not accurate
 			let newFormValues = { ...formValues };
-			newFormValues.query_keyword.splice(index, 1);
+			newFormValues.query_keyword = newFormValues.query_keyword.splice(index, 1);
+			console.log(newFormValues.query_keyword)
 			setFormValues(newFormValues);
 		}
 	};

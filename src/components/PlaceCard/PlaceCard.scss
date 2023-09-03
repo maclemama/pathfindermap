@@ -1,0 +1,113 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.place-card {
+	width: 25rem;
+	display: flex;
+	background-color: white;
+	flex-direction: column;
+	border-radius: $element-radius;
+	border: $el-border;
+
+	&__photo-wrapper {
+		margin: 0;
+	}
+
+	&__content {
+		&-top-wrapper {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: $el-border;
+			padding: 0.4rem 1rem;
+
+			@include desktop {
+				padding: 0.8rem 1rem;
+			}
+		}
+
+		&-middle-wrapper {
+			display: flex;
+			padding: 0.4rem 1rem 0rem 1rem;
+
+			@include desktop {
+				padding: 0.8rem 1rem 0rem 1rem;
+			}
+		}
+
+		&-bottom-wrapper {
+			display: flex;
+			align-items: center;
+			padding: 0rem 1rem 0.4rem 1rem;
+
+			@include desktop {
+				padding: 0rem 1rem 0.8rem 1rem;
+			}
+		}
+	}
+
+	&__info-wrapper {
+		width: 60%;
+	}
+
+	&__rating-wrapper {
+		width: 40%;
+	}
+
+	&__rating-icons-wrapper {
+		display: flex;
+	}
+
+	&__photo {
+		width: 25rem;
+		height: 13rem;
+		object-fit: cover;
+		border-top-left-radius: $element-radius;
+		border-top-right-radius: $element-radius;
+
+		@include desktop {
+			width: 25rem;
+			height: 15rem;
+		}
+	}
+
+	&__name {
+		font-size: 1.2rem;
+
+		@include desktop {
+			font-size: 1.4rem;
+		}
+	}
+
+	&__icon {
+		width: 1.4rem;
+
+		@include desktop {
+			width: 1.6rem;
+		}
+	}
+
+	&__rating-icon {
+		width: 1.4rem;
+	}
+
+	&__info {
+		margin-bottom: 0.8rem;
+	}
+
+	&__info-title {
+		font-size: 1.2rem;
+
+		@include desktop {
+			font-size: 1.4rem;
+		}
+	}
+
+	&__info-text {
+		font-size: 1.2rem;
+
+		@include desktop {
+			font-size: 1.4rem;
+		}
+	}
+}
