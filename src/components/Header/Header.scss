@@ -12,12 +12,26 @@
 
 	@include el-shadow;
 
+	@include desktop {
+		position: absolute;
+		top: 2rem;
+		right: 3rem;
+		z-index: 1000;
+		border-radius: $element-radius;
+		padding: 0;
+	}
+
 	&__logo {
 		height: 3rem;
+
+		@include desktop {
+			display: none;
+		}
 	}
 
 	&__signin-button{
         border-radius: $el-border;
+		margin: 0;
         &-text {
             font-size: 1.6rem;
             font-family: "Poppins";
@@ -25,6 +39,12 @@
             text-decoration: underline;
             text-decoration-color: blue;
             line-height: 1rem;
+
+			@include desktop {
+				font-size: 1.8rem;
+				text-decoration: none;
+				margin: 1.5rem 2rem 1.5rem 0.8rem;
+			}
         }
     }
 }

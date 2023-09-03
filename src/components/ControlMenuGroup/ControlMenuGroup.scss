@@ -1,0 +1,58 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.control-menu-group {
+	background-color: $primary-bg-light-color;
+	padding: $mobile-row-gap $mobile-col-gap;
+	border-radius: $section-radius;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	row-gap: $mobile-row-gap;
+	@include el-shadow;
+	border: $el-border;
+	max-width: 50rem;
+
+	@include desktop {
+		width: 45rem;
+		height: 100vh;
+		// padding: $tablet-row-gap $tablet-col-gap;
+		row-gap: $tablet-row-gap;
+		// flex-direction: column-reverse;
+		// overflow: scroll;
+        // border: none;
+	}
+
+	&__toggle-wrapper {
+        display: block;
+		@include desktop {
+			display: none;
+		}
+	}
+
+	&__home-button {
+		display: none;
+
+		@include desktop {
+			display: flex;
+		}
+	}
+
+	&__tab {
+		width: 100%;
+	}
+
+	&__logo {
+		height: 3rem;
+	}
+	&__icon {
+		width: 2rem;
+		height: 2rem;
+		display: none;
+
+		&--active {
+			display: block;
+		}
+	}
+}

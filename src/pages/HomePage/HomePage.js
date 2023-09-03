@@ -7,18 +7,22 @@ import {
 	getGoogleGeocoder,
 } from "../../scripts/locationUtilis";
 import { useState, useEffect, useCallback } from "react";
+import useMediaQuery from "../../scripts/useMediaQuery";
 
 function HomePage() {
 	const [startingPoint, setStartingPoint] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [routes, setRoutes] = useState(null);
 	const [mapRadius, setMapRadius] = useState(3000);
+	const isDesktop = useMediaQuery("(min-width: 1280px)");
+
 
 	const [ libraries ] = useState(['places']); // remove map library warning by holding it in state
 	const { isLoaded, loadError } = useLoadScript({
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
 		libraries,
 	});
+
 
 	const setCurrentLocationAsStart = useCallback(() => {
 		// get user current location
@@ -67,6 +71,7 @@ function HomePage() {
 				setCurrentLocationAsStart={setCurrentLocationAsStart}
 				setRoutes={setRoutes}
 				setMapRadius={setMapRadius}
+				isDesktop={isDesktop}
 			/>
 		</div>
 	);

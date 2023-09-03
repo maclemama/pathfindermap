@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svgjs="http://svgjs.dev/svgjs" width="1000" height="1000" viewBox="0 0 1000 1000">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlnsXlink="http://www.w3.org/1999/xlink"
+    xmlnsSvgjs="http://svgjs.dev/svgjs" width="1000" height="1000" viewBox="0 0 1000 1000">
     <rect width="1000" height="1000" fill="#ffffff"></rect>
     <g transform="matrix(0.7,0,0,0.7,149.57575757575756,440.1306044543925)">
         <svg viewBox="0 0 396 68" data-background-color="#ffffff"
             preserveAspectRatio="xMidYMid meet" height="171" width="1000"
-            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
             <g id="tight-bounds" transform="matrix(1,0,0,1,0.2400000000000091,0.0110183550652323)">
                 <svg viewBox="0 0 395.52 67.97796328986954" height="67.97796328986954"
                     width="395.52">
