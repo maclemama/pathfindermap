@@ -1,0 +1,12 @@
+.verification {
+	&__error{
+		color: red;
+		font-size: 2rem;
+	}
+
+	&__success {
+		color: green;
+		font-size: 2rem;
+		text-align: center;
+	}
+}

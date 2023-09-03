@@ -16,7 +16,7 @@ function App() {
 						<Route path="/" element={<HomePage isTablet={isTablet}/>}></Route>
 						<Route path="/signin" element={<AuthPage action={"signin"}/>}></Route>
 						<Route path="/signup" element={<AuthPage action={"signup"}/>}></Route>
-						<Route path="/verify/:verification_code" element={<AuthPage action={"verify"}/>}></Route>
+						<Route path="/user/verify/:verification_code" element={<AuthPage action={"verify"}/>}></Route>
 					</Routes>
 				</main>
 			</BrowserRouter>

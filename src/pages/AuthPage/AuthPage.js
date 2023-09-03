@@ -2,8 +2,12 @@ import "./AuthPage.scss";
 import { getRandomElementsFromArray } from "../../scripts/dataUtilis";
 import TextRotationAnimation from "../../components/TextRotationAnimation/TextRotationAnimation";
 import Signup from "../../components/Signup/Signup";
+import { useParams } from "react-router-dom";
+import SignupVerify from "../../components/SignupVerify/SignupVerify";
 
 function AuthPage({ action }) {
+	const params = useParams();
+	console.log(params)
 	const imageList = [
 		{
 			author: "Matt Mutlu",
@@ -65,6 +69,7 @@ function AuthPage({ action }) {
 
 			<div className="auth-page__form-wrapper">
 				{action === "signup" && <Signup />}
+				{action === "verify" && <SignupVerify verification_code={params.verification_code}/> }
 			</div>
 		</main>
 	);
