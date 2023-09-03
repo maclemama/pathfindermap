@@ -1,4 +1,4 @@
-const getUserLocation = () => {
+export const getUserLocation = () => {
 	return new Promise((resolve, reject) => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((location) => {
@@ -12,7 +12,7 @@ const getUserLocation = () => {
 	});
 };
 
-const getGoogleGeocoder = (geoInput) => {
+export const getGoogleGeocoder = (geoInput) => {
 	return new Promise((resolve, reject) => {
 		/* eslint-disable */
 		const geocoder = new google.maps.Geocoder();
@@ -31,5 +31,3 @@ const getGoogleGeocoder = (geoInput) => {
 			});
 	});
 };
-
-export { getUserLocation, getGoogleGeocoder };

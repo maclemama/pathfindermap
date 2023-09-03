@@ -7,14 +7,12 @@ function RouteDetailsPanel({selectedRoute, routes, mapRef}) {
 
     useEffect(()=>{
         if(selectedRoute){
-            console.log(`Selected route change to ${selectedRoute}`)
             const routeDetails = routes.filter(route => route.route_id === selectedRoute);
-            console.log(routeDetails)
             if(routeDetails[0]){
                 setSelectedRouteDetails(routeDetails[0]);
             }
         }
-    },[selectedRoute])
+    },[selectedRoute, routes])
 
     return ( 
         <section className="route-panel">

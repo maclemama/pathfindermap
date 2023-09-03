@@ -1,0 +1,22 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.signup-input {
+	height: 4rem;
+	padding: 1rem 1.2rem 1rem 1.2rem;
+	background-color: white;
+    width: 100%;
+	border: none;
+    border-bottom: $el-border;
+    border-radius: $element-radius;
+
+    &__wrapper{
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+    &__label {
+        margin-bottom: 0.5rem;
+    }
+}

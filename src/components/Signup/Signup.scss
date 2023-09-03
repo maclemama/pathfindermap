@@ -1,0 +1,34 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.signup {
+	&__title {
+		font-size: 2rem;
+		margin-bottom: 2rem;
+	}
+
+	&__form {
+		display: flex;
+		flex-direction: column;
+		row-gap: 1rem;
+		width: 80%;
+
+		@include desktop {
+			width: 40%;
+		}
+	}
+
+	&__logo {
+		display: none;
+		@include desktop {
+			height: 3rem;
+			margin-bottom: 3rem;
+			display: block;
+		}
+	}
+
+	&__button {
+		font-size: 1.8rem;
+		margin-bottom: 3rem;
+	}
+}

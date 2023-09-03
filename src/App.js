@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import useMediaQuery from "./scripts/useMediaQuery";
+import AuthPage from "./pages/AuthPage/AuthPage";
 
 function App() {
 	const isTablet = useMediaQuery("(min-width: 768px)");
@@ -12,11 +13,10 @@ function App() {
 				<Header />
 				<main className="main">
 					<Routes>
-						<Route
-							path="/"
-							element={<HomePage />}
-							isTablet={isTablet}
-						></Route>
+						<Route path="/" element={<HomePage isTablet={isTablet}/>}></Route>
+						<Route path="/signin" element={<AuthPage action={"signin"}/>}></Route>
+						<Route path="/signup" element={<AuthPage action={"signup"}/>}></Route>
+						<Route path="/verify/:verification_code" element={<AuthPage action={"verify"}/>}></Route>
 					</Routes>
 				</main>
 			</BrowserRouter>

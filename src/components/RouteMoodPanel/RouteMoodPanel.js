@@ -20,7 +20,7 @@ function RouteMoodPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 	const [formValues, setFormValues] = useState(defaultFormValue);
 
 	const handleSearchInputChange = (e) => {
-		const { name, value } = e.target;
+		const { value } = e.target;
 		const newFormValus = { ...formValues };
 		newFormValus.query_mood = value;
 		setFormValues(newFormValus);

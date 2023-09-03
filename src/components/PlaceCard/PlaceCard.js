@@ -10,7 +10,7 @@ import starFillIcon from "../../assets/icons/star_fill.svg";
 import starHalfFillIcon from "../../assets/icons/star_half.svg";
 import starEmptyIcon from "../../assets/icons/star_empty.svg";
 import storeIcon from "../../assets/icons/storefront.svg";
-import placeholderPhoto from "../../assets/icons/placeholder.png";
+import placeholderPhoto from "../../assets/images/placeholder.png";
 import { Link } from "react-router-dom";
 
 function PlaceCard({ placeData, routeID, mapRef }) {

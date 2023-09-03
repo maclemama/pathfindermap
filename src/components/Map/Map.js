@@ -1,10 +1,10 @@
 import { GoogleMap, MarkerF, CircleF } from "@react-google-maps/api";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo } from "react";
 import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
 import Routes from "../Routes/Routes";
 import "./Map.scss";
 
-function Map({ startingPoint, setStartingPoint, routes, mapRadius, setSelectedRoute, mapRef }) {
+function Map({ startingPoint, routes, mapRadius, setSelectedRoute, mapRef }) {
 	// const mapRef = useRef();
 
 	// const handleCenterChange = ()=>{
@@ -14,9 +14,9 @@ function Map({ startingPoint, setStartingPoint, routes, mapRadius, setSelectedRo
 
 	const mapOptions = useMemo(
 		() => ({
-			// mapId: "f6ca3c1a38d4ecfa",
+			mapId: "f6ca3c1a38d4ecfa",
 			disableDefaultUI: true,
-			clickableIcons: false,
+			clickableIcons: true,
 			zoom: 17,
 			tilt: 30,
 		}),
