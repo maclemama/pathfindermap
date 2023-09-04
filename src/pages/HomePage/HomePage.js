@@ -7,7 +7,6 @@ import {
 	getGoogleGeocoder,
 } from "../../scripts/locationUtilis";
 import { useState, useEffect, useCallback, useRef } from "react";
-import useMediaQuery from "../../scripts/useMediaQuery";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
 
 function HomePage() {
@@ -17,7 +16,6 @@ function HomePage() {
 	const [routes, setRoutes] = useState(null);
 	const [selectedRoute, setSelectedRoute] = useState(null);
 	const [mapRadius, setMapRadius] = useState(3000);
-	const isDesktop = useMediaQuery("(min-width: 1280px)");
 
 	const [libraries] = useState(["places"]); // remove map library warning by holding it in state
 	const { isLoaded, loadError } = useLoadScript({
@@ -83,7 +81,7 @@ function HomePage() {
 				setCurrentLocationAsStart={setCurrentLocationAsStart}
 				setRoutes={setRoutes}
 				setMapRadius={setMapRadius}
-				isDesktop={isDesktop}
+
 			/>
 		</div>
 	);

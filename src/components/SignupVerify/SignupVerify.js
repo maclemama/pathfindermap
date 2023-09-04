@@ -1,7 +1,5 @@
 import "./SignupVerify.scss";
-import SignupInput from "../SignupInput/SignupInput";
-import logo from "../../assets/logos/logo-no-background.png";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -31,11 +29,12 @@ function SignupVerify({ verification_code }) {
 	return (
 		<>
 			{error && <div className="verification__error">{error}</div>}
-			{success && <div className="verification__success">
-			Verification Complete
-			<p>Redirecting to signin page...</p>
-				
-				</div>}
+			{success && (
+				<div className="verification__success">
+					Verification Complete
+					<p>Redirecting to signin page...</p>
+				</div>
+			)}
 		</>
 	);
 }
