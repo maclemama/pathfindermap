@@ -1,0 +1,92 @@
+import "./ProfileSavedRoute.scss";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import RouteDetailsPanel from "../RouteDetailsPanel/RouteDetailsPanel";
+
+function ProfileSavedRoute({ mapRef, signedin }) {
+	const token = localStorage.getItem("token");
+	const [savedRoute, setSavedRoute] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [totalPage, setTotalPage] = useState(null);
+	useEffect(() => {
+		if (token) {
+			axios
+				.get(`${process.env.REACT_APP_SERVER_URL}/route/page/${currentPage}`, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				})
+				.then((res) => {
+					setTotalPage(res.data.total_page);
+					let routeIDs = res.data.data.map((route) => route.id);
+					axios
+						.post(
+							`${process.env.REACT_APP_SERVER_URL}/route/details`,
+							{
+								route: routeIDs,
+							},
+							{
+								headers: {
+									Authorization: `Bearer ${token}`,
+								},
+							}
+						)
+						.then((detailsRes) => {
+							setSavedRoute(detailsRes.data);
+							setIsLoading(false);
+						});
+				})
+				.catch((error) => {
+					
+				});
+		}
+	}, [currentPage]);
+
+	const handlePageSwitch = (pageNumber) => {
+		if (pageNumber === currentPage) {
+			return;
+		} else {
+			setCurrentPage(pageNumber);
+		}
+	};
+
+	if (isLoading) {
+		return;
+	}
+
+	return (
+		<section className="saved-route">
+			<h2 className="saved-route__title">Saved Paths</h2>
+			<div className="saved-route__list">
+				{savedRoute.map((route) => {
+					return (
+						<RouteDetailsPanel
+							selectedRoute={route.route_id}
+							routes={savedRoute}
+							mapRef={mapRef}
+							signedin={signedin}
+							isInProfile={true}
+						/>
+					);
+				})}
+			</div>
+			<div className="saved-route__list-page-wrapper">
+				{[...Array(totalPage)].map((nth, index) => {
+					const thisPage = index + 1;
+					return (
+						<button
+							className="saved-route__list-page-button"
+							onClick={() => handlePageSwitch(thisPage)}
+							key={thisPage}
+						>
+							<h4 className="saved-route__list-page-text">{thisPage}</h4>
+						</button>
+					);
+				})}
+			</div>
+		</section>
+	);
+}
+
+export default ProfileSavedRoute;

@@ -42,14 +42,12 @@ function ControlStartingPoint({
 	};
 
 	const onSearchSelect = (val) => {
-		console.log("asdasd");
 		setValue(val, false);
 		clearSuggestions();
 		setAutoCompleteOptions([]);
 		if (val) {
 			getGoogleGeocoder({ placeId: val })
 				.then((matchedPlace) => {
-					console.log(matchedPlace);
 					setInputValue(matchedPlace.formatted_address);
 					setStartingPoint({
 						lat: matchedPlace.geometry.location.lat(),
@@ -59,7 +57,7 @@ function ControlStartingPoint({
 					});
 					setIsCurrentLoaction(false);
 				})
-				.catch((e) => console.log("Geocoder failed due to: " + e));
+				.catch((e) => {});
 		}
 	};
 

@@ -20,7 +20,6 @@ function ControlMenuGroup({
 	setMapRadius,
 	isCollapse,
 	toggleShowHide,
-	isDesktop,
 }) {
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
@@ -52,11 +51,18 @@ function ControlMenuGroup({
 			payload.query_mood = formValues.query_mood;
 		}
 
-		console.log(payload);
+		const token = localStorage.getItem("token");
+		let headers = {};
+		if (token) {
+			headers = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			};
+		}
 		axios
-			.post(process.env.REACT_APP_SERVER_URL + "/query", payload)
+			.post(process.env.REACT_APP_SERVER_URL + "/query", payload, headers)
 			.then((res) => {
-				console.log(res.data);
 				setRoutes(res.data);
 				setAllFormReset(allFormReset + 1);
 			});

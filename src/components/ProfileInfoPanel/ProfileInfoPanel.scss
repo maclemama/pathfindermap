@@ -1,0 +1,14 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.profile-info{
+    background-color: rgb(233, 233, 233);
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem;
+
+    @include desktop{
+        height: 100%;
+        width: 100%;
+    }
+}

@@ -18,12 +18,10 @@ function Signin() {
 				password: event.target.password.value,
 			})
 			.then((response) => {
-				console.log(response.data.token);
 				localStorage.setItem("token", response.data.token);
 				navigate("/profile");
 			})
 			.catch((error) => {
-				console.error(error);
 				event.target.email.value = "";
 				event.target.password.value = "";
 				setError(error.response.data.message);

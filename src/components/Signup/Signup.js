@@ -23,7 +23,6 @@ function Signup() {
 				navigate("/signin");
 			})
 			.catch((error) => {
-				console.error(error);
 				setError(error.response.data.message);
 			});
 	};

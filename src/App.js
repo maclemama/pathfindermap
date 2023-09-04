@@ -3,12 +3,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import AuthPage from "./pages/AuthPage/AuthPage";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 function App() {
 	const [checkedSignin, setCheckedSignin] = useState(false);
 	const [user, setUser] = useState(null);
 	const [signedin, setSignedin] = useState(false);
+	const mapRef = useRef();
 	return (
 		<div className="App">
 			<BrowserRouter>
@@ -22,7 +24,7 @@ function App() {
 				/>
 				<main className="main">
 					<Routes>
-						<Route path="/" element={<HomePage />}></Route>
+						<Route path="/" element={<HomePage signedin={signedin} mapRef={mapRef}/> }></Route>
 						<Route
 							path="/signin"
 							element={<AuthPage action={"signin"} signedin={signedin} />}
@@ -34,6 +36,14 @@ function App() {
 						<Route
 							path="/user/verify/:verification_code"
 							element={<AuthPage action={"verify"} signedin={signedin} />}
+						></Route>
+						<Route
+							path="/profile"
+							element={<ProfilePage signedin={signedin}  mapRef={mapRef}/>}
+						></Route>
+						<Route
+							path="*"
+							element={<AuthPage action={"not-found"} signedin={signedin} user={user}/>}
 						></Route>
 					</Routes>
 				</main>

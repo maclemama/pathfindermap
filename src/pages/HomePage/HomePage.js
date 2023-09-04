@@ -9,8 +9,7 @@ import {
 import { useState, useEffect, useCallback, useRef } from "react";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
 
-function HomePage() {
-	const mapRef = useRef();
+function HomePage({ signedin, mapRef }) {
 	const [startingPoint, setStartingPoint] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [routes, setRoutes] = useState(null);
@@ -21,14 +20,13 @@ function HomePage() {
 	const { isLoaded, loadError } = useLoadScript({
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
 		libraries,
+		language: "en",
 	});
 
 	const setCurrentLocationAsStart = useCallback(() => {
-		// get user current location
 		getUserLocation()
 			.then((location) => {
 				const { latitude, longitude } = location.coords;
-				// setStartingPoint({ lat: latitude, lng: longitude });
 				getGoogleGeocoder({ location: { lat: latitude, lng: longitude } })
 					.then((matchedPlace) => {
 						setStartingPoint({
@@ -39,9 +37,9 @@ function HomePage() {
 						});
 						setIsLoading(false);
 					})
-					.catch((e) => console.log("Geocoder failed due to: " + e));
+					.catch((e) => {});
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => {});
 	}, []);
 
 	useEffect(() => {
@@ -64,6 +62,7 @@ function HomePage() {
 						selectedRoute={selectedRoute}
 						routes={routes}
 						mapRef={mapRef}
+						signedin={signedin}
 					/>
 				)}
 				<Map
@@ -81,7 +80,6 @@ function HomePage() {
 				setCurrentLocationAsStart={setCurrentLocationAsStart}
 				setRoutes={setRoutes}
 				setMapRadius={setMapRadius}
-
 			/>
 		</div>
 	);

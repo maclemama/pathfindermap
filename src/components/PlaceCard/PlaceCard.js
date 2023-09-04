@@ -13,17 +13,13 @@ import storeIcon from "../../assets/icons/storefront.svg";
 import placeholderPhoto from "../../assets/images/placeholder.png";
 import { Link } from "react-router-dom";
 
-function PlaceCard({ placeData, routeID, mapRef }) {
-	console.log(placeData.place_id);
-	console.log(placeData.photo_reference);
-	console.log(mapRef);
+function PlaceCard({ placeData, mapRef }) {
 
 	const [placeGoogleData, setPlaceGoogleData] = useState(null);
 
 	useEffect(() => {
 		const storedPlace = getPlaceSessionData(placeData.place_id);
 		const hasData = storedPlace ? storedPlace : false;
-		console.log(`stored data!! ${JSON.parse(hasData)}`);
 
 		if (!hasData) {
 			const service = new window.google.maps.places.PlacesService(
@@ -34,9 +30,7 @@ function PlaceCard({ placeData, routeID, mapRef }) {
 					placeId: placeData.place_id,
 				},
 				(data, status) => {
-					console.log(data);
 					if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-						console.log("call api get photo");
 						let result = {
 							open_now:
 								data.current_opening_hours &&
@@ -64,13 +58,11 @@ function PlaceCard({ placeData, routeID, mapRef }) {
 						}
 
 						setPlaceSessionData(placeData.place_id, JSON.stringify(result));
-						console.log(result);
 						setPlaceGoogleData(result);
 					}
 				}
 			);
 		} else {
-			console.log(`stored dataaaaaa!! ${hasData}`);
 			setPlaceGoogleData(JSON.parse(hasData));
 		}
 	}, []);
@@ -114,6 +106,7 @@ function PlaceCard({ placeData, routeID, mapRef }) {
 													}
 													className="place-card__rating-icon"
 													alt={`Store price level for this store is ${rating}`}
+													key={index}
 												/>
 											);
 										})}
@@ -139,6 +132,7 @@ function PlaceCard({ placeData, routeID, mapRef }) {
 													src={icon}
 													className="place-card__rating-icon"
 													alt={`Store rating for this store is ${rating}`}
+													key={index}
 												/>
 											);
 										})}
@@ -183,6 +177,5 @@ function PlaceCard({ placeData, routeID, mapRef }) {
 		)
 	);
 }
-// /[...Array(n)].map()
 
 export default PlaceCard;

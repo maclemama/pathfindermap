@@ -15,14 +15,12 @@ function SignupVerify({ verification_code }) {
 				verification_code: verification_code,
 			})
 			.then((response) => {
-				console.log(response.data);
 				setSuccess(true);
 				setTimeout(() => {
 					navigate("/signin");
 				}, 2000);
 			})
 			.catch((error) => {
-				console.error(error);
 				setError(error.response.data.message);
 			});
 	}, []);

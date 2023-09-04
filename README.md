@@ -1,70 +1,48 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Logo](https://lh3.googleusercontent.com/u/0/drive-viewer/AITFw-ydJTF4mpgDjo0ijkSP7Rghjt_fHt-fDCefpg49fMCRnUVkuGG7BQLjgbK2vrZ36jbpzUtYRP94AYIufe474moAMDjaVQ=w898-h3164)
 
-## Available Scripts
 
-In the project directory, you can run:
+# Pathfinder Map
 
-### `npm start`
+This application is a map and walking route recommendation application. User could enter their route duration, (sigle or multiple) places keywords, the mood they want to feel in their journey or even choose random route suggestions. The application would then based on user location or selected starting point to draw serveral suggested routes on a map and suggested places along the way they could check out. If they feel good about specific route or they want to plan ahead, they could save the route in their account and revisit those saved routes later in their profile page.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- Keywords mode multiple waypoints route search
+- Mood mode route search
+- Shuffle aka. random mode route search
+- Click on routes on the map to get details of each place along specific route such as user rating, price level on Google map and contact information
+- Save route and check saved route history in profile page
+ 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Run Locally
+Please note that the [[Client]](https://github.com/maclemama/pathfindermap) and [[Server]](https://github.com/maclemama/pathfindermap-server) code of Pathfinder Map are seperated into two repositories. To test it locally, you will need to install both repositories. For this client side repository, please follow below instruction to install:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Clone [[Client]](https://github.com/maclemama/pathfindermap) repository.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+  git clone git@github.com:maclemama/pathfindermap.git
+```
 
-### `npm run eject`
+Go to the project directory
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+  cd pathfindermap
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Install dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+  npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Create environment file detailed in the .env.sample
 
-## Learn More
+Start the server
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+  npm start
+```

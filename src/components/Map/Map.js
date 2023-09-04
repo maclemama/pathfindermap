@@ -5,12 +5,6 @@ import Routes from "../Routes/Routes";
 import "./Map.scss";
 
 function Map({ startingPoint, routes, mapRadius, setSelectedRoute, mapRef }) {
-	// const mapRef = useRef();
-
-	// const handleCenterChange = ()=>{
-	// 	console.log(mapRef.current.center.lat())
-	// 	console.log(mapRef.current.center.lng())
-	// }
 
 	const mapOptions = useMemo(
 		() => ({
@@ -48,7 +42,6 @@ function Map({ startingPoint, routes, mapRadius, setSelectedRoute, mapRef }) {
 				center={startingPoint}
 				onLoad={onLoad}
 				options={mapOptions}
-				// onCenterChanged={handleCenterChange}
 			>
 				<MarkerF position={startingPoint} icon={markerPrimaryIcon} />
 
