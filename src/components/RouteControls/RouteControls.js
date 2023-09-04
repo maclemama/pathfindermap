@@ -14,7 +14,7 @@ function RouteControls({ formValues, setFormValues, setMapRadius }) {
 	return (
 		<div className="route-controls">
 			<div className="route-controls__input-group-wrapper">
-				<label className="route-controls__input-label">Radius</label>
+				<label className="route-controls__input-label">Search Radius</label>
 				<div className="route-controls__input-wrapper">
 					<div className="route-controls__input-middle-wrapper">
 						<Slider

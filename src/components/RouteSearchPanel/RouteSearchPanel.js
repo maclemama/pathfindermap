@@ -17,36 +17,25 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 		max_route: 5,
 	};
 	const [formValues, setFormValues] = useState(defaultFormValue);
-	const [searchQuery, setSearchQuery] = useState([{}]);
-	const maxNumberOfSearch = 9;
+	const maxNumberOfSearch = 4;
 	const numberOfSearch = formValues.query_keyword.length;
 
 	const handleSearchInputChange = (e, index) => {
 		const { value } = e.target;
 		const newFormValus = { ...formValues };
 		newFormValus.query_keyword[index] = value;
-		console.log(newFormValus)
 		setFormValues(newFormValus);
 	};
 
 	const handleCloseSearchInput = (index) => {
 		if (formValues.query_keyword.length > 1) {
-			let newSearch = [...searchQuery];
-			newSearch.splice(index, 1);
-			setSearchQuery(newSearch);
-			console.log(formValues.query_keyword)
-
-			//BUG on close form value not accurate
 			let newFormValues = { ...formValues };
-			newFormValues.query_keyword = newFormValues.query_keyword.splice(index, 1);
-			console.log(newFormValues.query_keyword)
+			newFormValues.query_keyword.splice(index, 1);
 			setFormValues(newFormValues);
 		}
 	};
 
 	const addNewSearch = () => {
-		const newSearch = [...searchQuery, {}];
-		setSearchQuery(newSearch);
 		let newFormValues = { ...formValues };
 		newFormValues.query_keyword.push("");
 		setFormValues(newFormValues);
@@ -55,7 +44,6 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 	useEffect(() => {
 		if (allFormReset > 0) {
 			setFormValues(defaultFormValue);
-			setSearchQuery([{}]);
 		}
 	}, [allFormReset]);
 
@@ -66,10 +54,8 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 			</h2>
 			<div className="route-search__form">
 				<div className="route-search__stop-wrapper">
-					{/* {searchQuery && searchQuery[0] && searchQuery.map((query) => query)} */}
-					{searchQuery &&
-						searchQuery[0] &&
-						searchQuery.map((query, index) => {
+					{formValues.query_keyword &&
+						formValues.query_keyword.map((query, index) => {
 							const inputPrefix = [
 								<FormInputPrefix text={`Stop ${index + 1}`} />,
 							];
@@ -89,9 +75,14 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 										<FormInput
 											inputType={"text"}
 											inputName={`route-search__input-${index}`}
+											inputValue={formValues.query_keyword[index]}
 											inputOnChange={(e) => handleSearchInputChange(e, index)}
 											prefixComponent={inputPrefix}
-											subfixComponent={formValues.query_keyword.length > 1 || index !== 0 ? inputSubfix : []}
+											subfixComponent={
+												formValues.query_keyword.length > 1 || index !== 0
+													? inputSubfix
+													: []
+											}
 											inputPreflixWidth={65}
 											inputPlaceHolder={
 												"Places you want to go or things to do..."
