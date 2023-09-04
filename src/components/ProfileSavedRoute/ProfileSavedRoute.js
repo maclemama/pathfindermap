@@ -20,26 +20,32 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 				.then((res) => {
 					setTotalPage(res.data.total_page);
 					let routeIDs = res.data.data.map((route) => route.id);
-					axios
-						.post(
-							`${process.env.REACT_APP_SERVER_URL}/route/details`,
-							{
-								route: routeIDs,
-							},
-							{
-								headers: {
-									Authorization: `Bearer ${token}`,
+					if (res.data.total_page !== 0) {
+						axios
+							.post(
+								`${process.env.REACT_APP_SERVER_URL}/route/details`,
+								{
+									route: routeIDs,
 								},
-							}
-						)
-						.then((detailsRes) => {
-							setSavedRoute(detailsRes.data);
-							setIsLoading(false);
-						});
+								{
+									headers: {
+										Authorization: `Bearer ${token}`,
+									},
+								}
+							)
+							.then((detailsRes) => {
+								setSavedRoute(detailsRes.data);
+								setIsLoading(false);
+							})
+							.catch((err) => {
+								setSavedRoute(false)
+								setIsLoading(false);
+							});
+					}else{
+						setSavedRoute(false)
+					}
 				})
-				.catch((error) => {
-					
-				});
+				.catch((error) => {});
 		}
 	}, [currentPage]);
 
@@ -48,6 +54,8 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 			return;
 		} else {
 			setCurrentPage(pageNumber);
+			setSavedRoute(null)
+			setIsLoading(true)
 		}
 	};
 
@@ -59,6 +67,12 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 		<section className="saved-route">
 			<h2 className="saved-route__title">Saved Paths</h2>
 			<div className="saved-route__list">
+				{!savedRoute && (
+					<p className="saved-route__no-route-text">
+						No saved route in your account, go find out some path you like and click the love button to save it here.
+					</p>
+				)}
+
 				{savedRoute.map((route) => {
 					return (
 						<RouteDetailsPanel
@@ -67,6 +81,7 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 							mapRef={mapRef}
 							signedin={signedin}
 							isInProfile={true}
+							key={route.route_id}
 						/>
 					);
 				})}

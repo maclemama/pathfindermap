@@ -11,7 +11,7 @@ function RoutePlacesList({ selectedRouteDetails, mapRef }) {
 				selectedRouteDetails.route_waypoints[0] &&
 				selectedRouteDetails.route_waypoints.map((placeData, index) => {
 					return (
-						<div className="route-place-list__wrapper">
+						<div className="route-place-list__wrapper" key={placeData.place_id}>
 							{index > 0 && (
 								<img
 									src={nextIcon}
