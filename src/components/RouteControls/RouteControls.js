@@ -37,7 +37,7 @@ function RouteControls({ formValues, setFormValues, setMapRadius }) {
 				</div>
 			</div>
 			<div className="route-controls__input-group-wrapper">
-				<label className="route-controls__input-label">Commute Time</label>
+				<label className="route-controls__input-label">Walking Time</label>
 				<div className="route-controls__input-wrapper">
 					<div className="route-controls__input-middle-wrapper">
 						<Slider
