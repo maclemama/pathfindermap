@@ -11,6 +11,7 @@
 
 	&__photo-wrapper {
 		margin: 0;
+		position: relative;
 	}
 
 	&__content {
@@ -75,6 +76,17 @@
 		@include desktop {
 			width: 25rem;
 			height: 15rem;
+		}
+
+		&-keyword-overlay{
+			position: absolute;
+			top:0rem;
+			left:0rem;
+			background-color: rgba(107, 207, 207, 0.811);
+			padding: 0.5rem 1rem;
+			border-top-left-radius: $element-radius;
+			border-bottom-right-radius: $element-radius;
+			color: white;
 		}
 	}
 

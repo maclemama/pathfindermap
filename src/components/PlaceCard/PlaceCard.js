@@ -76,6 +76,9 @@ function PlaceCard({ placeData, mapRef }) {
 						alt={placeData.name}
 						className="place-card__photo"
 					/>
+					<div className="place-card__photo-keyword-overlay">
+						{placeData.query_mood || placeData.query_keyword || "Shuffle Place" }
+					</div>
 				</figure>
 				<div className="place-card__content">
 					<div className="place-card__content-top-wrapper">
@@ -170,7 +173,7 @@ function PlaceCard({ placeData, mapRef }) {
 								</Link>
 							</div>
 						)}
-						
+
 						{placeGoogleData.open_now && (
 							<p className="place-card__open-now">Open Now 🟢</p>
 						)}
