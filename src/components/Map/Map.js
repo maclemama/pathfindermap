@@ -10,7 +10,7 @@ function Map({ startingPoint, routes, mapRadius, setSelectedRoute, mapRef }) {
 		() => ({
 			mapId: "f6ca3c1a38d4ecfa",
 			disableDefaultUI: true,
-			clickableIcons: true,
+			clickableIcons: false,
 			zoom: 17,
 			tilt: 30,
 		}),

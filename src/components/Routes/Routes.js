@@ -41,6 +41,7 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 		bounds.extend(startingPoint);
 		/* eslint-enable */
 		mapRef.current.fitBounds(bounds);
+		mapRef.current.setTilt(30)
 	};
 
 	useEffect(() => {
@@ -48,15 +49,14 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 			if (routes[0]) {
 				const newPlaces = [];
 				const newDirections = [];
-				const markerVisibility = [];
+				const markerVisibility = {};
 
 				// loop over routes and get all and set places and direction config data
 				routes.forEach((route) => {
 					const thisWaypoints = route.route_waypoints;
 					const waypointsLatLng = [];
 					let destination;
-					markerVisibility.push(true);
-
+					markerVisibility[String(route.route_id)] = true;
 					thisWaypoints.forEach((place, index) => {
 						place.route_id = route.route_id;
 						newPlaces.push(place);
@@ -74,11 +74,10 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 						origin: startingPoint,
 						destination: destination,
 						waypoints: waypointsLatLng,
-						route_id:route.route_id
+						route_id: route.route_id,
 					};
 					newDirections.push(routeConfig);
 				});
-
 				setShowMarker(markerVisibility);
 
 				// set markers on the map
@@ -98,7 +97,7 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 								waypoints: route.waypoints,
 								optimizeWaypoints: false,
 							});
-							result.route_id = route.route_id
+							result.route_id = route.route_id;
 							return result;
 						})
 					);
@@ -133,22 +132,26 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 				}
 			})
 		);
+		let newMarkerVisibility = {};
 
-		setShowMarker(
-			showMarker.map((marker, i) => {
-				if (direction.route_id !== i) {
-					return false;
-				} else {
-					return marker;
-				}
-			})
-		);
+		Object.keys(showMarker).forEach((routeID) => {
+			if (String(direction.route_id) !== routeID) {
+				newMarkerVisibility[routeID] = false;
+			} else {
+				newMarkerVisibility[routeID] = true;
+			}
+		});
+		setShowMarker(newMarkerVisibility);
 	};
 
 	const handleRouteMouseOut = (e) => {
 		setPolyLineColors(defaultPolyLineColors);
 		setPolyLineZIndex(defaultZIndex);
-		setShowMarker(showMarker.map((show) => true));
+		let newMarkerVisibility = {};
+		Object.keys(showMarker).forEach(
+			(routeID) => (newMarkerVisibility[routeID] = true)
+		);
+		setShowMarker(newMarkerVisibility);
 	};
 
 	const handleRouteDoubleClick = (e) => {
@@ -178,6 +181,7 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 		);
 		/* eslint-enable */
 		mapRef.current.fitBounds(bounds);
+		mapRef.current.setTilt(30)
 	};
 
 	return (
@@ -192,12 +196,14 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 						<MarkerF
 							position={location}
 							icon={markerSecondaryIcon}
-							visible={showMarker[place.route_id]}
+							visible={showMarker[String(place.route_id)]}
 							key={index}
 						>
-							<InfoWindowF position={location}>
-								<div>{place.name}</div>
-							</InfoWindowF>
+							<div className="infowindow" visible={false}>
+								<InfoWindowF position={location}>
+									<div>{place.name}</div>
+								</InfoWindowF>
+							</div>
 						</MarkerF>
 					);
 				})}
