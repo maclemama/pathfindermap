@@ -4,7 +4,6 @@ import nextIcon from "../../assets/icons/next.svg";
 
 function RoutePlacesList({ selectedRouteDetails, mapRef }) {
 	return (
-
 		<article className="route-place-list">
 			{selectedRouteDetails &&
 				selectedRouteDetails.route_waypoints &&

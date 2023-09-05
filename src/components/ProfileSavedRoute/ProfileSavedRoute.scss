@@ -1,11 +1,52 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixin" as *;
 
-.saved-route{
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
-    padding: 1rem;
+.saved-route {
+	display: flex;
+	flex-direction: column;
+	row-gap: 1rem;
+	padding: 1rem;
+	border-radius: $section-radius;
 
-    
+	&__top-wrapper {
+		display: flex;
+		justify-content: space-between;
+		padding: 1rem 2rem;
+	}
+
+	&__list {
+		border-radius: $section-radius;
+		width: 90vw;
+		background-color: #ffffff;
+		padding: 2rem;
+
+		@include desktop {
+			width: 70vw;
+			max-width: $desktop-breakpoint;
+		}
+
+		& .route-panel:first-child {
+			border-top-left-radius: $section-radius;
+			border-top-right-radius: $section-radius;
+		}
+
+		& .route-panel:last-child {
+			border-bottom-left-radius: $section-radius;
+			border-bottom-right-radius: $section-radius;
+		}
+
+		&-page-wrapper {
+			padding: 2rem;
+
+			&--top {
+				padding: 0rem;
+			}
+		}
+
+		&-page-button {
+			&--active {
+				border-bottom: 1px solid blue;
+			}
+		}
+	}
 }

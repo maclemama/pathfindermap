@@ -1,27 +1,26 @@
 import { useVelocity } from "framer-motion";
 import ProfileInfoPanel from "../../components/ProfileInfoPanel/ProfileInfoPanel";
 import ProfileSavedRoute from "../../components/ProfileSavedRoute/ProfileSavedRoute";
-import "./ProfilePage.scss"
+import "./ProfilePage.scss";
 import { useNavigate } from "react-router-dom";
 
-function ProfilePage({signedin, user,  mapRef}) {
-    const navigate = useNavigate();
-    
-    if(!signedin){
-        navigate("/")
-    }
+function ProfilePage({ signedin, user, mapRef }) {
+	const navigate = useNavigate();
 
-    return (
-        <section className="profile">
-            <div className="profile__info-panel">
-                <ProfileInfoPanel user={user}/>
-            </div>
-            <div className="profile__saved-route">
-                <ProfileSavedRoute mapRef={mapRef} signedin={signedin}/>
-            </div>
-        </section>
+	if (!signedin) {
+		navigate("/");
+	}
 
-    );
+	return (
+		<section className="profile">
+			<div className="profile__info-panel">
+				<ProfileInfoPanel user={user} />
+			</div>
+			<div className="profile__saved-route">
+				<ProfileSavedRoute mapRef={mapRef} signedin={signedin} />
+			</div>
+		</section>
+	);
 }
 
 export default ProfilePage;

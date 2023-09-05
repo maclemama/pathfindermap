@@ -38,11 +38,11 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 								setIsLoading(false);
 							})
 							.catch((err) => {
-								setSavedRoute(false)
+								setSavedRoute(false);
 								setIsLoading(false);
 							});
-					}else{
-						setSavedRoute(false)
+					} else {
+						setSavedRoute(false);
 					}
 				})
 				.catch((error) => {});
@@ -54,8 +54,8 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 			return;
 		} else {
 			setCurrentPage(pageNumber);
-			setSavedRoute(null)
-			setIsLoading(true)
+			setSavedRoute(null);
+			setIsLoading(true);
 		}
 	};
 
@@ -65,11 +65,32 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 
 	return (
 		<section className="saved-route">
-			<h2 className="saved-route__title">Saved Paths</h2>
+			<div className="saved-route__top-wrapper">
+				<h2 className="saved-route__title">📌 Saved Paths</h2>
+				<div className="saved-route__list-page-wrapper saved-route__list-page-wrapper--top">
+					{[...Array(totalPage)].map((nth, index) => {
+						const thisPage = index + 1;
+						return (
+							<button
+								className={`saved-route__list-page-button ${
+									thisPage === currentPage
+										? "saved-route__list-page-button--active"
+										: ""
+								}`}
+								onClick={() => handlePageSwitch(thisPage)}
+								key={thisPage}
+							>
+								<h4 className="saved-route__list-page-text">{thisPage}</h4>
+							</button>
+						);
+					})}
+				</div>
+			</div>
 			<div className="saved-route__list">
 				{!savedRoute && (
 					<p className="saved-route__no-route-text">
-						No saved route in your account, go find out some path you like and click the love button to save it here.
+						No saved route in your account, go find out some path you like and
+						click the love button to save it here.
 					</p>
 				)}
 
@@ -91,7 +112,11 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 					const thisPage = index + 1;
 					return (
 						<button
-							className="saved-route__list-page-button"
+							className={`saved-route__list-page-button ${
+								thisPage === currentPage
+									? "saved-route__list-page-button--active"
+									: ""
+							}`}
 							onClick={() => handlePageSwitch(thisPage)}
 							key={thisPage}
 						>

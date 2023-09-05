@@ -59,13 +59,15 @@ function Header({
 	}
 
 	return (
-		<header className="header">
+		<header className={`header ${isProfilePage ? "header--profile" : ""}`}>
 			<button className="header__home-button">
 				<Link to="/">
 					<img
 						src={headerLogo}
 						alt="Pathfinder brand logo"
-						className="header__logo"
+						className={`header__logo ${
+							isProfilePage ? "header__logo--profile" : ""
+						}`}
 					/>
 				</Link>
 			</button>
@@ -95,8 +97,19 @@ function Header({
 					)}
 					{isProfilePage && (
 						<>
-							<button className="header__signin-button" onClick={handleSignout}>
-								<h3 className="header__signin-button-text">Sign out</h3>
+							<button
+								className={`header__signin-button ${
+									isProfilePage ? "header__signin-button--profile" : ""
+								}`}
+								onClick={handleSignout}
+							>
+								<h3
+									className={`header__signin-button-text ${
+										isProfilePage ? "header__signin-button-text--profile" : ""
+									}`}
+								>
+									Sign out
+								</h3>
 							</button>
 						</>
 					)}
