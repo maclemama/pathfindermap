@@ -34,6 +34,9 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 								}
 							)
 							.then((detailsRes) => {
+								detailsRes.data.sort(
+									(a, b) => new Date(b.created_at) - new Date(a.created_at)
+								);
 								setSavedRoute(detailsRes.data);
 								setIsLoading(false);
 							})
@@ -47,7 +50,7 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 				})
 				.catch((error) => {});
 		}
-	}, [currentPage]);
+	}, [currentPage, token]);
 
 	const handlePageSwitch = (pageNumber) => {
 		if (pageNumber === currentPage) {

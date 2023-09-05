@@ -3,6 +3,7 @@ import SVGIcons from "../SVGIcons/SVGIcons";
 import "./RouteDetailsPanel.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getGoogleGeocoder } from "../../scripts/locationUtilis";
 
 function RouteDetailsPanel({
 	selectedRoute,
@@ -19,10 +20,42 @@ function RouteDetailsPanel({
 		if (selectedRoute) {
 			const routeDetails = routes.filter(
 				(route) => route.route_id === selectedRoute
-			);
-			if (routeDetails[0]) {
-				setSelectedRouteDetails(routeDetails[0]);
-				setSavedRoute(routeDetails[0].user_saved);
+			)[0];
+			if (routeDetails) {
+				routeDetails.created_at = new Date(
+					routeDetails.created_at
+				).toLocaleDateString();
+				if (isInProfile) {
+					getGoogleGeocoder({
+						location: {
+							lat: routeDetails.latitude,
+							lng: routeDetails.longitude,
+						},
+					}).then((matchedPlace) => {
+						let postal_town, country, route;
+						matchedPlace.address_components.forEach((addr) => {
+							if (addr.types.includes("postal_town")) {
+								postal_town = addr.long_name;
+							}
+							if (addr.types.includes("country")) {
+								country = addr.long_name;
+							}
+							if (addr.types.includes("route")) {
+								route = addr.short_name;
+							}
+						});
+						routeDetails.starting_address =
+							`${route ? route + ", " : ""}` +
+							`${postal_town ? postal_town + ", " : ""}` +
+							country;
+
+						setSelectedRouteDetails(routeDetails);
+						setSavedRoute(routeDetails.user_saved);
+					});
+				} else {
+					setSelectedRouteDetails(routeDetails);
+					setSavedRoute(routeDetails.user_saved);
+				}
 			}
 			setIsLoading(false);
 		}
@@ -44,8 +77,8 @@ function RouteDetailsPanel({
 					}
 				)
 				.then((res) => {
-					if (res.data.success) {
-						setSavedRoute(!savedRoute);
+					if (res.data) {
+						setSavedRoute(res.data.user_saved);
 					}
 				});
 		}
@@ -60,18 +93,6 @@ function RouteDetailsPanel({
 			{selectedRouteDetails && (
 				<>
 					<div className="route-panel__top-wrapper">
-						<h2 className="route-panel__title">Places in the Path</h2>
-						{signedin && savedRoute && (
-							<button
-								className="route-panel__save-button"
-								onClick={() => handleRouteSave("unsave")}
-							>
-								<SVGIcons
-									iconName={"heart_fill"}
-									cssClassName={"route-panel__save-icon"}
-								/>
-							</button>
-						)}
 						{signedin && !savedRoute && (
 							<button
 								className="route-panel__save-button"
@@ -79,6 +100,27 @@ function RouteDetailsPanel({
 							>
 								<SVGIcons
 									iconName={"heart_empty"}
+									cssClassName={"route-panel__save-icon"}
+								/>
+							</button>
+						)}
+
+						{isInProfile ? (
+							<h2 className="route-panel__title">
+								Path start from {selectedRouteDetails.starting_address}. Saved
+								at {selectedRouteDetails.created_at}
+							</h2>
+						) : (
+							<h2 className="route-panel__title">Places in the Path</h2>
+						)}
+
+						{signedin && savedRoute && (
+							<button
+								className="route-panel__save-button"
+								onClick={() => handleRouteSave("unsave")}
+							>
+								<SVGIcons
+									iconName={"heart_fill"}
 									cssClassName={"route-panel__save-icon"}
 								/>
 							</button>

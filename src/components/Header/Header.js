@@ -19,32 +19,34 @@ function Header({
 	const isSignupPage = location.pathname.toLowerCase().includes("signup");
 	const isProfilePage = location.pathname.toLowerCase().includes("profile");
 	const [isLoading, setIsLoading] = useState(true);
-	const token = localStorage.getItem("token");
 
 	useEffect(() => {
-		if (token) {
-			axios
-				.get(process.env.REACT_APP_SERVER_URL + "/user", {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				})
-				.then((res) => {
-					setUser(res.data);
-					setSignedin(true);
-					setIsLoading(false);
-				})
-				.catch((error) => {
-					setSignedin(false);
-					localStorage.removeItem("token");
-					setUser(null);
-					setIsLoading(false);
-				});
-		} else {
-			setSignedin(false);
-			setIsLoading(false);
-		}
-		setCheckedSignin(true);
+		(() => {
+			const token = localStorage.getItem("token");
+			if (token) {
+				axios
+					.get(process.env.REACT_APP_SERVER_URL + "/user", {
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					})
+					.then((res) => {
+						setUser(res.data);
+						setSignedin(true);
+						setIsLoading(false);
+					})
+					.catch((error) => {
+						setSignedin(false);
+						localStorage.removeItem("token");
+						setUser(null);
+						setIsLoading(false);
+					});
+			} else {
+				setSignedin(false);
+				setIsLoading(false);
+			}
+			setCheckedSignin(true);
+		})();
 	}, []);
 
 	const handleSignout = () => {

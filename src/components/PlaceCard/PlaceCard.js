@@ -14,7 +14,6 @@ import placeholderPhoto from "../../assets/images/placeholder.png";
 import { Link } from "react-router-dom";
 
 function PlaceCard({ placeData, mapRef }) {
-
 	const [placeGoogleData, setPlaceGoogleData] = useState(null);
 
 	useEffect(() => {
@@ -170,6 +169,10 @@ function PlaceCard({ placeData, mapRef }) {
 									/>
 								</Link>
 							</div>
+						)}
+						
+						{placeGoogleData.open_now && (
+							<p className="place-card__open-now">Open Now 🟢</p>
 						)}
 					</div>
 				</div>

@@ -14,6 +14,11 @@
 	}
 
 	&__content {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		height: 100%;
+
 		&-top-wrapper {
 			display: flex;
 			justify-content: space-between;
@@ -39,6 +44,8 @@
 			display: flex;
 			align-items: center;
 			padding: 0rem 1rem 0.4rem 1rem;
+			justify-content: space-between;
+
 
 			@include desktop {
 				padding: 0rem 1rem 0.8rem 1rem;
@@ -95,7 +102,8 @@
 		margin-bottom: 0.8rem;
 	}
 
-	&__info-title {
+	&__info-text,
+	&__info-title{
 		font-size: 1.2rem;
 
 		@include desktop {
@@ -103,7 +111,7 @@
 		}
 	}
 
-	&__info-text {
+	&__open-now {
 		font-size: 1.2rem;
 
 		@include desktop {

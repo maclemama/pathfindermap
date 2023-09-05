@@ -199,7 +199,7 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 							visible={showMarker[String(place.route_id)]}
 							key={index}
 						>
-							<div className="infowindow" visible={false}>
+							<div className="infowindow">
 								<InfoWindowF position={location}>
 									<div>{place.name}</div>
 								</InfoWindowF>

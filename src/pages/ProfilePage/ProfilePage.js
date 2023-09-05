@@ -1,4 +1,3 @@
-import { useVelocity } from "framer-motion";
 import ProfileInfoPanel from "../../components/ProfileInfoPanel/ProfileInfoPanel";
 import ProfileSavedRoute from "../../components/ProfileSavedRoute/ProfileSavedRoute";
 import "./ProfilePage.scss";
