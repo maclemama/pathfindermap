@@ -6,15 +6,17 @@ import {
 	getUserLocation,
 	getGoogleGeocoder,
 } from "../../scripts/locationUtilis";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
+import { useLocation } from "react-router";
 
-function HomePage({ signedin, mapRef }) {
+function HomePage({ signedin, mapRef, passedStartingPoint, passedRouteData }) {
 	const [startingPoint, setStartingPoint] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [routes, setRoutes] = useState(null);
 	const [selectedRoute, setSelectedRoute] = useState(null);
 	const [mapRadius, setMapRadius] = useState(3000);
+	const location = useLocation();
 
 	const [libraries] = useState(["places"]); // remove map library warning by holding it in state
 	const { isLoaded, loadError } = useLoadScript({
@@ -24,22 +26,28 @@ function HomePage({ signedin, mapRef }) {
 	});
 
 	const setCurrentLocationAsStart = useCallback(() => {
-		getUserLocation()
-			.then((location) => {
-				const { latitude, longitude } = location.coords;
-				getGoogleGeocoder({ location: { lat: latitude, lng: longitude } })
-					.then((matchedPlace) => {
-						setStartingPoint({
-							lat: latitude,
-							lng: longitude,
-							placeId: matchedPlace.place_id,
-							address: matchedPlace.formatted_address,
-						});
-						setIsLoading(false);
-					})
-					.catch((e) => {});
-			})
-			.catch((err) => {});
+		if (location.state && location.state.passedStartingPoint) {
+			setStartingPoint(location.state.passedStartingPoint);
+			setRoutes(location.state.passedRouteData);
+			setIsLoading(false);
+		} else {
+			getUserLocation()
+				.then((location) => {
+					const { latitude, longitude } = location.coords;
+					getGoogleGeocoder({ location: { lat: latitude, lng: longitude } })
+						.then((matchedPlace) => {
+							setStartingPoint({
+								lat: latitude,
+								lng: longitude,
+								placeId: matchedPlace.place_id,
+								address: matchedPlace.formatted_address,
+							});
+							setIsLoading(false);
+						})
+						.catch((e) => {});
+				})
+				.catch((err) => {});
+		}
 	}, []);
 
 	useEffect(() => {

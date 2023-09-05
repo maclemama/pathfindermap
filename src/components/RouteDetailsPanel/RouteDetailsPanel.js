@@ -4,6 +4,7 @@ import "./RouteDetailsPanel.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getGoogleGeocoder } from "../../scripts/locationUtilis";
+import { useNavigate } from "react-router";
 
 function RouteDetailsPanel({
 	selectedRoute,
@@ -15,6 +16,7 @@ function RouteDetailsPanel({
 	const [selectedRouteDetails, setSelectedRouteDetails] = useState(null);
 	const [isloading, setIsLoading] = useState(true);
 	const [savedRoute, setSavedRoute] = useState(null);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (selectedRoute) {
@@ -48,7 +50,7 @@ function RouteDetailsPanel({
 							`${route ? route + ", " : ""}` +
 							`${postal_town ? postal_town + ", " : ""}` +
 							country;
-
+						routeDetails.place_id = matchedPlace.place_id;
 						setSelectedRouteDetails(routeDetails);
 						setSavedRoute(routeDetails.user_saved);
 					});
@@ -84,6 +86,20 @@ function RouteDetailsPanel({
 		}
 	};
 
+	const handleShowMap = () => {
+		navigate("/", {
+			state: {
+				passedStartingPoint: {
+					lat: selectedRouteDetails.latitude,
+					lng: selectedRouteDetails.longitude,
+					placeId: selectedRouteDetails.place_id,
+					address: selectedRouteDetails.formatted_address,
+				},
+				passedRouteData: [selectedRouteDetails],
+			},
+		});
+	};
+
 	if (isloading) {
 		return;
 	}
@@ -93,37 +109,49 @@ function RouteDetailsPanel({
 			{selectedRouteDetails && (
 				<>
 					<div className="route-panel__top-wrapper">
-						{signedin && !savedRoute && (
-							<button
-								className="route-panel__save-button"
-								onClick={() => handleRouteSave("save")}
-							>
-								<SVGIcons
-									iconName={"heart_empty"}
-									cssClassName={"route-panel__save-icon"}
-								/>
-							</button>
-						)}
+						<div className="route-panel__top-left-wrapper">
+							{signedin && !savedRoute && (
+								<button
+									className="route-panel__save-button"
+									onClick={() => handleRouteSave("save")}
+								>
+									<SVGIcons
+										iconName={"heart_empty"}
+										cssClassName={"route-panel__save-icon"}
+									/>
+								</button>
+							)}
 
-						{isInProfile ? (
-							<h2 className="route-panel__title">
-								Path start from {selectedRouteDetails.starting_address}. Saved
-								at {selectedRouteDetails.created_at}
-							</h2>
-						) : (
-							<h2 className="route-panel__title">Places in the Path</h2>
-						)}
+							{signedin && savedRoute && (
+								<button
+									className="route-panel__save-button"
+									onClick={() => handleRouteSave("unsave")}
+								>
+									<SVGIcons
+										iconName={"heart_fill"}
+										cssClassName={"route-panel__save-icon"}
+									/>
+								</button>
+							)}
 
-						{signedin && savedRoute && (
-							<button
-								className="route-panel__save-button"
-								onClick={() => handleRouteSave("unsave")}
-							>
-								<SVGIcons
-									iconName={"heart_fill"}
-									cssClassName={"route-panel__save-icon"}
-								/>
-							</button>
+							{isInProfile ? (
+								<h2 className="route-panel__title">
+									Path start from {selectedRouteDetails.starting_address}. Saved
+									at {selectedRouteDetails.created_at}
+								</h2>
+							) : (
+								<h2 className="route-panel__title">Places in the Path</h2>
+							)}
+						</div>
+						{isInProfile && (
+							<div className="route-panel__top-right-wrapper">
+								<button
+									onClick={handleShowMap}
+									className="route-panel__show-map-button"
+								>
+									Show Map
+								</button>
+							</div>
 						)}
 					</div>
 					<RoutePlacesList

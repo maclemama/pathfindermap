@@ -15,6 +15,13 @@
 		align-items: center;
 		align-content: center;
 		column-gap: 1rem;
+
+		justify-content: space-between;
+	}
+
+	&__top-left-wrapper {
+		display: flex;
+		align-items: center;
 	}
 
 	&__save-icon {
@@ -22,8 +29,18 @@
 		fill: red;
 	}
 
+	&__show-map-button{
+		border: $el-border;
+		border-radius: $element-radius;
+		padding: 1rem;
+
+		&:hover{
+			background-color: #d9d9d9;
+			color: white;
+		}
+	}
+
 	&__title {
 		font-size: 1.5rem;
-		// margin-bottom: $mobile-row-gap;
 	}
 }
