@@ -105,6 +105,7 @@ function ControlMenuGroup({
 			</div>
 
 			<ControlStartingPoint
+				startingPoint={startingPoint}
 				setStartingPoint={setStartingPoint}
 				setIsCurrentLoaction={setIsCurrentLoaction}
 				setCurrentLocationAsStart={setCurrentLocationAsStart}

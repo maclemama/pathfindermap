@@ -6,6 +6,7 @@ import FormAutoComplete from "../FormAutoComplete/FormAutoComplete";
 import FormInputPrefix from "../FormInputPrefix/FormInputPrefix";
 
 function ControlStartingPoint({
+	startingPoint,
 	setStartingPoint,
 	setIsCurrentLoaction,
 	setCurrentLocationAsStart,
@@ -16,9 +17,7 @@ function ControlStartingPoint({
 		clearSuggestions,
 	} = usePlacesAutocomplete();
 	const [autoCompleteOptions, setAutoCompleteOptions] = useState([]);
-	const [inputValue, setInputValue] = useState(
-		"Using Current Location (Tap tp search)"
-	);
+	const [inputValue, setInputValue] = useState("Using current location (tap to search)");
 	const [inputPreflixWidth, setInputPreflixWidth] = useState(0);
 
 	const onSearchChange = (val) => {
@@ -30,7 +29,7 @@ function ControlStartingPoint({
 		setAutoCompleteOptions([
 			<div
 				onClick={() => {
-					setCurrentLocationAsStart();
+					setCurrentLocationAsStart(true);
 					setAutoCompleteOptions([]);
 					setInputValue("Using Current Location");
 				}}
@@ -84,6 +83,7 @@ function ControlStartingPoint({
 			);
 			setAutoCompleteOptions(dropdownOptionComponents);
 		}
+		setInputValue(startingPoint.address)
 	}, [status, data]);
 
 	return (

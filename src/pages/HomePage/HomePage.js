@@ -25,12 +25,13 @@ function HomePage({ signedin, mapRef, passedStartingPoint, passedRouteData }) {
 		language: "en",
 	});
 
-	const setCurrentLocationAsStart = useCallback(() => {
-		if (location.state && location.state.passedStartingPoint) {
+	const setCurrentLocationAsStart = useCallback((resetCurrent) => {
+		if (location.state && location.state.passedStartingPoint && !resetCurrent) {
 			setStartingPoint(location.state.passedStartingPoint);
 			setRoutes(location.state.passedRouteData);
 			setIsLoading(false);
 		} else {
+			setIsLoading(false);
 			getUserLocation()
 				.then((location) => {
 					const { latitude, longitude } = location.coords;

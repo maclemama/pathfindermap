@@ -63,7 +63,6 @@ function ControlMenu({
 						setMapRadius={setMapRadius}
 						isCollapse={isCollapse}
 						toggleShowHide={toggleShowHide}
-						isDesktop={isDesktop}
 					/>
 				</motion.div>
 			</div>
@@ -78,7 +77,6 @@ function ControlMenu({
 					setMapRadius={setMapRadius}
 					isCollapse={isCollapse}
 					toggleShowHide={toggleShowHide}
-					isDesktop={isDesktop}
 				/>
 			</div>
 		</section>

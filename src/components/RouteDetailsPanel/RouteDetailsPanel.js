@@ -93,7 +93,7 @@ function RouteDetailsPanel({
 					lat: selectedRouteDetails.latitude,
 					lng: selectedRouteDetails.longitude,
 					placeId: selectedRouteDetails.place_id,
-					address: selectedRouteDetails.formatted_address,
+					address: selectedRouteDetails.starting_address,
 				},
 				passedRouteData: [selectedRouteDetails],
 			},
