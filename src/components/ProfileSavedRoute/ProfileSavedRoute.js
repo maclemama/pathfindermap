@@ -2,8 +2,9 @@ import "./ProfileSavedRoute.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import RouteDetailsPanel from "../RouteDetailsPanel/RouteDetailsPanel";
+import Modal from "../Modal/Modal";
 
-function ProfileSavedRoute({ mapRef, signedin }) {
+function ProfileSavedRoute({ mapRef, signedin, setModal }) {
 	const token = localStorage.getItem("token");
 	const [savedRoute, setSavedRoute] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -40,7 +41,14 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 								setSavedRoute(detailsRes.data);
 								setIsLoading(false);
 							})
-							.catch((err) => {
+							.catch((error) => {
+								setModal([
+									<Modal
+										title={"Error"}
+										message={error.response.data.message || error.message}
+										setModal={setModal}
+									/>,
+								]);
 								setSavedRoute(false);
 								setIsLoading(false);
 							});
@@ -48,7 +56,17 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 						setSavedRoute(false);
 					}
 				})
-				.catch((error) => {});
+				.catch((error) => {
+					setModal([
+						<Modal
+							title={"Error"}
+							message={error.response.data.message || error.message}
+							setModal={setModal}
+						/>,
+					]);
+					setSavedRoute(false);
+					setIsLoading(false);
+				});
 		}
 	}, [currentPage, token]);
 
@@ -105,6 +123,7 @@ function ProfileSavedRoute({ mapRef, signedin }) {
 							mapRef={mapRef}
 							signedin={signedin}
 							isInProfile={true}
+							setModal={setModal}
 							key={route.route_id}
 						/>
 					);

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import "./ProfileInfoPanel.scss";
 import axios from "axios";
+import Modal from "../Modal/Modal";
 
-function ProfileInfoPanel() {
+function ProfileInfoPanel({ setModal }) {
 	const token = localStorage.getItem("token");
-    const [user, setUser] = useState(null)
-    const [isLoading, setIsLoading] = useState(true);
+	const [user, setUser] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
 		if (token) {
 			axios
@@ -16,17 +17,24 @@ function ProfileInfoPanel() {
 				})
 				.then((res) => {
 					setUser(res.data);
-                    setIsLoading(false);
+					setIsLoading(false);
 				})
 				.catch((error) => {
-					
+					setModal([
+						<Modal
+							title={"Error"}
+							message={error.response.data.message || error.message}
+							setModal={setModal}
+						/>,
+					]);
+					setIsLoading(false);
 				});
-		} 
+		}
 	}, []);
 
-    if(isLoading){
-        return;
-    }
+	if (isLoading) {
+		return;
+	}
 
 	return (
 		<section className="profile-info">

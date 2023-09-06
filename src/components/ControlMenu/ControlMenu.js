@@ -10,7 +10,7 @@ function ControlMenu({
 	setCurrentLocationAsStart,
 	setRoutes,
 	setMapRadius,
-	isDesktop,
+	setModal
 }) {
 	const [positionY, setPositionY] = useState(-50);
 	const [maxPositionY, setMaxPositionY] = useState(0);
@@ -63,6 +63,7 @@ function ControlMenu({
 						setMapRadius={setMapRadius}
 						isCollapse={isCollapse}
 						toggleShowHide={toggleShowHide}
+						setModal={setModal}
 					/>
 				</motion.div>
 			</div>
@@ -77,6 +78,7 @@ function ControlMenu({
 					setMapRadius={setMapRadius}
 					isCollapse={isCollapse}
 					toggleShowHide={toggleShowHide}
+					setModal={setModal}
 				/>
 			</div>
 		</section>

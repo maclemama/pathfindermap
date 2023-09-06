@@ -1,5 +1,5 @@
 import usePlacesAutocomplete from "use-places-autocomplete";
-import { getGoogleGeocoder } from "../../scripts/locationUtilis";
+import { getGoogleGeocoder } from "../../scripts/locationUtils";
 import { useEffect, useState } from "react";
 import "./ControlStartingPoint.scss";
 import FormAutoComplete from "../FormAutoComplete/FormAutoComplete";

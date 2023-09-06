@@ -5,18 +5,19 @@ import { useLoadScript } from "@react-google-maps/api";
 import {
 	getUserLocation,
 	getGoogleGeocoder,
-} from "../../scripts/locationUtilis";
+} from "../../scripts/locationUtils";
 import { useState, useEffect, useCallback } from "react";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
 import { useLocation } from "react-router";
 
-function HomePage({ signedin, mapRef, passedStartingPoint, passedRouteData }) {
+function HomePage({ signedin, mapRef}) {
 	const [startingPoint, setStartingPoint] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [routes, setRoutes] = useState(null);
 	const [selectedRoute, setSelectedRoute] = useState(null);
 	const [mapRadius, setMapRadius] = useState(3000);
 	const location = useLocation();
+	const [modal, setModal] = useState([]);
 
 	const [libraries] = useState(["places"]); // remove map library warning by holding it in state
 	const { isLoaded, loadError } = useLoadScript({
@@ -90,7 +91,10 @@ function HomePage({ signedin, mapRef, passedStartingPoint, passedRouteData }) {
 				setCurrentLocationAsStart={setCurrentLocationAsStart}
 				setRoutes={setRoutes}
 				setMapRadius={setMapRadius}
+				setModal={setModal}
 			/>
+
+			{modal[0]}
 		</div>
 	);
 }

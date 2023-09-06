@@ -3,8 +3,9 @@ import SVGIcons from "../SVGIcons/SVGIcons";
 import "./RouteDetailsPanel.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getGoogleGeocoder } from "../../scripts/locationUtilis";
+import { getGoogleGeocoder } from "../../scripts/locationUtils";
 import { useNavigate } from "react-router";
+import Modal from "../Modal/Modal";
 
 function RouteDetailsPanel({
 	selectedRoute,
@@ -12,6 +13,7 @@ function RouteDetailsPanel({
 	mapRef,
 	signedin,
 	isInProfile,
+	setModal
 }) {
 	const [selectedRouteDetails, setSelectedRouteDetails] = useState(null);
 	const [isloading, setIsLoading] = useState(true);
@@ -53,6 +55,15 @@ function RouteDetailsPanel({
 						routeDetails.place_id = matchedPlace.place_id;
 						setSelectedRouteDetails(routeDetails);
 						setSavedRoute(routeDetails.user_saved);
+					}).catch((error) => {
+						setModal([
+							<Modal
+								title={"Error"}
+								message={error.response.data.message || error.message}
+								setModal={setModal}
+							/>,
+						]);
+						setSelectedRouteDetails([]);
 					});
 				} else {
 					setSelectedRouteDetails(routeDetails);

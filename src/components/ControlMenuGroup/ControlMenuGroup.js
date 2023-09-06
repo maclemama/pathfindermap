@@ -11,6 +11,7 @@ import axios from "axios";
 import logo from "../../assets/logos/logo-no-background.png";
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
+import Modal from "../Modal/Modal";
 
 function ControlMenuGroup({
 	startingPoint,
@@ -21,15 +22,16 @@ function ControlMenuGroup({
 	setMapRadius,
 	isCollapse,
 	toggleShowHide,
+	setModal,
 }) {
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
 	const [allFormReset, setAllFormReset] = useState(0);
-	const [isLoading, setIsLoading] = useState(false)
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleQuerySubmit = (e, formValues, mode) => {
 		e.preventDefault();
-		setIsLoading(true)
+		setIsLoading(true);
 		const payload = {
 			query_mode: formValues.query_mode,
 			duration: formValues.duration,
@@ -68,7 +70,18 @@ function ControlMenuGroup({
 			.then((res) => {
 				setRoutes(res.data);
 				setAllFormReset(allFormReset + 1);
-				setIsLoading(false)
+				setIsLoading(false);
+			})
+			.catch((error) => {
+				setModal([
+					<Modal
+						title={"Error"}
+						message={error.response.data.message || error.message}
+						setModal={setModal}
+					/>,
+				]);
+				setRoutes([]);
+				setIsLoading(false);
 			});
 	};
 
@@ -138,7 +151,7 @@ function ControlMenuGroup({
 					/>
 				)}
 			</div>
-			{isLoading ? <Loading/> : <></>}
+			{isLoading ? <Loading /> : <></>}
 			<ControlTabs
 				tabNames={tabNames}
 				setActiveTag={setActiveTag}

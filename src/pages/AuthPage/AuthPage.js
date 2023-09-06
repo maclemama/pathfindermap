@@ -1,5 +1,5 @@
 import "./AuthPage.scss";
-import { getRandomElementsFromArray } from "../../scripts/dataUtilis";
+import { getRandomElementsFromArray } from "../../scripts/dataUtils";
 import TextRotationAnimation from "../../components/TextRotationAnimation/TextRotationAnimation";
 import Signup from "../../components/Signup/Signup";
 import { useParams, useNavigate } from "react-router-dom";

@@ -2,9 +2,11 @@ import ProfileInfoPanel from "../../components/ProfileInfoPanel/ProfileInfoPanel
 import ProfileSavedRoute from "../../components/ProfileSavedRoute/ProfileSavedRoute";
 import "./ProfilePage.scss";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-function ProfilePage({ signedin, user, mapRef }) {
+function ProfilePage({ signedin, mapRef }) {
 	const navigate = useNavigate();
+	const [modal, setModal] = useState([]);
 
 	if (!signedin) {
 		navigate("/");
@@ -13,11 +15,17 @@ function ProfilePage({ signedin, user, mapRef }) {
 	return (
 		<section className="profile">
 			<div className="profile__info-panel">
-				<ProfileInfoPanel user={user} />
+				<ProfileInfoPanel setModal={setModal} />
 			</div>
 			<div className="profile__saved-route">
-				<ProfileSavedRoute mapRef={mapRef} signedin={signedin} />
+				<ProfileSavedRoute
+					mapRef={mapRef}
+					signedin={signedin}
+					setModal={setModal}
+				/>
 			</div>
+
+			{modal[0]}
 		</section>
 	);
 }
