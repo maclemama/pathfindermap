@@ -41,7 +41,7 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 		bounds.extend(startingPoint);
 		/* eslint-enable */
 		mapRef.current.fitBounds(bounds);
-		mapRef.current.setTilt(30)
+		mapRef.current.setTilt(30);
 	};
 
 	useEffect(() => {
@@ -181,7 +181,7 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 		);
 		/* eslint-enable */
 		mapRef.current.fitBounds(bounds);
-		mapRef.current.setTilt(30)
+		mapRef.current.setTilt(30);
 	};
 
 	return (
@@ -199,11 +199,9 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 							visible={showMarker[String(place.route_id)]}
 							key={index}
 						>
-							<div className="infowindow">
-								<InfoWindowF position={location}>
-									<div>{place.name}</div>
-								</InfoWindowF>
-							</div>
+							<InfoWindowF position={location}>
+								<div>{place.name}</div>
+							</InfoWindowF>
 						</MarkerF>
 					);
 				})}
