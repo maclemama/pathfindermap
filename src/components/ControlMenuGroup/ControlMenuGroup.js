@@ -10,6 +10,7 @@ import { useMemo, useState } from "react";
 import axios from "axios";
 import logo from "../../assets/logos/logo-no-background.png";
 import { Link } from "react-router-dom";
+import Loading from "../Loading/Loading";
 
 function ControlMenuGroup({
 	startingPoint,
@@ -24,9 +25,11 @@ function ControlMenuGroup({
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
 	const [allFormReset, setAllFormReset] = useState(0);
+	const [isLoading, setIsLoading] = useState(false)
 
 	const handleQuerySubmit = (e, formValues, mode) => {
 		e.preventDefault();
+		setIsLoading(true)
 		const payload = {
 			query_mode: formValues.query_mode,
 			duration: formValues.duration,
@@ -65,6 +68,7 @@ function ControlMenuGroup({
 			.then((res) => {
 				setRoutes(res.data);
 				setAllFormReset(allFormReset + 1);
+				setIsLoading(false)
 			});
 	};
 
@@ -134,6 +138,7 @@ function ControlMenuGroup({
 					/>
 				)}
 			</div>
+			{isLoading ? <Loading/> : <></>}
 			<ControlTabs
 				tabNames={tabNames}
 				setActiveTag={setActiveTag}

@@ -83,6 +83,7 @@ function HomePage({ signedin, mapRef, passedStartingPoint, passedRouteData }) {
 					mapRef={mapRef}
 				/>
 			</div>
+
 			<ControlMenu
 				startingPoint={startingPoint}
 				setStartingPoint={setStartingPoint}

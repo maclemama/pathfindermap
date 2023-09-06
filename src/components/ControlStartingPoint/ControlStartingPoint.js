@@ -17,7 +17,9 @@ function ControlStartingPoint({
 		clearSuggestions,
 	} = usePlacesAutocomplete();
 	const [autoCompleteOptions, setAutoCompleteOptions] = useState([]);
-	const [inputValue, setInputValue] = useState("Using current location (tap to search)");
+	const [inputValue, setInputValue] = useState(
+		"Using current location (tap to search)"
+	);
 	const [inputPreflixWidth, setInputPreflixWidth] = useState(0);
 
 	const onSearchChange = (val) => {
@@ -82,28 +84,30 @@ function ControlStartingPoint({
 				</div>
 			);
 			setAutoCompleteOptions(dropdownOptionComponents);
+			
 		}
-		setInputValue(startingPoint.address)
 	}, [status, data]);
 
 	return (
-		<section className="starting-point">
-			<FormAutoComplete
-				dropdownListComponent={autoCompleteOptions}
-				inputPlaceHolder={"Search Address"}
-				inputOnChange={onSearchChange}
-				inputOnFocus={inputOnFocus}
-				inputValue={inputValue}
-				inputPreflixWidth={inputPreflixWidth}
-				prefixComponent={[
-					<FormInputPrefix
-						text={"Start"}
-						svgName={"home_pin"}
-						setInputPreflixWidth={setInputPreflixWidth}
-					/>,
-				]}
-			/>
-		</section>
+		<>
+			<section className="starting-point">
+				<FormAutoComplete
+					dropdownListComponent={autoCompleteOptions}
+					inputPlaceHolder={"Search Address"}
+					inputOnChange={onSearchChange}
+					inputOnFocus={inputOnFocus}
+					inputValue={inputValue}
+					inputPreflixWidth={inputPreflixWidth}
+					prefixComponent={[
+						<FormInputPrefix
+							text={"Start"}
+							svgName={"home_pin"}
+							setInputPreflixWidth={setInputPreflixWidth}
+						/>,
+					]}
+				/>
+			</section>
+		</>
 	);
 }
 

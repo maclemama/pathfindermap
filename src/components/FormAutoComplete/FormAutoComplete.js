@@ -11,6 +11,7 @@ function FormAutoComplete({
 	inputValue,
 	prefixComponent,
 	inputPreflixWidth,
+	subfixComponent
 }) {
 	const [isInputFocus, setisInputFocus] = useState(false);
 	const inputOnBlur = () => {
@@ -32,6 +33,7 @@ function FormAutoComplete({
 				inputValue={inputValue}
 				prefixComponent={prefixComponent}
 				inputPreflixWidth={inputPreflixWidth}
+				subfixComponent={subfixComponent}
 			/>
 			{dropdownListComponent && dropdownListComponent[0] && (
 				<div
