@@ -9,11 +9,12 @@ import Modal from "../Modal/Modal";
 
 function RouteDetailsPanel({
 	selectedRoute,
+	selectedRouteDirection,
 	routes,
 	mapRef,
 	signedin,
 	isInProfile,
-	setModal
+	setModal,
 }) {
 	const [selectedRouteDetails, setSelectedRouteDetails] = useState(null);
 	const [isloading, setIsLoading] = useState(true);
@@ -35,37 +36,52 @@ function RouteDetailsPanel({
 							lat: routeDetails.latitude,
 							lng: routeDetails.longitude,
 						},
-					}).then((matchedPlace) => {
-						let postal_town, country, route;
-						matchedPlace.address_components.forEach((addr) => {
-							if (addr.types.includes("postal_town")) {
-								postal_town = addr.long_name;
-							}
-							if (addr.types.includes("country")) {
-								country = addr.long_name;
-							}
-							if (addr.types.includes("route")) {
-								route = addr.short_name;
-							}
+					})
+						.then((matchedPlace) => {
+							let postal_town, country, route;
+							matchedPlace.address_components.forEach((addr) => {
+								if (addr.types.includes("postal_town")) {
+									postal_town = addr.long_name;
+								}
+								if (addr.types.includes("country")) {
+									country = addr.long_name;
+								}
+								if (addr.types.includes("route")) {
+									route = addr.short_name;
+								}
+							});
+							routeDetails.starting_address =
+								`${route ? route + ", " : ""}` +
+								`${postal_town ? postal_town + ", " : ""}` +
+								country;
+							routeDetails.place_id = matchedPlace.place_id;
+							setSelectedRouteDetails(routeDetails);
+							setSavedRoute(routeDetails.user_saved);
+						})
+						.catch((error) => {
+							setModal([
+								<Modal
+									title={"Error"}
+									message={error.response.data.message || error.message}
+									setModal={setModal}
+								/>,
+							]);
+							setSelectedRouteDetails([]);
 						});
-						routeDetails.starting_address =
-							`${route ? route + ", " : ""}` +
-							`${postal_town ? postal_town + ", " : ""}` +
-							country;
-						routeDetails.place_id = matchedPlace.place_id;
-						setSelectedRouteDetails(routeDetails);
-						setSavedRoute(routeDetails.user_saved);
-					}).catch((error) => {
-						setModal([
-							<Modal
-								title={"Error"}
-								message={error.response.data.message || error.message}
-								setModal={setModal}
-							/>,
-						]);
-						setSelectedRouteDetails([]);
-					});
 				} else {
+					let walkingTime = 0;
+					let walkingDistance = 0;
+					selectedRouteDirection.routes[0].legs.forEach((waypoint) => {
+						console.log(waypoint);
+						walkingDistance += waypoint.distance.value;
+						walkingTime += waypoint.duration.value;
+					});
+					console.log(walkingTime);
+					routeDetails.walking_distance = Number(
+						(walkingDistance / 1000).toFixed(1)
+					);
+					routeDetails.walking_time = Number((walkingTime / 60).toFixed(0));
+					console.log(routeDetails);
 					setSelectedRouteDetails(routeDetails);
 					setSavedRoute(routeDetails.user_saved);
 				}
@@ -154,7 +170,7 @@ function RouteDetailsPanel({
 								<h2 className="route-panel__title">Places in the Path</h2>
 							)}
 						</div>
-						{isInProfile && (
+						{isInProfile ? (
 							<div className="route-panel__top-right-wrapper">
 								<button
 									onClick={handleShowMap}
@@ -162,6 +178,23 @@ function RouteDetailsPanel({
 								>
 									Show Map
 								</button>
+							</div>
+						) : (
+							<div className="route-panel__route-number">
+								{selectedRouteDetails.walking_distance && (
+									<span className="route-panel__route-distance">{`Distance: ${
+										selectedRouteDetails.walking_distance
+									} km${
+										selectedRouteDetails.walking_distance > 1 ? "s" : ""
+									}`}</span>
+								)}
+								{selectedRouteDetails.walking_time && (
+									<span className="route-panel__route-distance">{`Walking Duration: ${
+										selectedRouteDetails.walking_time
+									} min${
+										selectedRouteDetails.walking_time > 1 ? "s" : ""
+									}`}</span>
+								)}
 							</div>
 						)}
 					</div>

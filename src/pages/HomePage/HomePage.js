@@ -10,11 +10,12 @@ import { useState, useEffect, useCallback } from "react";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
 import { useLocation } from "react-router";
 
-function HomePage({ signedin, mapRef}) {
+function HomePage({ signedin, mapRef }) {
 	const [startingPoint, setStartingPoint] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [routes, setRoutes] = useState(null);
 	const [selectedRoute, setSelectedRoute] = useState(null);
+	const [selectedRouteDirection, setSelectedRouteDirection] = useState(null);
 	const [mapRadius, setMapRadius] = useState(3000);
 	const location = useLocation();
 	const [modal, setModal] = useState([]);
@@ -70,6 +71,7 @@ function HomePage({ signedin, mapRef}) {
 				{selectedRoute && (
 					<RouteDetailsPanel
 						selectedRoute={selectedRoute}
+						selectedRouteDirection={selectedRouteDirection}
 						routes={routes}
 						mapRef={mapRef}
 						signedin={signedin}
@@ -82,6 +84,7 @@ function HomePage({ signedin, mapRef}) {
 					mapRadius={mapRadius}
 					setSelectedRoute={setSelectedRoute}
 					mapRef={mapRef}
+					setSelectedRouteDirection={setSelectedRouteDirection}
 				/>
 			</div>
 

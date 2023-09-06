@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
 import "./Routes.scss";
 
-function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
+function Routes({ routes, startingPoint, mapRef, setSelectedRoute, setSelectedRouteDirection }) {
 	const [directions, setDirections] = useState([]);
 	const [places, setPlaces] = useState(null);
 	const [showMarker, setShowMarker] = useState([]);
@@ -161,6 +161,7 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute }) {
 	const handleRouteClick = (e, direction) => {
 		// set selected route to display route details in route details panel
 		setSelectedRoute(direction.route_id);
+		setSelectedRouteDirection(direction);
 
 		// handle map bound
 		const directionBounds = direction.routes[0].bounds;

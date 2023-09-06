@@ -4,8 +4,14 @@ import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
 import Routes from "../Routes/Routes";
 import "./Map.scss";
 
-function Map({ startingPoint, routes, mapRadius, setSelectedRoute, mapRef }) {
-
+function Map({
+	startingPoint,
+	routes,
+	mapRadius,
+	setSelectedRoute,
+	mapRef,
+	setSelectedRouteDirection,
+}) {
 	const mapOptions = useMemo(
 		() => ({
 			mapId: "f6ca3c1a38d4ecfa",
@@ -50,6 +56,7 @@ function Map({ startingPoint, routes, mapRadius, setSelectedRoute, mapRef }) {
 					startingPoint={startingPoint}
 					mapRef={mapRef}
 					setSelectedRoute={setSelectedRoute}
+					setSelectedRouteDirection={setSelectedRouteDirection}
 				/>
 
 				<CircleF

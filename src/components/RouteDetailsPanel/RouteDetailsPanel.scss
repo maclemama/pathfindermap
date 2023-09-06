@@ -43,4 +43,18 @@
 	&__title {
 		font-size: 1.5rem;
 	}
+
+	&__route-number{
+		display: flex;
+		column-gap: 1rem;
+		padding-right: 2rem;
+	}
+
+	&__route-distance, &__route-distance{
+		padding: 0.5rem 0.8rem;
+		border-radius: 1rem;
+		border: $el-border;
+		background-color: #696666;
+		color: white;
+	}
 }
