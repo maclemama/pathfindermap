@@ -21,58 +21,48 @@ function Header() {
 
 	return (
 		<header className={`header ${isProfilePage ? "header--profile" : ""}`}>
-			<button className="header__home-button">
-				<Link to="/">
-					<img
-						src={headerLogo}
-						alt="Pathfinder brand logo"
-						className={`header__logo ${
-							isProfilePage ? "header__logo--profile" : ""
-						}`}
-					/>
-				</Link>
-			</button>
+			<Link to="/">
+				<img
+					src={headerLogo}
+					alt="Pathfinder brand logo"
+					className={`header__logo ${
+						isProfilePage ? "header__logo--profile" : ""
+					}`}
+				/>
+			</Link>
 
 			{isProfilePage || isSignupPage || isSigninPage || !!user || (
-				<button className="header__signin-button">
-					<Link to="/signin">
-						<h3 className="header__signin-button-text">Sign in</h3>
-					</Link>
-				</button>
+				<Link className="header__signin-button" to="/signin">
+					<h3 className="header__signin-button-text">Sign in</h3>
+				</Link>
 			)}
 
 			{!!user && (
 				<div className="header__user-control-wrapper">
 					{isProfilePage || (
-						<>
-							<button className="header__profile">
-								<Link to="/profile">
-									<SVGIcons
-										cssClassName={"header__profile-icon"}
-										iconName={"user"}
-									/>
-									<h4 className="header__profile-icon-text">Profile</h4>
-								</Link>
-							</button>
-						</>
+						<Link className="header__profile" to="/profile">
+							<SVGIcons
+								cssClassName={"header__profile-icon"}
+								iconName={"user"}
+							/>
+							<h4 className="header__profile-icon-text">Profile</h4>
+						</Link>
 					)}
 					{isProfilePage && (
-						<>
-							<button
-								className={`header__signin-button ${
-									isProfilePage ? "header__signin-button--profile" : ""
+						<button
+							className={`header__signin-button ${
+								isProfilePage ? "header__signin-button--profile" : ""
+							}`}
+							onClick={handleSignout}
+						>
+							<h3
+								className={`header__signin-button-text ${
+									isProfilePage ? "header__signin-button-text--profile" : ""
 								}`}
-								onClick={handleSignout}
 							>
-								<h3
-									className={`header__signin-button-text ${
-										isProfilePage ? "header__signin-button-text--profile" : ""
-									}`}
-								>
-									Sign out
-								</h3>
-							</button>
-						</>
+								Sign out
+							</h3>
+						</button>
 					)}
 				</div>
 			)}
