@@ -6,10 +6,10 @@
 	height: 4rem;
 	border-radius: $element-radius;
 	padding: 1rem 1.2rem 1rem var(--prefix-width);
-	background-color: white;
-	border: $el-border;
+	background-color: $primary-input-background-color;
+	border: $element-border;
 
-	&__wrapper{
+	&__wrapper {
 		position: relative;
 	}
 }

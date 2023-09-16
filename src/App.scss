@@ -1,12 +1,13 @@
 @use "./styles/partials/reset";
 @use "./styles/partials/font";
+@use "./styles/partials/variables" as *;
 
-.main{
-    position: relative;
-    height: 100vh;
+.main {
+	position: relative;
+	height: 100vh;
 }
 
-.App{
-    position: relative;
-    background-color: rgb(233, 233, 233);
+.App {
+	position: relative;
+	background-color: $primary-background-color;
 }

@@ -2,15 +2,15 @@
 @use "../../styles/partials/mixin" as *;
 
 .route-submit-button {
-	background-color: white;
+	background-color: $primary-cta-button-background-color;
 	height: 4rem;
 	border-radius: $element-radius;
 	font-size: 1.8rem;
-	color: #455eed;
-    border: 1px solid #455eed;
+	color: $primary-cta-button-color;
+	border: 1px solid $primary-cta-button-color;
 
 	&:hover {
-		background-color: #455eed;
-		color: white;
+		background-color: $primary-cta-button-color;
+		color: $primary-text-light-color;
 	}
 }

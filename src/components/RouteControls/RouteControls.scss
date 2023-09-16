@@ -1,35 +1,34 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixin" as *;
 
-.route-controls{
-    display: flex;
-    flex-direction: column;
-    row-gap: $mobile-row-gap;
-    background-color:#FFFFFF;
-    padding: 1rem;
-    border-radius: $element-radius;
-    border: $el-border;
+.route-controls {
+	display: flex;
+	flex-direction: column;
+	row-gap: $mobile-row-gap;
+	background-color: $primary-section-background-color;
+	padding: 1rem;
+	border-radius: $element-radius;
+	border: $element-border;
 
-    &__input-label{
-        font-size: 1.4rem;
-        width: 40%;
-    }
+	&__input-label {
+		font-size: 1.4rem;
+		width: 40%;
+	}
 
-    &__input-group-wrapper{
-        display: flex;
-        justify-content: space-between;
-    }
+	&__input-group-wrapper {
+		display: flex;
+		justify-content: space-between;
+	}
 
-    &__input-wrapper{
-        width: 75%;
-        display: flex;
+	&__input-wrapper {
+		width: 75%;
+		display: flex;
+	}
 
-    }
-
-    &__input-middle-wrapper{
-        width: 60%;
-    }
-    &__input-right-wrapper{
-        width: 40%;
-    }
+	&__input-middle-wrapper {
+		width: 60%;
+	}
+	&__input-right-wrapper {
+		width: 40%;
+	}
 }

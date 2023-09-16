@@ -8,6 +8,6 @@
 		justify-content: center;
 	}
 	@include desktop {
-		background-color: rgb(233, 233, 233);
+		background-color: $primary-background-color;
 	}
 }

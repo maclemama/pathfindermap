@@ -1,24 +1,26 @@
+@use "../../styles/partials/variables" as *;
+
 .form-autocomplete {
-    position: relative;
+	position: relative;
 
- &__dropdown{
-    font-weight: normal;
-	margin: 0;
-	padding: 1rem;
-	line-height: 2;
-	position: absolute;
-	z-index: 100;
-	background-color: #ffffff;
-	border-radius: 8px;
-	outline: none;
-	box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
-		0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-	width: 100%;
-    top: 4rem;
-	visibility: hidden;
+	&__dropdown {
+		font-weight: normal;
+		margin: 0;
+		padding: 1rem;
+		line-height: 2;
+		position: absolute;
+		z-index: 100;
+		background-color: $primary-input-background-color;
+		border-radius: 8px;
+		outline: none;
+		box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+			0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+		width: 100%;
+		top: 4rem;
+		visibility: hidden;
 
-	&--active{
-		visibility: visible;
+		&--active {
+			visibility: visible;
+		}
 	}
- }
 }

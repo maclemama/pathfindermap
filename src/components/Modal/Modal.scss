@@ -5,44 +5,44 @@
 	position: fixed;
 	top: 50%;
 	left: 50%;
-    width: 40rem;
-    padding: 2rem;
-    transform: translate(-50%, -50%);
+	width: 40rem;
+	padding: 2rem;
+	transform: translate(-50%, -50%);
 
-    background-color: $primary-bg-light-color;
-    @include el-shadow;
-	border: $el-border;
-    border-radius: $section-radius;
-    display:flex;
-    flex-direction: column;
+	background-color: $primary-panel-background-color;
+	@include el-shadow;
+	border: $element-border;
+	border-radius: $section-radius;
+	display: flex;
+	flex-direction: column;
 
-    &__top-wrapper{
-        display: flex;
-        justify-content: space-between;
-    }
+	&__top-wrapper {
+		display: flex;
+		justify-content: space-between;
+	}
 
-    &__close-icon{
-        width: 3rem;
-    }
+	&__close-icon {
+		width: 3rem;
+	}
 
-    &__close-button{
-        width: 3rem;
-    }
+	&__close-button {
+		width: 3rem;
+	}
 
-    &__title{
-        font-size: 3rem;
-    }
+	&__title {
+		font-size: 3rem;
+	}
 
-    &__message{
-        padding: 2.5rem 0rem;
-        font-size: 2rem;
-    }
+	&__message {
+		padding: 2.5rem 0rem;
+		font-size: 2rem;
+	}
 
-    &__confirm-button{
-        border: $el-border;
-        font-size: 2rem;
-        font-weight: bold;
-        padding: 1rem;
-        border-radius: $element-radius;
-    }
+	&__confirm-button {
+		border: $element-border;
+		font-size: 2rem;
+		font-weight: bold;
+		padding: 1rem;
+		border-radius: $element-radius;
+	}
 }

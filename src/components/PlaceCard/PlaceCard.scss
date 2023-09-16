@@ -4,10 +4,10 @@
 .place-card {
 	width: 25rem;
 	display: flex;
-	background-color: white;
+	background-color: $primary-card-background-color;
 	flex-direction: column;
 	border-radius: $element-radius;
-	border: $el-border;
+	border: $element-border;
 
 	&__photo-wrapper {
 		margin: 0;
@@ -24,7 +24,7 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			border-bottom: $el-border;
+			border-bottom: $element-border;
 			padding: 0.4rem 1rem;
 
 			@include desktop {
@@ -46,7 +46,6 @@
 			align-items: center;
 			padding: 0rem 1rem 0.4rem 1rem;
 			justify-content: space-between;
-
 
 			@include desktop {
 				padding: 0rem 1rem 0.8rem 1rem;
@@ -78,11 +77,11 @@
 			height: 15rem;
 		}
 
-		&-keyword-overlay{
+		&-keyword-overlay {
 			position: absolute;
-			top:0rem;
-			left:0rem;
-			background-color: rgba(107, 207, 207, 0.811);
+			top: 0rem;
+			left: 0rem;
+			background-color: $secondary-card-background-color;
 			padding: 0.5rem 1rem;
 			border-top-left-radius: $element-radius;
 			border-bottom-right-radius: $element-radius;
@@ -115,7 +114,7 @@
 	}
 
 	&__info-text,
-	&__info-title{
+	&__info-title {
 		font-size: 1.2rem;
 
 		@include desktop {

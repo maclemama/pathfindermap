@@ -2,8 +2,8 @@
 @use "../../styles/partials/mixin" as *;
 
 .route-panel {
-	background-color: $primary-bg-light-color;
-	border: $el-border;
+	background-color: $primary-background-color;
+	border: $element-border;
 	padding: 2rem;
 	height: auto;
 	display: flex;
@@ -30,13 +30,13 @@
 	}
 
 	&__show-map-button{
-		border: $el-border;
+		border: $element-border;
 		border-radius: $element-radius;
 		padding: 1rem;
 
 		&:hover{
-			background-color: #d9d9d9;
-			color: white;
+			background-color: $secondary-button-background-color;
+			color: $primary-text-light-color;
 		}
 	}
 
@@ -53,8 +53,8 @@
 	&__route-distance, &__route-distance{
 		padding: 0.5rem 0.8rem;
 		border-radius: 1rem;
-		border: $el-border;
-		background-color: #696666;
-		color: white;
+		border: $element-border;
+		background-color: $primary-info-background-color;
+		color:$primary-text-light-color;
 	}
 }

@@ -2,7 +2,7 @@
 @use "../../styles/partials/mixin" as *;
 
 .control-menu-group {
-	background-color: $primary-bg-light-color;
+	background-color: $primary-panel-background-color;
 	padding: $mobile-row-gap $mobile-col-gap;
 	border-radius: $section-radius;
 	width: 100vw;
@@ -11,7 +11,7 @@
 	align-items: center;
 	row-gap: $mobile-row-gap;
 	@include el-shadow;
-	border: $el-border;
+	border: $element-border;
 	max-width: 50rem;
 
 	@include desktop {
@@ -21,7 +21,7 @@
 	}
 
 	&__toggle-wrapper {
-        display: block;
+		display: block;
 		@include desktop {
 			display: none;
 		}

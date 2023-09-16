@@ -6,36 +6,36 @@
 
 	top: 3rem;
 	left: 3rem;
-	background-color: $primary-bg-light-color;
-	border: $el-border;
+	background-color: $primary-panel-background-color;
+	border: $element-border;
 	border-radius: $section-radius;
 	display: flex;
 
 	&__title {
 		padding: 1.5rem;
-        border-right: $el-border;
+		border-right: $element-border;
 	}
 	&__button {
 		padding: 1.5rem;
-        border-right: $el-border;
+		border-right: $element-border;
 
-        &--active{
-            background-color: #696666;
-            color: white;
-        }
+		&--active {
+			background-color: $primary-info-background-color;
+			color: $primary-text-light-color;
+		}
 	}
 
 	&__path-text {
 		font-size: 1.8rem;
 	}
 
-    &__show-all-button{
-        padding: 1.5rem;
-        border-top-right-radius: $section-radius;
-        border-bottom-right-radius: $section-radius;
-        &--active{
-            background-color: #696666;
-            color: white;
-        }
-    }
+	&__show-all-button {
+		padding: 1.5rem;
+		border-top-right-radius: $section-radius;
+		border-bottom-right-radius: $section-radius;
+		&--active {
+			background-color: $primary-info-background-color;
+			color: $primary-text-light-color;
+		}
+	}
 }

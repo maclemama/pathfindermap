@@ -2,11 +2,11 @@
 @use "../../styles/partials/mixin" as *;
 
 .header {
-	background-color: $primary-bg-light-color;
+	background-color: $primary-panel-background-color;
 	display: flex;
 	justify-content: space-between;
 	padding: 1rem 2rem;
-	border: $el-border;
+	border: $element-border;
 	border-bottom-left-radius: $section-radius;
 	border-bottom-right-radius: $section-radius;
 	@include el-shadow;
@@ -46,7 +46,7 @@
 	}
 
 	&__signin-button {
-		border-radius: $el-border;
+		border-radius: $element-border;
 		margin: 0;
 		&-text {
 			font-size: 1.6rem;
