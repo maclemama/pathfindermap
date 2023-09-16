@@ -5,11 +5,15 @@
 	background-color: $primary-panel-background-color;
 	display: flex;
 	justify-content: space-between;
-	padding: 1rem 2rem;
+	padding: $mobile-row-gap $mobile-col-gap;
 	border: $element-border;
 	border-bottom-left-radius: $section-radius;
 	border-bottom-right-radius: $section-radius;
-	@include el-shadow;
+	@include element-shadow;
+
+	@include tablet {
+		padding: $tablet-row-gap $tablet-col-gap;
+	}
 
 	@include desktop {
 		position: absolute;

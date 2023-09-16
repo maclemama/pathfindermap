@@ -10,7 +10,7 @@
 	transform: translate(-50%, -50%);
 
 	background-color: $primary-panel-background-color;
-	@include el-shadow;
+	@include element-shadow;
 	border: $element-border;
 	border-radius: $section-radius;
 	display: flex;
