@@ -4,7 +4,7 @@ import axios from "axios";
 import RouteDetailsPanel from "../RouteDetailsPanel/RouteDetailsPanel";
 import Modal from "../Modal/Modal";
 
-function ProfileSavedRoute({ mapRef, signedin, setModal }) {
+function ProfileSavedRoute({ mapRef, user, setModal }) {
 	const token = localStorage.getItem("token");
 	const [savedRoute, setSavedRoute] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +19,6 @@ function ProfileSavedRoute({ mapRef, signedin, setModal }) {
 					},
 				})
 				.then((res) => {
-					setTotalPage(res.data.total_page);
 					let routeIDs = res.data.data.map((route) => route.id);
 					if (res.data.total_page !== 0) {
 						axios
@@ -121,7 +120,7 @@ function ProfileSavedRoute({ mapRef, signedin, setModal }) {
 							selectedRoute={route.route_id}
 							routes={savedRoute}
 							mapRef={mapRef}
-							signedin={signedin}
+							user={user}
 							isInProfile={true}
 							setModal={setModal}
 							key={route.route_id}

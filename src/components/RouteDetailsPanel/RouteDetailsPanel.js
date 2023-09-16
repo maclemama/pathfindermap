@@ -1,21 +1,22 @@
 import RoutePlacesList from "../RoutePlacesList/RoutePlacesList";
 import SVGIcons from "../SVGIcons/SVGIcons";
 import "./RouteDetailsPanel.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { getGoogleGeocoder } from "../../scripts/locationUtils";
 import { useNavigate } from "react-router";
 import Modal from "../Modal/Modal";
+import { UserContext } from "../../App";
 
 function RouteDetailsPanel({
 	selectedRoute,
 	selectedRouteDirection,
 	routes,
 	mapRef,
-	signedin,
 	isInProfile,
 	setModal,
 }) {
+	const { user } = useContext(UserContext);
 	const [selectedRouteDetails, setSelectedRouteDetails] = useState(null);
 	const [isloading, setIsLoading] = useState(true);
 	const [savedRoute, setSavedRoute] = useState(null);
@@ -59,10 +60,11 @@ function RouteDetailsPanel({
 							setSavedRoute(routeDetails.user_saved);
 						})
 						.catch((error) => {
+							console.log(error);
 							setModal([
 								<Modal
 									title={"Error"}
-									message={error.response.data.message || error.message}
+									message={error.message}
 									setModal={setModal}
 								/>,
 							]);
@@ -137,7 +139,7 @@ function RouteDetailsPanel({
 				<>
 					<div className="route-panel__top-wrapper">
 						<div className="route-panel__top-left-wrapper">
-							{signedin && !savedRoute && (
+							{!!user && !savedRoute && (
 								<button
 									className="route-panel__save-button"
 									onClick={() => handleRouteSave("save")}
@@ -149,7 +151,7 @@ function RouteDetailsPanel({
 								</button>
 							)}
 
-							{signedin && savedRoute && (
+							{!!user && savedRoute && (
 								<button
 									className="route-panel__save-button"
 									onClick={() => handleRouteSave("unsave")}

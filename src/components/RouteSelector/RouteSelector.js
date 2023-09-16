@@ -1,5 +1,4 @@
 import "./RouteSelector.scss";
-import { useEffect } from "react";
 
 function RouteSelector({
 	routes,
@@ -9,9 +8,6 @@ function RouteSelector({
 	setSelectedRouteDirection,
 	mapRef,
 }) {
-	useEffect(() => {
-		console.log(selectedRoute);
-	}, [selectedRoute]);
 	const handleRouteSwitch = (direction) => {
 		setSelectedRouteDirection(direction);
 		setSelectedRoute(direction.route_id);

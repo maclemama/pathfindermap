@@ -5,14 +5,17 @@ import Signup from "../../components/Signup/Signup";
 import { useParams, useNavigate } from "react-router-dom";
 import SignupVerify from "../../components/SignupVerify/SignupVerify";
 import Signin from "../../components/Signin/Signin";
+import { UserContext } from "../../App";
+import { useContext } from "react";
 
-function AuthPage({ action, signedin }) {
+function AuthPage({ action }) {
 	const params = useParams();
 	const navigate = useNavigate();
-
-	if (signedin) {
+	const { user } = useContext(UserContext);
+	
+	if (user) {
 		navigate("/profile");
-	};
+	}
 
 	const imageList = [
 		{

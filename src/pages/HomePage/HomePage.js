@@ -10,7 +10,7 @@ import { useState, useEffect, useCallback } from "react";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
 import { useLocation } from "react-router";
 
-function HomePage({ signedin, mapRef }) {
+function HomePage({ mapRef }) {
 	const [startingPoint, setStartingPoint] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [routes, setRoutes] = useState(null);
@@ -74,7 +74,6 @@ function HomePage({ signedin, mapRef }) {
 						selectedRouteDirection={selectedRouteDirection}
 						routes={routes}
 						mapRef={mapRef}
-						signedin={signedin}
 					/>
 				)}
 				<Map
