@@ -8,8 +8,17 @@ import { useEffect, useState } from "react";
 import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
 import "./Routes.scss";
 
-function Routes({ routes, startingPoint, mapRef, setSelectedRoute, setSelectedRouteDirection }) {
-	const [directions, setDirections] = useState([]);
+function Routes({
+	routes,
+	startingPoint,
+	mapRef,
+	setSelectedRoute,
+	setSelectedRouteDirection,
+	directions,
+	setDirections,
+	selectedRoute,
+	selectedRouteDirection,
+}) {
 	const [places, setPlaces] = useState(null);
 	const [showMarker, setShowMarker] = useState([]);
 
@@ -112,13 +121,15 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute, setSelectedRo
 		}
 	}, [routes]);
 
-	const handleRouteMouseOver = (e, index, direction) => {
+	const showSelectedRoute = (index, direction) => {
+		// setPolyLineZIndex(defaultZIndex);
+		// 	setPolyLineColors(defaultPolyLineColors);
 		setPolyLineColors(
 			polyLineColors.map((color, i) => {
 				if (index !== i) {
 					return "#FFFFFF";
 				} else {
-					return color;
+					return defaultPolyLineColors[i];
 				}
 			})
 		);
@@ -128,7 +139,7 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute, setSelectedRo
 				if (index !== i) {
 					return 49;
 				} else {
-					return zIndex;
+					return defaultZIndex[i];
 				}
 			})
 		);
@@ -144,7 +155,7 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute, setSelectedRo
 		setShowMarker(newMarkerVisibility);
 	};
 
-	const handleRouteMouseOut = (e) => {
+	const showAllRoute = (e) => {
 		setPolyLineColors(defaultPolyLineColors);
 		setPolyLineZIndex(defaultZIndex);
 		let newMarkerVisibility = {};
@@ -152,16 +163,44 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute, setSelectedRo
 			(routeID) => (newMarkerVisibility[routeID] = true)
 		);
 		setShowMarker(newMarkerVisibility);
+		if (places) {
+			centerMap(places);
+		}
 	};
 
 	const handleRouteDoubleClick = (e) => {
 		centerMap(places);
 	};
 
-	const handleRouteClick = (e, direction) => {
+	// const handleRouteChange = (direction) => {
+	// 	// set selected route to display route details in route details panel
+	// 	setSelectedRoute(direction.route_id);
+	// 	setSelectedRouteDirection(direction);
+
+	// 	// handle map bound
+	// 	const directionBounds = direction.routes[0].bounds;
+
+	// 	/* eslint-disable */
+	// 	const bounds = new google.maps.LatLngBounds();
+	// 	bounds.extend(
+	// 		new google.maps.LatLng(
+	// 			directionBounds.getSouthWest().lat(),
+	// 			directionBounds.getSouthWest().lng()
+	// 		)
+	// 	);
+	// 	bounds.extend(
+	// 		new google.maps.LatLng(
+	// 			directionBounds.getNorthEast().lat(),
+	// 			directionBounds.getNorthEast().lng()
+	// 		)
+	// 	);
+	// 	/* eslint-enable */
+	// 	mapRef.current.fitBounds(bounds);
+	// 	mapRef.current.setTilt(30);
+	// };
+
+	const handleRouteChange = (direction) => {
 		// set selected route to display route details in route details panel
-		setSelectedRoute(direction.route_id);
-		setSelectedRouteDirection(direction);
 
 		// handle map bound
 		const directionBounds = direction.routes[0].bounds;
@@ -184,6 +223,23 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute, setSelectedRo
 		mapRef.current.fitBounds(bounds);
 		mapRef.current.setTilt(30);
 	};
+
+	useEffect(() => {
+		if (selectedRouteDirection) {
+			// showAllRoute();
+			// setPolyLineZIndex(defaultZIndex);
+			// setPolyLineColors(defaultPolyLineColors);
+			handleRouteChange(selectedRouteDirection);
+			const directionIdex = directions
+				.map((d) => d.route_id)
+				.indexOf(selectedRouteDirection.route_id);
+			console.log(directionIdex);
+			console.log(selectedRouteDirection);
+			showSelectedRoute(directionIdex, selectedRouteDirection);
+		} else {
+			showAllRoute();
+		}
+	}, [selectedRouteDirection]);
 
 	return (
 		<>
@@ -230,9 +286,12 @@ function Routes({ routes, startingPoint, mapRef, setSelectedRoute, setSelectedRo
 									strokeWeight: 6,
 									zIndex: polyLineZIndex[index],
 								}}
-								onMouseOver={(e) => handleRouteMouseOver(e, index, direction)}
-								onMouseOut={handleRouteMouseOut}
-								onClick={(e) => handleRouteClick(e, direction)}
+								onMouseOver={() => showSelectedRoute(index, direction)}
+								// onMouseOut={showAllRoute}
+								onClick={() => {
+									setSelectedRoute(direction.route_id);
+									setSelectedRouteDirection(direction);
+								}}
 								onDblClick={handleRouteDoubleClick}
 							/>
 						</div>

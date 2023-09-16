@@ -1,0 +1,41 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.route-selector {
+	position: absolute;
+
+	top: 3rem;
+	left: 3rem;
+	background-color: $primary-bg-light-color;
+	border: $el-border;
+	border-radius: $section-radius;
+	display: flex;
+
+	&__title {
+		padding: 1.5rem;
+        border-right: $el-border;
+	}
+	&__button {
+		padding: 1.5rem;
+        border-right: $el-border;
+
+        &--active{
+            background-color: #696666;
+            color: white;
+        }
+	}
+
+	&__path-text {
+		font-size: 1.8rem;
+	}
+
+    &__show-all-button{
+        padding: 1.5rem;
+        border-top-right-radius: $section-radius;
+        border-bottom-right-radius: $section-radius;
+        &--active{
+            background-color: #696666;
+            color: white;
+        }
+    }
+}

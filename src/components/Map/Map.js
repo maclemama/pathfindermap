@@ -3,15 +3,20 @@ import { useCallback, useMemo } from "react";
 import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
 import Routes from "../Routes/Routes";
 import "./Map.scss";
+import RouteSelector from "../RouteSelector/RouteSelector";
+import { useState } from "react";
 
 function Map({
 	startingPoint,
 	routes,
 	mapRadius,
+	selectedRoute,
 	setSelectedRoute,
 	mapRef,
 	setSelectedRouteDirection,
+	selectedRouteDirection
 }) {
+	const [directions, setDirections] = useState([]);
 	const mapOptions = useMemo(
 		() => ({
 			mapId: "f6ca3c1a38d4ecfa",
@@ -57,6 +62,10 @@ function Map({
 					mapRef={mapRef}
 					setSelectedRoute={setSelectedRoute}
 					setSelectedRouteDirection={setSelectedRouteDirection}
+					directions={directions}
+					setDirections={setDirections}
+					selectedRoute={selectedRoute}
+					selectedRouteDirection={selectedRouteDirection}
 				/>
 
 				<CircleF
@@ -65,6 +74,14 @@ function Map({
 					options={circleOptions}
 				/>
 			</GoogleMap>
+			<RouteSelector
+				routes={routes}
+				mapRef={mapRef}
+				directions={directions}
+				selectedRoute={selectedRoute}
+				setSelectedRoute={setSelectedRoute}
+				setSelectedRouteDirection={setSelectedRouteDirection}
+			/>
 		</section>
 	);
 }

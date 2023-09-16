@@ -82,8 +82,10 @@ function HomePage({ signedin, mapRef }) {
 					setStartingPoint={setStartingPoint}
 					routes={routes}
 					mapRadius={mapRadius}
+					selectedRoute={selectedRoute}
 					setSelectedRoute={setSelectedRoute}
 					mapRef={mapRef}
+					selectedRouteDirection={selectedRouteDirection}
 					setSelectedRouteDirection={setSelectedRouteDirection}
 				/>
 			</div>
