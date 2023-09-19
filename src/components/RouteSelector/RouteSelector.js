@@ -6,7 +6,6 @@ function RouteSelector({
 	setSelectedRoute,
 	directions,
 	setSelectedRouteDirection,
-	mapRef,
 }) {
 	const handleRouteSwitch = (direction) => {
 		setSelectedRouteDirection(direction);
@@ -17,6 +16,7 @@ function RouteSelector({
 		setSelectedRouteDirection(null);
 		setSelectedRoute(null);
 	};
+
 	return (
 		routes && (
 			<section className="route-selector">

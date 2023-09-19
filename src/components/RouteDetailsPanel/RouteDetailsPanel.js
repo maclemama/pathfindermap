@@ -27,70 +27,72 @@ function RouteDetailsPanel({
 			const routeDetails = routes.filter(
 				(route) => route.route_id === selectedRoute
 			)[0];
+
 			if (routeDetails) {
 				routeDetails.created_at = new Date(
 					routeDetails.created_at
 				).toLocaleDateString();
-				if (isInProfile) {
-					getGoogleGeocoder({
-						location: {
-							lat: routeDetails.latitude,
-							lng: routeDetails.longitude,
-						},
-					})
-						.then((matchedPlace) => {
-							let postal_town, country, route;
-							matchedPlace.address_components.forEach((addr) => {
-								if (addr.types.includes("postal_town")) {
-									postal_town = addr.long_name;
-								}
-								if (addr.types.includes("country")) {
-									country = addr.long_name;
-								}
-								if (addr.types.includes("route")) {
-									route = addr.short_name;
-								}
-							});
-							routeDetails.starting_address =
-								`${route ? route + ", " : ""}` +
-								`${postal_town ? postal_town + ", " : ""}` +
-								country;
-							routeDetails.place_id = matchedPlace.place_id;
-							setSelectedRouteDetails(routeDetails);
-							setSavedRoute(routeDetails.user_saved);
-						})
-						.catch((error) => {
-							console.log(error);
-							setModal([
-								<Modal
-									title={"Error"}
-									message={error.message}
-									setModal={setModal}
-								/>,
-							]);
-							setSelectedRouteDetails([]);
-						});
-				} else {
-					let walkingTime = 0;
-					let walkingDistance = 0;
-					selectedRouteDirection.routes[0].legs.forEach((waypoint) => {
-						console.log(waypoint);
-						walkingDistance += waypoint.distance.value;
-						walkingTime += waypoint.duration.value;
-					});
-					console.log(walkingTime);
-					routeDetails.walking_distance = Number(
-						(walkingDistance / 1000).toFixed(1)
-					);
-					routeDetails.walking_time = Number((walkingTime / 60).toFixed(0));
-					console.log(routeDetails);
-					setSelectedRouteDetails(routeDetails);
-					setSavedRoute(routeDetails.user_saved);
-				}
 			}
+
+			if (isInProfile) {
+				getGoogleGeocoder({
+					location: {
+						lat: routeDetails.latitude,
+						lng: routeDetails.longitude,
+					},
+				})
+					.then((matchedPlace) => {
+						let postal_town, country, route;
+						matchedPlace.address_components.forEach((addr) => {
+							if (addr.types.includes("postal_town")) {
+								postal_town = addr.long_name;
+							}
+							if (addr.types.includes("country")) {
+								country = addr.long_name;
+							}
+							if (addr.types.includes("route")) {
+								route = addr.short_name;
+							}
+						});
+						routeDetails.starting_address =
+							`${route ? route + ", " : ""}` +
+							`${postal_town ? postal_town + ", " : ""}` +
+							country;
+						routeDetails.place_id = matchedPlace.place_id;
+						setSelectedRouteDetails(routeDetails);
+						setSavedRoute(routeDetails.user_saved);
+					})
+					.catch((error) => {
+						setModal([
+							<Modal
+								title={"Error"}
+								message={error.message}
+								setModal={setModal}
+							/>,
+						]);
+						setSelectedRouteDetails([]);
+					});
+			} else {
+				let walkingTime = 0;
+				let walkingDistance = 0;
+
+				selectedRouteDirection.routes[0].legs.forEach((waypoint) => {
+					walkingDistance += waypoint.distance.value;
+					walkingTime += waypoint.duration.value;
+				});
+
+				routeDetails.walking_distance = Number(
+					(walkingDistance / 1000).toFixed(1)
+				);
+				routeDetails.walking_time = Number((walkingTime / 60).toFixed(0));
+
+				setSelectedRouteDetails(routeDetails);
+				setSavedRoute(routeDetails.user_saved);
+			}
+
 			setIsLoading(false);
 		}
-	}, [selectedRoute, routes]);
+	}, [selectedRoute, routes, isInProfile, selectedRouteDirection]);
 
 	const handleRouteSave = (saveUnsave) => {
 		const token = localStorage.getItem("token");

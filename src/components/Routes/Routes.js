@@ -4,7 +4,7 @@ import {
 	InfoWindowF,
 	PolylineF,
 } from "@react-google-maps/api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
 import "./Routes.scss";
 
@@ -16,42 +16,53 @@ function Routes({
 	setSelectedRouteDirection,
 	directions,
 	setDirections,
-	selectedRoute,
 	selectedRouteDirection,
 }) {
 	const [places, setPlaces] = useState(null);
 	const [showMarker, setShowMarker] = useState([]);
 
-	const defaultPolyLineColors = [
-		"#FF5733",
-		"#8A2BE2",
-		"#00FF7F",
-		"#FFD700",
-		"#FF1493",
-		"#32CD32",
-		"#9400D3",
-		"#00BFFF",
-		"#FF4500",
-		"#4B0082",
-	];
+	const defaultPolyLineColors = useMemo(
+		() => [
+			"#FF5733",
+			"#8A2BE2",
+			"#00FF7F",
+			"#FFD700",
+			"#FF1493",
+			"#32CD32",
+			"#9400D3",
+			"#00BFFF",
+			"#FF4500",
+			"#4B0082",
+		],
+		[]
+	);
 
 	const [polyLineColors, setPolyLineColors] = useState(defaultPolyLineColors);
 
-	const defaultZIndex = [50, 50, 50, 50, 50, 50, 50, 50, 50, 50];
+	const defaultZIndex = useMemo(
+		() => [50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
+		[]
+	);
+
 	const [polyLineZIndex, setPolyLineZIndex] = useState(defaultZIndex);
 
-	const centerMap = (markers) => {
-		/* eslint-disable */
-		const bounds = new google.maps.LatLngBounds();
+	const centerMap = useCallback(
+		(markers) => {
+			/* eslint-disable */
+			const bounds = new google.maps.LatLngBounds();
 
-		markers.forEach((marker) => {
-			bounds.extend(new google.maps.LatLng(marker.latitude, marker.longitude));
-		});
-		bounds.extend(startingPoint);
-		/* eslint-enable */
-		mapRef.current.fitBounds(bounds);
-		mapRef.current.setTilt(30);
-	};
+			markers.forEach((marker) => {
+				bounds.extend(
+					new google.maps.LatLng(marker.latitude, marker.longitude)
+				);
+			});
+			bounds.extend(startingPoint);
+			/* eslint-enable */
+			mapRef.current.fitBounds(bounds);
+			mapRef.current.setTilt(30);
+		},
+		[mapRef, startingPoint]
+	);
 
 	useEffect(() => {
 		if (routes) {
@@ -119,43 +130,50 @@ function Routes({
 				centerMap(newPlaces);
 			}
 		}
-	}, [routes]);
+	}, [routes, centerMap, setDirections, startingPoint]);
 
-	const showSelectedRoute = (index, direction) => {
-		// setPolyLineZIndex(defaultZIndex);
-		// 	setPolyLineColors(defaultPolyLineColors);
-		setPolyLineColors(
-			polyLineColors.map((color, i) => {
-				if (index !== i) {
-					return "#FFFFFF";
+	const showSelectedRoute = useCallback(
+		(index, direction) => {
+			setPolyLineColors(
+				polyLineColors.map((color, i) => {
+					if (index !== i) {
+						return "#FFFFFF";
+					} else {
+						return defaultPolyLineColors[i];
+					}
+				})
+			);
+
+			setPolyLineZIndex(
+				polyLineZIndex.map((zIndex, i) => {
+					if (index !== i) {
+						return 49;
+					} else {
+						return defaultZIndex[i];
+					}
+				})
+			);
+			let newMarkerVisibility = {};
+
+			Object.keys(showMarker).forEach((routeID) => {
+				if (String(direction.route_id) !== routeID) {
+					newMarkerVisibility[routeID] = false;
 				} else {
-					return defaultPolyLineColors[i];
+					newMarkerVisibility[routeID] = true;
 				}
-			})
-		);
+			});
+			setShowMarker(newMarkerVisibility);
+		},
+		[
+			defaultPolyLineColors,
+			defaultZIndex,
+			polyLineColors,
+			polyLineZIndex,
+			showMarker,
+		]
+	);
 
-		setPolyLineZIndex(
-			polyLineZIndex.map((zIndex, i) => {
-				if (index !== i) {
-					return 49;
-				} else {
-					return defaultZIndex[i];
-				}
-			})
-		);
-		let newMarkerVisibility = {};
-
-		Object.keys(showMarker).forEach((routeID) => {
-			if (String(direction.route_id) !== routeID) {
-				newMarkerVisibility[routeID] = false;
-			} else {
-				newMarkerVisibility[routeID] = true;
-			}
-		});
-		setShowMarker(newMarkerVisibility);
-	};
-
-	const showAllRoute = (e) => {
+	const showAllRoute = useCallback(() => {
 		setPolyLineColors(defaultPolyLineColors);
 		setPolyLineZIndex(defaultZIndex);
 		let newMarkerVisibility = {};
@@ -166,80 +184,51 @@ function Routes({
 		if (places) {
 			centerMap(places);
 		}
-	};
+	}, [centerMap, defaultPolyLineColors, defaultZIndex, places]);
 
 	const handleRouteDoubleClick = (e) => {
 		centerMap(places);
 	};
 
-	// const handleRouteChange = (direction) => {
-	// 	// set selected route to display route details in route details panel
-	// 	setSelectedRoute(direction.route_id);
-	// 	setSelectedRouteDirection(direction);
+	const handleRouteChange = useCallback(
+		(direction) => {
+			// set selected route to display route details in route details panel
 
-	// 	// handle map bound
-	// 	const directionBounds = direction.routes[0].bounds;
+			// handle map bound
+			const directionBounds = direction.routes[0].bounds;
 
-	// 	/* eslint-disable */
-	// 	const bounds = new google.maps.LatLngBounds();
-	// 	bounds.extend(
-	// 		new google.maps.LatLng(
-	// 			directionBounds.getSouthWest().lat(),
-	// 			directionBounds.getSouthWest().lng()
-	// 		)
-	// 	);
-	// 	bounds.extend(
-	// 		new google.maps.LatLng(
-	// 			directionBounds.getNorthEast().lat(),
-	// 			directionBounds.getNorthEast().lng()
-	// 		)
-	// 	);
-	// 	/* eslint-enable */
-	// 	mapRef.current.fitBounds(bounds);
-	// 	mapRef.current.setTilt(30);
-	// };
-
-	const handleRouteChange = (direction) => {
-		// set selected route to display route details in route details panel
-
-		// handle map bound
-		const directionBounds = direction.routes[0].bounds;
-
-		/* eslint-disable */
-		const bounds = new google.maps.LatLngBounds();
-		bounds.extend(
-			new google.maps.LatLng(
-				directionBounds.getSouthWest().lat(),
-				directionBounds.getSouthWest().lng()
-			)
-		);
-		bounds.extend(
-			new google.maps.LatLng(
-				directionBounds.getNorthEast().lat(),
-				directionBounds.getNorthEast().lng()
-			)
-		);
-		/* eslint-enable */
-		mapRef.current.fitBounds(bounds);
-		mapRef.current.setTilt(30);
-	};
+			/* eslint-disable */
+			const bounds = new google.maps.LatLngBounds();
+			bounds.extend(
+				new google.maps.LatLng(
+					directionBounds.getSouthWest().lat(),
+					directionBounds.getSouthWest().lng()
+				)
+			);
+			bounds.extend(
+				new google.maps.LatLng(
+					directionBounds.getNorthEast().lat(),
+					directionBounds.getNorthEast().lng()
+				)
+			);
+			/* eslint-enable */
+			mapRef.current.fitBounds(bounds);
+			mapRef.current.setTilt(30);
+		},
+		[mapRef]
+	);
 
 	useEffect(() => {
 		if (selectedRouteDirection) {
-			// showAllRoute();
-			// setPolyLineZIndex(defaultZIndex);
-			// setPolyLineColors(defaultPolyLineColors);
 			handleRouteChange(selectedRouteDirection);
 			const directionIdex = directions
 				.map((d) => d.route_id)
 				.indexOf(selectedRouteDirection.route_id);
-			console.log(directionIdex);
-			console.log(selectedRouteDirection);
 			showSelectedRoute(directionIdex, selectedRouteDirection);
 		} else {
 			showAllRoute();
 		}
-	}, [selectedRouteDirection]);
+	}, [selectedRouteDirection, directions, handleRouteChange, showAllRoute]);
 
 	return (
 		<>
@@ -287,7 +276,6 @@ function Routes({
 									zIndex: polyLineZIndex[index],
 								}}
 								onMouseOver={() => showSelectedRoute(index, direction)}
-								// onMouseOut={showAllRoute}
 								onClick={() => {
 									setSelectedRoute(direction.route_id);
 									setSelectedRouteDirection(direction);

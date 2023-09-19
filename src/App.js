@@ -18,7 +18,7 @@ function App() {
 		if (!token && user) {
 			setUser(null);
 		}
-	}, [token]);
+	}, [token, user]);
 
 	useEffect(() => {
 		if (token) {
@@ -36,7 +36,7 @@ function App() {
 					setUser(null);
 				});
 		}
-	}, []);
+	}, [token]);
 
 	return (
 		<div className="App">

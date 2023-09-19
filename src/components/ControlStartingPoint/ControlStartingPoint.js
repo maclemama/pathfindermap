@@ -1,16 +1,11 @@
 import usePlacesAutocomplete from "use-places-autocomplete";
 import { getGoogleGeocoder } from "../../scripts/locationUtils";
-import { useEffect, useState } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import "./ControlStartingPoint.scss";
 import FormAutoComplete from "../FormAutoComplete/FormAutoComplete";
 import FormInputPrefix from "../FormInputPrefix/FormInputPrefix";
 
-function ControlStartingPoint({
-	startingPoint,
-	setStartingPoint,
-	setIsCurrentLoaction,
-	setCurrentLocationAsStart,
-}) {
+function ControlStartingPoint({ setStartingPoint, setCurrentLocationAsStart }) {
 	const {
 		suggestions: { status, data },
 		setValue,
@@ -42,7 +37,7 @@ function ControlStartingPoint({
 		setInputValue("");
 	};
 
-	const onSearchSelect = (val) => {
+	const onSearchSelect = useCallback((val) => {
 		setValue(val, false);
 		clearSuggestions();
 		setAutoCompleteOptions([]);
@@ -56,11 +51,26 @@ function ControlStartingPoint({
 						placeId: matchedPlace.place_id,
 						address: matchedPlace.formatted_address,
 					});
-					setIsCurrentLoaction(false);
 				})
 				.catch((e) => {});
 		}
-	};
+	},[]);
+
+	const currentLocationOption = useMemo(
+		() => (
+			<div
+				key={"home"}
+				onClick={() => {
+					setCurrentLocationAsStart();
+					setAutoCompleteOptions([]);
+					setInputValue("Using Current Location");
+				}}
+			>
+				<p>Use current location</p>
+			</div>
+		),
+		[]
+	);
 
 	useEffect(() => {
 		if (status === "OK" && data[0]) {
@@ -71,20 +81,8 @@ function ControlStartingPoint({
 					</div>
 				);
 			});
-			dropdownOptionComponents.unshift(
-				<div
-					key={"home"}
-					onClick={() => {
-						setCurrentLocationAsStart();
-						setAutoCompleteOptions([]);
-						setInputValue("Using Current Location");
-					}}
-				>
-					<p>Use current location</p>
-				</div>
-			);
+			dropdownOptionComponents.unshift(currentLocationOption);
 			setAutoCompleteOptions(dropdownOptionComponents);
-			
 		}
 	}, [status, data]);
 

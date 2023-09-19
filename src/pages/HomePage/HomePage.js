@@ -6,9 +6,13 @@ import {
 	getUserLocation,
 	getGoogleGeocoder,
 } from "../../scripts/locationUtils";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, createContext } from "react";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
 import { useLocation } from "react-router";
+import Modal from "../../components/Modal/Modal";
+
+export const StartingPointContext = createContext(null);
+export const MapRadiusContext = createContext(null);
 
 function HomePage({ mapRef }) {
 	const [startingPoint, setStartingPoint] = useState(null);
@@ -33,7 +37,6 @@ function HomePage({ mapRef }) {
 			setRoutes(location.state.passedRouteData);
 			setIsLoading(false);
 		} else {
-			setIsLoading(false);
 			getUserLocation()
 				.then((location) => {
 					const { latitude, longitude } = location.coords;
@@ -45,17 +48,33 @@ function HomePage({ mapRef }) {
 								placeId: matchedPlace.place_id,
 								address: matchedPlace.formatted_address,
 							});
-							setIsLoading(false);
 						})
-						.catch((e) => {});
+						.catch((error) => {
+							setModal([
+								<Modal
+									title={"Error"}
+									message={error.message}
+									setModal={setModal}
+								/>,
+							]);
+						});
 				})
-				.catch((err) => {});
+				.catch((error) => {
+					setModal([
+						<Modal
+							title={"Error"}
+							message={error.message}
+							setModal={setModal}
+						/>,
+					]);
+				});
+			setIsLoading(false);
 		}
-	}, []);
+	}, [location]);
 
 	useEffect(() => {
 		setCurrentLocationAsStart();
-	}, []);
+	}, [setCurrentLocationAsStart]);
 
 	if (loadError) {
 		return <div>Error loading map</div>;
@@ -67,37 +86,38 @@ function HomePage({ mapRef }) {
 
 	return (
 		<div className="home">
-			<div className="home__desktop-right-wrapper">
-				{selectedRoute && (
-					<RouteDetailsPanel
-						selectedRoute={selectedRoute}
-						selectedRouteDirection={selectedRouteDirection}
-						routes={routes}
-						mapRef={mapRef}
+			<StartingPointContext.Provider
+				value={{ startingPoint, setStartingPoint }}
+			>
+				<MapRadiusContext.Provider value={{ mapRadius, setMapRadius }}>
+					<div className="home__desktop-right-wrapper">
+						{selectedRoute && (
+							<RouteDetailsPanel
+								selectedRoute={selectedRoute}
+								selectedRouteDirection={selectedRouteDirection}
+								routes={routes}
+								mapRef={mapRef}
+							/>
+						)}
+						<Map
+							startingPoint={startingPoint}
+							routes={routes}
+							mapRadius={mapRadius}
+							selectedRoute={selectedRoute}
+							setSelectedRoute={setSelectedRoute}
+							mapRef={mapRef}
+							selectedRouteDirection={selectedRouteDirection}
+							setSelectedRouteDirection={setSelectedRouteDirection}
+						/>
+					</div>
+
+					<ControlMenu
+						setCurrentLocationAsStart={setCurrentLocationAsStart}
+						setRoutes={setRoutes}
+						setModal={setModal}
 					/>
-				)}
-				<Map
-					startingPoint={startingPoint}
-					setStartingPoint={setStartingPoint}
-					routes={routes}
-					mapRadius={mapRadius}
-					selectedRoute={selectedRoute}
-					setSelectedRoute={setSelectedRoute}
-					mapRef={mapRef}
-					selectedRouteDirection={selectedRouteDirection}
-					setSelectedRouteDirection={setSelectedRouteDirection}
-				/>
-			</div>
-
-			<ControlMenu
-				startingPoint={startingPoint}
-				setStartingPoint={setStartingPoint}
-				setCurrentLocationAsStart={setCurrentLocationAsStart}
-				setRoutes={setRoutes}
-				setMapRadius={setMapRadius}
-				setModal={setModal}
-			/>
-
+				</MapRadiusContext.Provider>
+			</StartingPointContext.Provider>
 			{modal[0]}
 		</div>
 	);

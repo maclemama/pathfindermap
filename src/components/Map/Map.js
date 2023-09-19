@@ -64,7 +64,6 @@ function Map({
 					setSelectedRouteDirection={setSelectedRouteDirection}
 					directions={directions}
 					setDirections={setDirections}
-					selectedRoute={selectedRoute}
 					selectedRouteDirection={selectedRouteDirection}
 				/>
 
@@ -76,7 +75,6 @@ function Map({
 			</GoogleMap>
 			<RouteSelector
 				routes={routes}
-				mapRef={mapRef}
 				directions={directions}
 				selectedRoute={selectedRoute}
 				setSelectedRoute={setSelectedRoute}

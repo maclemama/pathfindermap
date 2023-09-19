@@ -7,7 +7,7 @@ import FormInputPrefix from "../FormInputPrefix/FormInputPrefix";
 import FormInputSubfix from "../FormInputSubfix/FormInputSubfix";
 import RouteSubmitButton from "../RouteSubmitButton/RouteSubmitButton";
 
-function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
+function RouteSearchPanel({ handleQuerySubmit, allFormReset }) {
 	const defaultFormValue = {
 		query_mode: "keyword",
 		query_keyword: [""],
@@ -103,7 +103,6 @@ function RouteSearchPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 				<RouteControls
 					formValues={formValues}
 					setFormValues={setFormValues}
-					setMapRadius={setMapRadius}
 				/>
 				<RouteSubmitButton
 					onClickFunc={(e) => handleQuerySubmit(e, formValues, "keyword")}

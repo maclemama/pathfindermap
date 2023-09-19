@@ -4,12 +4,8 @@ import "./ControlMenu.scss";
 import ControlMenuGroup from "../ControlMenuGroup/ControlMenuGroup";
 
 function ControlMenu({
-	startingPoint,
-	setStartingPoint,
-	setIsCurrentLoaction,
 	setCurrentLocationAsStart,
 	setRoutes,
-	setMapRadius,
 	setModal
 }) {
 	const [positionY, setPositionY] = useState(-50);
@@ -55,12 +51,8 @@ function ControlMenu({
 					onDrag={handleDrag}
 				>
 					<ControlMenuGroup
-						startingPoint={startingPoint}
-						setStartingPoint={setStartingPoint}
-						setIsCurrentLoaction={setIsCurrentLoaction}
 						setCurrentLocationAsStart={setCurrentLocationAsStart}
 						setRoutes={setRoutes}
-						setMapRadius={setMapRadius}
 						isCollapse={isCollapse}
 						toggleShowHide={toggleShowHide}
 						setModal={setModal}
@@ -70,12 +62,8 @@ function ControlMenu({
 
 			<div className="control-menu__wrapper--desktop">
 			<ControlMenuGroup
-					startingPoint={startingPoint}
-					setStartingPoint={setStartingPoint}
-					setIsCurrentLoaction={setIsCurrentLoaction}
 					setCurrentLocationAsStart={setCurrentLocationAsStart}
 					setRoutes={setRoutes}
-					setMapRadius={setMapRadius}
 					isCollapse={isCollapse}
 					toggleShowHide={toggleShowHide}
 					setModal={setModal}

@@ -6,20 +6,17 @@ import RouteSearchPanel from "../RouteSearchPanel/RouteSearchPanel";
 import SVGIcons from "../SVGIcons/SVGIcons";
 import RouteMoodPanel from "../RouteMoodPanel/RouteMoodPanel";
 import RouteRandomPanel from "../RouteRandomPanel/RouteRandomPanel";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useContext } from "react";
 import axios from "axios";
 import logo from "../../assets/logos/logo-no-background.png";
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import Modal from "../Modal/Modal";
+import { StartingPointContext } from "../../pages/HomePage/HomePage";
 
 function ControlMenuGroup({
-	startingPoint,
-	setStartingPoint,
-	setIsCurrentLoaction,
 	setCurrentLocationAsStart,
 	setRoutes,
-	setMapRadius,
 	isCollapse,
 	toggleShowHide,
 	setModal,
@@ -28,6 +25,7 @@ function ControlMenuGroup({
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
 	const [allFormReset, setAllFormReset] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+	const { startingPoint, setStartingPoint } = useContext(StartingPointContext);
 
 	const handleQuerySubmit = (e, formValues, mode) => {
 		e.preventDefault();
@@ -122,16 +120,13 @@ function ControlMenuGroup({
 			</div>
 
 			<ControlStartingPoint
-				startingPoint={startingPoint}
 				setStartingPoint={setStartingPoint}
-				setIsCurrentLoaction={setIsCurrentLoaction}
 				setCurrentLocationAsStart={setCurrentLocationAsStart}
 			/>
 			<div className="control-menu-group__tab">
 				{activeTab === tabNames[0] && (
 					<RouteSearchPanel
 						handleQuerySubmit={handleQuerySubmit}
-						setMapRadius={setMapRadius}
 						allFormReset={allFormReset}
 					/>
 				)}
@@ -139,16 +134,12 @@ function ControlMenuGroup({
 				{activeTab === tabNames[1] && (
 					<RouteMoodPanel
 						handleQuerySubmit={handleQuerySubmit}
-						setMapRadius={setMapRadius}
 						allFormReset={allFormReset}
 					/>
 				)}
 
 				{activeTab === tabNames[2] && (
-					<RouteRandomPanel
-						handleQuerySubmit={handleQuerySubmit}
-						setMapRadius={setMapRadius}
-					/>
+					<RouteRandomPanel handleQuerySubmit={handleQuerySubmit} />
 				)}
 			</div>
 			{isLoading ? <Loading /> : <></>}

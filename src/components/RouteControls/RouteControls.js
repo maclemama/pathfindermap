@@ -1,7 +1,11 @@
 import "./RouteControls.scss";
 import { InputNumber, Slider, Switch } from "antd";
+import { useContext } from "react";
+import { MapRadiusContext } from "../../pages/HomePage/HomePage";
 
-function RouteControls({ formValues, setFormValues, setMapRadius }) {
+function RouteControls({ formValues, setFormValues }) {
+	const { setMapRadius } = useContext(MapRadiusContext);
+	
 	const handleChange = (value, name) => {
 		const newFormValues = { ...formValues };
 		newFormValues[name] = value;
@@ -87,7 +91,9 @@ function RouteControls({ formValues, setFormValues, setMapRadius }) {
 				</div>
 			</div>
 			<div className="route-controls__input-group-wrapper route-controls__input-group-wrapper--opennow">
-				<label className="route-controls__input-label">Only Places Open Now</label>
+				<label className="route-controls__input-label">
+					Only Places Open Now
+				</label>
 				<Switch
 					checkedChildren="Include Closed"
 					unCheckedChildren="Exclude Closed"
