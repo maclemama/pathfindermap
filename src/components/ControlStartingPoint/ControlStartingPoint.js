@@ -1,16 +1,23 @@
-import usePlacesAutocomplete from "use-places-autocomplete";
-import { getGoogleGeocoder } from "../../scripts/locationUtils";
-import { useState, useMemo, useCallback, useEffect } from "react";
 import "./ControlStartingPoint.scss";
+
+import { useState, useMemo, useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import usePlacesAutocomplete from "use-places-autocomplete";
+
+import { getGoogleGeocoder } from "../../scripts/locationUtils";
+import { setStartingPoint } from "../../store/startingPoint/startingPointSlice";
+
 import FormAutoComplete from "../FormAutoComplete/FormAutoComplete";
 import FormInputPrefix from "../FormInputPrefix/FormInputPrefix";
 
-function ControlStartingPoint({ setStartingPoint, setCurrentLocationAsStart }) {
+function ControlStartingPoint({ setCurrentLocationAsStart }) {
+	const dispatch = useDispatch();
 	const {
 		suggestions: { status, data },
 		setValue,
 		clearSuggestions,
 	} = usePlacesAutocomplete();
+
 	const [autoCompleteOptions, setAutoCompleteOptions] = useState([]);
 	const [inputValue, setInputValue] = useState(
 		"Using current location (tap to search)"
@@ -45,16 +52,18 @@ function ControlStartingPoint({ setStartingPoint, setCurrentLocationAsStart }) {
 			getGoogleGeocoder({ placeId: val })
 				.then((matchedPlace) => {
 					setInputValue(matchedPlace.formatted_address);
-					setStartingPoint({
-						lat: matchedPlace.geometry.location.lat(),
-						lng: matchedPlace.geometry.location.lng(),
-						placeId: matchedPlace.place_id,
-						address: matchedPlace.formatted_address,
-					});
+					dispatch(
+						setStartingPoint({
+							lat: matchedPlace.geometry.location.lat(),
+							lng: matchedPlace.geometry.location.lng(),
+							placeId: matchedPlace.place_id,
+							address: matchedPlace.formatted_address,
+						})
+					);
 				})
 				.catch((e) => {});
 		}
-	},[]);
+	}, []);
 
 	const currentLocationOption = useMemo(
 		() => (

@@ -1,20 +1,22 @@
 import "./ControlMenuGroup.scss";
+
+import axios from "axios";
 import { motion } from "framer-motion";
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import { setModal } from "../../store/modal/modalSlice";
+import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
+
 import ControlTabs from "../ControlTabs/ControlTabs";
 import ControlStartingPoint from "../ControlStartingPoint/ControlStartingPoint";
 import RouteSearchPanel from "../RouteSearchPanel/RouteSearchPanel";
 import SVGIcons from "../SVGIcons/SVGIcons";
 import RouteMoodPanel from "../RouteMoodPanel/RouteMoodPanel";
 import RouteRandomPanel from "../RouteRandomPanel/RouteRandomPanel";
-import { useMemo, useState, useContext } from "react";
-import axios from "axios";
 import logo from "../../assets/logos/logo-no-background.png";
-import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
-import { StartingPointContext } from "../../pages/HomePage/HomePage";
-
-import { useDispatch } from "react-redux";
-import { setModal } from "../../store/modal/modalSlice";
 
 function ControlMenuGroup({
 	setCurrentLocationAsStart,
@@ -27,7 +29,7 @@ function ControlMenuGroup({
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
 	const [allFormReset, setAllFormReset] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const { startingPoint, setStartingPoint } = useContext(StartingPointContext);
+	const startingPoint = useSelector(selectStartingPoint)
 
 	const handleQuerySubmit = (e, formValues, mode) => {
 		e.preventDefault();
@@ -121,7 +123,6 @@ function ControlMenuGroup({
 			</div>
 
 			<ControlStartingPoint
-				setStartingPoint={setStartingPoint}
 				setCurrentLocationAsStart={setCurrentLocationAsStart}
 			/>
 			<div className="control-menu-group__tab">

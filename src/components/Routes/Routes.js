@@ -1,3 +1,5 @@
+import "./Routes.scss";
+
 import {
 	MarkerF,
 	DirectionsRenderer,
@@ -5,12 +7,14 @@ import {
 	PolylineF,
 } from "@react-google-maps/api";
 import { useEffect, useState, useCallback, useMemo } from "react";
+import { useSelector } from "react-redux";
+
+import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
+
 import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
-import "./Routes.scss";
 
 function Routes({
 	routes,
-	startingPoint,
 	mapRef,
 	setSelectedRoute,
 	setSelectedRouteDirection,
@@ -18,6 +22,7 @@ function Routes({
 	setDirections,
 	selectedRouteDirection,
 }) {
+	const startingPoint = useSelector(selectStartingPoint)
 	const [places, setPlaces] = useState(null);
 	const [showMarker, setShowMarker] = useState([]);
 
