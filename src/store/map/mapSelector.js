@@ -1,0 +1,1 @@
+export const selectMapRadius = (state) => state.map.radius;

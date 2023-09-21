@@ -1,17 +1,19 @@
 import "./RouteControls.scss";
+
+import { useDispatch } from "react-redux";
 import { InputNumber, Slider, Switch } from "antd";
-import { useContext } from "react";
-import { MapRadiusContext } from "../../pages/HomePage/HomePage";
+
+import { setMapRadius } from "../../store/map/mapSlice";
 
 function RouteControls({ formValues, setFormValues }) {
-	const { setMapRadius } = useContext(MapRadiusContext);
-	
+	const dispatch = useDispatch();
+
 	const handleChange = (value, name) => {
 		const newFormValues = { ...formValues };
 		newFormValues[name] = value;
 		setFormValues(newFormValues);
 		if (name === "radius") {
-			setMapRadius(value);
+			dispatch(setMapRadius(value));
 		}
 	};
 

@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
+import { selectMapRadius } from "../../store/map/mapSelector";
 
 import RouteSelector from "../RouteSelector/RouteSelector";
 import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
@@ -12,16 +13,15 @@ import Routes from "../Routes/Routes";
 
 function Map({
 	routes,
-	mapRadius,
 	selectedRoute,
 	setSelectedRoute,
 	mapRef,
 	setSelectedRouteDirection,
 	selectedRouteDirection,
 }) {
-	console.log("Map component re-render")
+	console.log("Map component re-render");
 	const startingPoint = useSelector(selectStartingPoint);
-	const [directions, setDirections] = useState([]);
+	const mapRadius = useSelector(selectMapRadius);
 	const mapOptions = useMemo(
 		() => ({
 			mapId: "f6ca3c1a38d4ecfa",
@@ -48,6 +48,7 @@ function Map({
 		}),
 		[]
 	);
+	const [directions, setDirections] = useState([]);
 
 	const onLoad = useCallback((map) => (mapRef.current = map), []);
 

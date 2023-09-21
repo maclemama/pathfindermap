@@ -2,7 +2,7 @@ import "./HomePage.scss";
 
 import { useLoadScript } from "@react-google-maps/api";
 import { useLocation } from "react-router";
-import { useState, useEffect, useCallback, createContext } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 import {
@@ -16,8 +16,6 @@ import Map from "../../components/Map/Map";
 import ControlMenu from "../../components/ControlMenu/ControlMenu";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
 
-export const MapRadiusContext = createContext(null);
-
 function HomePage({ mapRef }) {
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -26,7 +24,6 @@ function HomePage({ mapRef }) {
 	const [routes, setRoutes] = useState(null);
 	const [selectedRoute, setSelectedRoute] = useState(null);
 	const [selectedRouteDirection, setSelectedRouteDirection] = useState(null);
-	const [mapRadius, setMapRadius] = useState(3000);
 
 	const [libraries] = useState(["places"]); // remove map library warning by holding it in state
 	const { isLoaded, loadError } = useLoadScript({
@@ -89,32 +86,29 @@ function HomePage({ mapRef }) {
 
 	return (
 		<div className="home">
-			<MapRadiusContext.Provider value={{ mapRadius, setMapRadius }}>
-				<div className="home__desktop-right-wrapper">
-					{selectedRoute && (
-						<RouteDetailsPanel
-							selectedRoute={selectedRoute}
-							selectedRouteDirection={selectedRouteDirection}
-							routes={routes}
-							mapRef={mapRef}
-						/>
-					)}
-					<Map
-						routes={routes}
-						mapRadius={mapRadius}
+			<div className="home__desktop-right-wrapper">
+				{selectedRoute && (
+					<RouteDetailsPanel
 						selectedRoute={selectedRoute}
-						setSelectedRoute={setSelectedRoute}
-						mapRef={mapRef}
 						selectedRouteDirection={selectedRouteDirection}
-						setSelectedRouteDirection={setSelectedRouteDirection}
+						routes={routes}
+						mapRef={mapRef}
 					/>
-				</div>
-
-				<ControlMenu
-					setCurrentLocationAsStart={setCurrentLocationAsStart}
-					setRoutes={setRoutes}
+				)}
+				<Map
+					routes={routes}
+					selectedRoute={selectedRoute}
+					setSelectedRoute={setSelectedRoute}
+					mapRef={mapRef}
+					selectedRouteDirection={selectedRouteDirection}
+					setSelectedRouteDirection={setSelectedRouteDirection}
 				/>
-			</MapRadiusContext.Provider>
+			</div>
+
+			<ControlMenu
+				setCurrentLocationAsStart={setCurrentLocationAsStart}
+				setRoutes={setRoutes}
+			/>
 		</div>
 	);
 }
