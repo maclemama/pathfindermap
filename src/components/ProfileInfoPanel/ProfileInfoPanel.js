@@ -1,43 +1,11 @@
 import "./ProfileInfoPanel.scss";
 
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import axios from "axios";
+import { useSelector } from "react-redux";
 
-import { setModal } from "../../store/modal/modalSlice";
+import { selectCurrentUser } from "../../store/user/userSelector";
 
 function ProfileInfoPanel() {
-	const dispatch = useDispatch();
-	const token = localStorage.getItem("token");
-	const [user, setUser] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-	useEffect(() => {
-		if (token) {
-			axios
-				.get(process.env.REACT_APP_SERVER_URL + "/user", {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				})
-				.then((res) => {
-					setUser(res.data);
-					setIsLoading(false);
-				})
-				.catch((error) => {
-					dispatch(
-						setModal({
-							title: "Error",
-							message: error.response.data.message || error.message,
-						})
-					);
-					setIsLoading(false);
-				});
-		}
-	}, []);
-
-	if (isLoading) {
-		return;
-	}
+	const user = useSelector(selectCurrentUser);
 
 	return (
 		<section className="profile-info">

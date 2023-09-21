@@ -10,8 +10,8 @@ import SignupInput from "../../components/SignupInput/SignupInput";
 import logo from "../../assets/logos/logo-no-background.png";
 
 function Signin() {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const [error, setError] = useState("");
 
