@@ -1,7 +1,9 @@
 import "./SignupVerify.scss";
-import { useNavigate } from "react-router-dom";
+
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+import { verifyUser } from "../../scripts/userUtils";
 
 function SignupVerify({ verification_code }) {
 	const [error, setError] = useState("");
@@ -10,20 +12,22 @@ function SignupVerify({ verification_code }) {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		axios
-			.post(`${process.env.REACT_APP_SERVER_URL}/user/verify`, {
-				verification_code: verification_code,
-			})
-			.then((response) => {
+		const verify = async () => {
+			try {
+				await verifyUser(verification_code);
 				setSuccess(true);
 				setTimeout(() => {
 					navigate("/signin");
 				}, 2000);
-			})
-			.catch((error) => {
+			} catch (error) {
 				setError(error.response.data.message);
-			});
-	}, []);
+			}
+		};
+
+		if (verification_code !== "email_sent") {
+			verify();
+		}
+	}, [verification_code, navigate]);
 	return (
 		<>
 			{error && <div className="verification__error">{error}</div>}
@@ -31,6 +35,12 @@ function SignupVerify({ verification_code }) {
 				<div className="verification__success">
 					Verification Complete
 					<p>Redirecting to signin page...</p>
+				</div>
+			)}
+			{verification_code === "email_sent" && (
+				<div className="verification__need-verify">
+					An verification email has been sent to your register email, please
+					click on the verification link in the email to verify.
 				</div>
 			)}
 		</>

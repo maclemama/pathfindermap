@@ -1,14 +1,18 @@
+import "./ProfilePage.scss";
+
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+
+import { selectCurrentUser } from "../../store/user/userSelector";
+
 import ProfileInfoPanel from "../../components/ProfileInfoPanel/ProfileInfoPanel";
 import ProfileSavedRoute from "../../components/ProfileSavedRoute/ProfileSavedRoute";
-import "./ProfilePage.scss";
-import { useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
-import { UserContext } from "../../App";
 
 function ProfilePage({ mapRef }) {
 	const navigate = useNavigate();
 	const [modal, setModal] = useState([]);
-	const { user } = useContext(UserContext);
+	const user = useSelector(selectCurrentUser);
 
 	if (!user) {
 		navigate("/");

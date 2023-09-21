@@ -1,18 +1,21 @@
 import "./AuthPage.scss";
+
+import { selectCurrentUser } from "../../store/user/userSelector";
+import { useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
+
 import { getRandomElementsFromArray } from "../../scripts/dataUtils";
+
 import TextRotationAnimation from "../../components/TextRotationAnimation/TextRotationAnimation";
 import Signup from "../../components/Signup/Signup";
-import { useParams, useNavigate } from "react-router-dom";
 import SignupVerify from "../../components/SignupVerify/SignupVerify";
 import Signin from "../../components/Signin/Signin";
-import { UserContext } from "../../App";
-import { useContext } from "react";
 
 function AuthPage({ action }) {
 	const params = useParams();
 	const navigate = useNavigate();
-	const { user } = useContext(UserContext);
-	
+	const user = useSelector(selectCurrentUser);
+
 	if (user) {
 		navigate("/profile");
 	}

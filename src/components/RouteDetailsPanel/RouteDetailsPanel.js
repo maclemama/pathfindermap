@@ -1,12 +1,16 @@
+import "./RouteDetailsPanel.scss";
+
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+
+import { selectCurrentUser } from "../../store/user/userSelector";
+import { getGoogleGeocoder } from "../../scripts/locationUtils";
+
 import RoutePlacesList from "../RoutePlacesList/RoutePlacesList";
 import SVGIcons from "../SVGIcons/SVGIcons";
-import "./RouteDetailsPanel.scss";
-import { useEffect, useState, useContext } from "react";
-import axios from "axios";
-import { getGoogleGeocoder } from "../../scripts/locationUtils";
-import { useNavigate } from "react-router";
 import Modal from "../Modal/Modal";
-import { UserContext } from "../../App";
 
 function RouteDetailsPanel({
 	selectedRoute,
@@ -16,7 +20,7 @@ function RouteDetailsPanel({
 	isInProfile,
 	setModal,
 }) {
-	const { user } = useContext(UserContext);
+	const user = useSelector(selectCurrentUser);
 	const [selectedRouteDetails, setSelectedRouteDetails] = useState(null);
 	const [isloading, setIsLoading] = useState(true);
 	const [savedRoute, setSavedRoute] = useState(null);

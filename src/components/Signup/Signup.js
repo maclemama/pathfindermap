@@ -1,30 +1,29 @@
 import "./Signup.scss";
-import SignupInput from "../../components/SignupInput/SignupInput";
-import logo from "../../assets/logos/logo-no-background.png";
+
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+
+import { signUpUser } from "../../scripts/userUtils";
+
+import SignupInput from "../../components/SignupInput/SignupInput";
+import logo from "../../assets/logos/logo-no-background.png";
 
 function Signup() {
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
-
-		axios
-			.post(`${process.env.REACT_APP_SERVER_URL}/user/register`, {
-				first_name: event.target.first_name.value,
-				last_name: event.target.last_name.value,
-				email: event.target.email.value,
-				password: event.target.password.value,
-			})
-			.then((response) => {
-				navigate("/signin");
-			})
-			.catch((error) => {
-				setError(error.response.data.message);
-			});
+		const first_name = event.target.first_name.value;
+		const last_name = event.target.last_name.value;
+		const email = event.target.email.value;
+		const password = event.target.password.value;
+		try {
+			await signUpUser(first_name, last_name, email, password);
+			navigate("/user/verify/email_sent");
+		} catch (error) {
+			setError(error.response.data.message);
+		}
 	};
 
 	return (

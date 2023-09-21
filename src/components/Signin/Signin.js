@@ -1,49 +1,32 @@
 import "./Signin.scss";
+
+import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { signInUser } from "../../scripts/userUtils";
+
 import SignupInput from "../../components/SignupInput/SignupInput";
 import logo from "../../assets/logos/logo-no-background.png";
-import { useNavigate, Link } from "react-router-dom";
-import { useState, useContext } from "react";
-import { UserContext } from "../../App";
-import axios from "axios";
 
 function Signin() {
-	const { setUser } = useContext(UserContext);
-	const [error, setError] = useState("");
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const handleSubmit = (event) => {
+	const [error, setError] = useState("");
+
+	const handleSubmit = async (event) => {
 		event.preventDefault();
+		const email = event.target.email.value;
+		const password = event.target.password.value;
+		try {
+			const setUserAction = await signInUser(email, password);
+			dispatch(setUserAction);
 
-		axios
-			.post(`${process.env.REACT_APP_SERVER_URL}/user/login`, {
-				email: event.target.email.value,
-				password: event.target.password.value,
-			})
-			.then((response) => {
-				const token = response.data.token;
-				localStorage.setItem("token", token);
-
-				axios
-					.get(process.env.REACT_APP_SERVER_URL + "/user", {
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
-					})
-					.then((res) => {
-						setUser(res.data);
-					})
-					.catch((error) => {
-						localStorage.removeItem("token");
-						setUser(null);
-					});
-
-				navigate("/profile");
-			})
-			.catch((error) => {
-				event.target.email.value = "";
-				event.target.password.value = "";
-				setError(error.response.data.message);
-			});
+			navigate("/profile");
+		} catch (error) {
+			setError(error?.response?.data.message);
+		}
 	};
 
 	return (

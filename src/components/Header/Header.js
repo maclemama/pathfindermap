@@ -1,21 +1,27 @@
 import "./Header.scss";
-import headerLogo from "../../assets/logos/logo-no-background.png";
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
+import { selectCurrentUser } from "../../store/user/userSelector";
+import { signOutUser } from "../../scripts/userUtils";
+
+import headerLogo from "../../assets/logos/logo-no-background.png";
 import SVGIcons from "../SVGIcons/SVGIcons";
-import { useContext } from "react";
-import { UserContext } from "../../App";
 
 function Header() {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const user = useSelector(selectCurrentUser);
+
 	const isSigninPage = location.pathname.toLowerCase().includes("signin");
 	const isSignupPage = location.pathname.toLowerCase().includes("signup");
 	const isProfilePage = location.pathname.toLowerCase().includes("profile");
-	const { setUser, user } = useContext(UserContext);
 
-	const handleSignout = () => {
-		localStorage.removeItem("token");
-		setUser(null);
+	const handleSignOut = () => {
+		const setUserAction = signOutUser();
+		dispatch(setUserAction);
 		navigate("/");
 	};
 
@@ -53,7 +59,7 @@ function Header() {
 							className={`header__signin-button ${
 								isProfilePage ? "header__signin-button--profile" : ""
 							}`}
-							onClick={handleSignout}
+							onClick={handleSignOut}
 						>
 							<h3
 								className={`header__signin-button-text ${
