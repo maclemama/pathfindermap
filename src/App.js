@@ -10,6 +10,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import Modal from "./components/Modal/Modal";
 
 function App() {
 	const mapRef = useRef();
@@ -48,6 +49,7 @@ function App() {
 						></Route>
 						<Route path="*" element={<AuthPage action={"not-found"} />}></Route>
 					</Routes>
+					<Modal />
 				</main>
 			</BrowserRouter>
 		</div>

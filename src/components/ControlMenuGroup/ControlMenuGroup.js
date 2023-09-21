@@ -11,16 +11,18 @@ import axios from "axios";
 import logo from "../../assets/logos/logo-no-background.png";
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
-import Modal from "../Modal/Modal";
 import { StartingPointContext } from "../../pages/HomePage/HomePage";
+
+import { useDispatch } from "react-redux";
+import { setModal } from "../../store/modal/modalSlice";
 
 function ControlMenuGroup({
 	setCurrentLocationAsStart,
 	setRoutes,
 	isCollapse,
 	toggleShowHide,
-	setModal,
 }) {
+	const dispatch = useDispatch();
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
 	const [allFormReset, setAllFormReset] = useState(0);
@@ -71,13 +73,12 @@ function ControlMenuGroup({
 				setIsLoading(false);
 			})
 			.catch((error) => {
-				setModal([
-					<Modal
-						title={"Error"}
-						message={error.response.data.message || error.message}
-						setModal={setModal}
-					/>,
-				]);
+				dispatch(
+					setModal({
+						title: "Error",
+						message: error.response.data.message || error.message,
+					})
+				);
 				setRoutes([]);
 				setIsLoading(false);
 			});

@@ -3,14 +3,14 @@ import "./RouteDetailsPanel.scss";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { selectCurrentUser } from "../../store/user/userSelector";
 import { getGoogleGeocoder } from "../../scripts/locationUtils";
+import { setModal } from "../../store/modal/modalSlice";
 
 import RoutePlacesList from "../RoutePlacesList/RoutePlacesList";
 import SVGIcons from "../SVGIcons/SVGIcons";
-import Modal from "../Modal/Modal";
 
 function RouteDetailsPanel({
 	selectedRoute,
@@ -18,8 +18,8 @@ function RouteDetailsPanel({
 	routes,
 	mapRef,
 	isInProfile,
-	setModal,
 }) {
+	const dispatch = useDispatch();
 	const user = useSelector(selectCurrentUser);
 	const [selectedRouteDetails, setSelectedRouteDetails] = useState(null);
 	const [isloading, setIsLoading] = useState(true);
@@ -67,13 +67,12 @@ function RouteDetailsPanel({
 						setSavedRoute(routeDetails.user_saved);
 					})
 					.catch((error) => {
-						setModal([
-							<Modal
-								title={"Error"}
-								message={error.message}
-								setModal={setModal}
-							/>,
-						]);
+						dispatch(
+							setModal({
+								title: "Error",
+								message: error.message,
+							})
+						);
 						setSelectedRouteDetails([]);
 					});
 			} else {

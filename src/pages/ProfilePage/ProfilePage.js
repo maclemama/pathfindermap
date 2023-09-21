@@ -1,7 +1,6 @@
 import "./ProfilePage.scss";
 
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { selectCurrentUser } from "../../store/user/userSelector";
@@ -11,7 +10,6 @@ import ProfileSavedRoute from "../../components/ProfileSavedRoute/ProfileSavedRo
 
 function ProfilePage({ mapRef }) {
 	const navigate = useNavigate();
-	const [modal, setModal] = useState([]);
 	const user = useSelector(selectCurrentUser);
 
 	if (!user) {
@@ -21,13 +19,11 @@ function ProfilePage({ mapRef }) {
 	return (
 		<section className="profile">
 			<div className="profile__info-panel">
-				<ProfileInfoPanel setModal={setModal} />
+				<ProfileInfoPanel />
 			</div>
 			<div className="profile__saved-route">
-				<ProfileSavedRoute mapRef={mapRef} user={user} setModal={setModal} />
+				<ProfileSavedRoute mapRef={mapRef} user={user} />
 			</div>
-
-			{modal[0]}
 		</section>
 	);
 }

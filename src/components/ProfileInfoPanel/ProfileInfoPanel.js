@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
 import "./ProfileInfoPanel.scss";
-import axios from "axios";
-import Modal from "../Modal/Modal";
 
-function ProfileInfoPanel({ setModal }) {
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+
+import { setModal } from "../../store/modal/modalSlice";
+
+function ProfileInfoPanel() {
+	const dispatch = useDispatch();
 	const token = localStorage.getItem("token");
 	const [user, setUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -20,13 +24,12 @@ function ProfileInfoPanel({ setModal }) {
 					setIsLoading(false);
 				})
 				.catch((error) => {
-					setModal([
-						<Modal
-							title={"Error"}
-							message={error.response.data.message || error.message}
-							setModal={setModal}
-						/>,
-					]);
+					dispatch(
+						setModal({
+							title: "Error",
+							message: error.response.data.message || error.message,
+						})
+					);
 					setIsLoading(false);
 				});
 		}

@@ -1,10 +1,15 @@
 import "./ProfileSavedRoute.scss";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
-import RouteDetailsPanel from "../RouteDetailsPanel/RouteDetailsPanel";
-import Modal from "../Modal/Modal";
+import { useDispatch } from "react-redux";
 
-function ProfileSavedRoute({ mapRef, user, setModal }) {
+import { setModal } from "../../store/modal/modalSlice";
+
+import RouteDetailsPanel from "../RouteDetailsPanel/RouteDetailsPanel";
+
+function ProfileSavedRoute({ mapRef, user }) {
+	const dispatch = useDispatch();
 	const token = localStorage.getItem("token");
 	const [savedRoute, setSavedRoute] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -41,13 +46,12 @@ function ProfileSavedRoute({ mapRef, user, setModal }) {
 								setIsLoading(false);
 							})
 							.catch((error) => {
-								setModal([
-									<Modal
-										title={"Error"}
-										message={error.response.data.message || error.message}
-										setModal={setModal}
-									/>,
-								]);
+								dispatch(
+									setModal({
+										title: "Error",
+										message: error.response.data.message || error.message,
+									})
+								);
 								setSavedRoute(false);
 								setIsLoading(false);
 							});
@@ -56,13 +60,12 @@ function ProfileSavedRoute({ mapRef, user, setModal }) {
 					}
 				})
 				.catch((error) => {
-					setModal([
-						<Modal
-							title={"Error"}
-							message={error.response.data.message || error.message}
-							setModal={setModal}
-						/>,
-					]);
+					dispatch(
+						setModal({
+							title: "Error",
+							message: error.response.data.message || error.message,
+						})
+					);
 					setSavedRoute(false);
 					setIsLoading(false);
 				});
@@ -122,7 +125,6 @@ function ProfileSavedRoute({ mapRef, user, setModal }) {
 							mapRef={mapRef}
 							user={user}
 							isInProfile={true}
-							setModal={setModal}
 							key={route.route_id}
 						/>
 					);

@@ -6,7 +6,6 @@ import ControlMenuGroup from "../ControlMenuGroup/ControlMenuGroup";
 function ControlMenu({
 	setCurrentLocationAsStart,
 	setRoutes,
-	setModal
 }) {
 	const [positionY, setPositionY] = useState(-50);
 	const [maxPositionY, setMaxPositionY] = useState(0);
@@ -55,7 +54,6 @@ function ControlMenu({
 						setRoutes={setRoutes}
 						isCollapse={isCollapse}
 						toggleShowHide={toggleShowHide}
-						setModal={setModal}
 					/>
 				</motion.div>
 			</div>
@@ -66,7 +64,6 @@ function ControlMenu({
 					setRoutes={setRoutes}
 					isCollapse={isCollapse}
 					toggleShowHide={toggleShowHide}
-					setModal={setModal}
 				/>
 			</div>
 		</section>
