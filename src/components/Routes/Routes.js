@@ -7,24 +7,29 @@ import {
 	PolylineF,
 } from "@react-google-maps/api";
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
+import { selectRoutes } from "../../store/route/routeSelector";
+import { selectPlaces } from "../../store/route/routeSelector";
+import { selectDirectionConfigs } from "../../store/route/routeSelector";
+import { selectSelectedRoute } from "../../store/route/routeSelector";
+import { setSelectedRoute } from "../../store/route/routeSlice";
+import { setSelectedDirection } from "../../store/route/routeSlice";
+import { generateDirection } from "../../scripts/routeUtils";
+import { getRouteCommuniteTime } from "../../scripts/routeUtils";
 
 import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
 
-function Routes({
-	routes,
-	mapRef,
-	setSelectedRoute,
-	setSelectedRouteDirection,
-	directions,
-	setDirections,
-	selectedRouteDirection,
-}) {
-	const startingPoint = useSelector(selectStartingPoint)
-	const [places, setPlaces] = useState(null);
+function Routes({ mapRef }) {
+	const dispatch = useDispatch();
+	const startingPoint = useSelector(selectStartingPoint);
+	const routes = useSelector(selectRoutes);
+	const places = useSelector(selectPlaces);
+	const directionConfigs = useSelector(selectDirectionConfigs);
+	const selectedRoute = useSelector(selectSelectedRoute);
 	const [showMarker, setShowMarker] = useState([]);
+	const [directions, setDirections] = useState([]);
 
 	const defaultPolyLineColors = useMemo(
 		() => [
@@ -68,74 +73,6 @@ function Routes({
 		},
 		[mapRef, startingPoint]
 	);
-
-	useEffect(() => {
-		if (routes) {
-			if (routes[0]) {
-				const newPlaces = [];
-				const newDirections = [];
-				const markerVisibility = {};
-
-				// loop over routes and get all and set places and direction config data
-				routes.forEach((route) => {
-					const thisWaypoints = route.route_waypoints;
-					const waypointsLatLng = [];
-					let destination;
-					markerVisibility[String(route.route_id)] = true;
-					thisWaypoints.forEach((place, index) => {
-						place.route_id = route.route_id;
-						newPlaces.push(place);
-						const latLng = { lat: place.latitude, lng: place.longitude };
-						if (index + 1 === thisWaypoints.length) {
-							destination = latLng;
-						} else {
-							waypointsLatLng.push({
-								location: latLng,
-							});
-						}
-					});
-
-					const routeConfig = {
-						origin: startingPoint,
-						destination: destination,
-						waypoints: waypointsLatLng,
-						route_id: route.route_id,
-					};
-					newDirections.push(routeConfig);
-				});
-				setShowMarker(markerVisibility);
-
-				// set markers on the map
-				setPlaces(newPlaces);
-
-				// get direction data
-				/* eslint-disable */
-				const directionsService = new google.maps.DirectionsService();
-				/* eslint-enable */
-				const fetchDirections = async () => {
-					const directionsData = await Promise.all(
-						newDirections.map(async (route, index) => {
-							const result = await directionsService.route({
-								origin: route.origin,
-								destination: route.destination,
-								travelMode: "WALKING",
-								waypoints: route.waypoints,
-								optimizeWaypoints: false,
-							});
-							result.route_id = route.route_id;
-							return result;
-						})
-					);
-					// set polyline on the map
-					setDirections(directionsData);
-				};
-				fetchDirections();
-
-				// reposition map zoom to fit all the locations
-				centerMap(newPlaces);
-			}
-		}
-	}, [routes, centerMap, setDirections, startingPoint]);
 
 	const showSelectedRoute = useCallback(
 		(index, direction) => {
@@ -191,11 +128,7 @@ function Routes({
 		}
 	}, [centerMap, defaultPolyLineColors, defaultZIndex, places]);
 
-	const handleRouteDoubleClick = (e) => {
-		centerMap(places);
-	};
-
-	const handleRouteChange = useCallback(
+	const changeMapZoom = useCallback(
 		(direction) => {
 			// set selected route to display route details in route details panel
 
@@ -223,17 +156,47 @@ function Routes({
 		[mapRef]
 	);
 
+	const handleRouteClick = (route_id) => {
+		dispatch(setSelectedRoute(route_id));
+	};
 	useEffect(() => {
-		if (selectedRouteDirection) {
-			handleRouteChange(selectedRouteDirection);
+		if (routes) {
+			if (routes[0]) {
+				const markerVisibility = {};
+
+				routes.forEach((route) => {
+					markerVisibility[String(route.route_id)] = true;
+				});
+				setShowMarker(markerVisibility);
+
+				// get direction data
+				const fetchDirections = async () => {
+					const directionsData = await generateDirection(directionConfigs);
+					setDirections(directionsData);
+				};
+				fetchDirections();
+
+				// reposition map zoom to fit all the locations
+				centerMap(places);
+			}
+		}
+	}, [routes, centerMap, setDirections]);
+
+	useEffect(() => {
+		if (selectedRoute) {
 			const directionIdex = directions
 				.map((d) => d.route_id)
-				.indexOf(selectedRouteDirection.route_id);
-			showSelectedRoute(directionIdex, selectedRouteDirection);
+				.indexOf(selectedRoute);
+			const selectedDirection = directions[directionIdex];
+			const routeCommuteTime = getRouteCommuniteTime(selectedDirection);
+
+			dispatch(setSelectedDirection(routeCommuteTime));
+			changeMapZoom(selectedDirection);
+			showSelectedRoute(directionIdex, selectedDirection);
 		} else {
 			showAllRoute();
 		}
-	}, [selectedRouteDirection, directions, handleRouteChange, showAllRoute]);
+	}, [selectedRoute, directions, showAllRoute, changeMapZoom]);
 
 	return (
 		<>
@@ -281,11 +244,7 @@ function Routes({
 									zIndex: polyLineZIndex[index],
 								}}
 								onMouseOver={() => showSelectedRoute(index, direction)}
-								onClick={() => {
-									setSelectedRoute(direction.route_id);
-									setSelectedRouteDirection(direction);
-								}}
-								onDblClick={handleRouteDoubleClick}
+								onClick={() => handleRouteClick(direction.route_id)}
 							/>
 						</div>
 					);

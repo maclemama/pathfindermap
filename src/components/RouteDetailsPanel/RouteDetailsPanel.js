@@ -6,37 +6,31 @@ import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectCurrentUser } from "../../store/user/userSelector";
+import { selectSelectedRoute } from "../../store/route/routeSelector";
+import { selectSelectedDirection } from "../../store/route/routeSelector";
+import { selectRoutes } from "../../store/route/routeSelector";
 import { getGoogleGeocoder } from "../../scripts/locationUtils";
 import { setModal } from "../../store/modal/modalSlice";
 
 import RoutePlacesList from "../RoutePlacesList/RoutePlacesList";
 import SVGIcons from "../SVGIcons/SVGIcons";
 
-function RouteDetailsPanel({
-	selectedRoute,
-	selectedRouteDirection,
-	routes,
-	mapRef,
-	isInProfile,
-}) {
+function RouteDetailsPanel({ mapRef, isInProfile }) {
 	const dispatch = useDispatch();
 	const user = useSelector(selectCurrentUser);
+	const routes = useSelector(selectRoutes);
+	const selectedRoute = useSelector(selectSelectedRoute);
+	const selectedDirection = useSelector(selectSelectedDirection);
 	const [selectedRouteDetails, setSelectedRouteDetails] = useState(null);
 	const [isloading, setIsLoading] = useState(true);
 	const [savedRoute, setSavedRoute] = useState(null);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (selectedRoute) {
+		if (selectedRoute && selectedDirection) {
 			const routeDetails = routes.filter(
 				(route) => route.route_id === selectedRoute
 			)[0];
-
-			if (routeDetails) {
-				routeDetails.created_at = new Date(
-					routeDetails.created_at
-				).toLocaleDateString();
-			}
 
 			if (isInProfile) {
 				getGoogleGeocoder({
@@ -76,26 +70,19 @@ function RouteDetailsPanel({
 						setSelectedRouteDetails([]);
 					});
 			} else {
-				let walkingTime = 0;
-				let walkingDistance = 0;
+				const {walking_distance, walking_time} = selectedDirection;
 
-				selectedRouteDirection.routes[0].legs.forEach((waypoint) => {
-					walkingDistance += waypoint.distance.value;
-					walkingTime += waypoint.duration.value;
+				setSelectedRouteDetails({
+					...routeDetails,
+					walking_distance,
+					walking_time
 				});
-
-				routeDetails.walking_distance = Number(
-					(walkingDistance / 1000).toFixed(1)
-				);
-				routeDetails.walking_time = Number((walkingTime / 60).toFixed(0));
-
-				setSelectedRouteDetails(routeDetails);
 				setSavedRoute(routeDetails.user_saved);
 			}
 
 			setIsLoading(false);
 		}
-	}, [selectedRoute, routes, isInProfile, selectedRouteDirection]);
+	}, [selectedRoute, selectedDirection, routes, isInProfile, dispatch]);
 
 	const handleRouteSave = (saveUnsave) => {
 		const token = localStorage.getItem("token");

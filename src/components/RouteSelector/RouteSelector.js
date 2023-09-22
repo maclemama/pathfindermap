@@ -1,29 +1,30 @@
 import "./RouteSelector.scss";
 
-function RouteSelector({
-	routes,
-	selectedRoute,
-	setSelectedRoute,
-	directions,
-	setSelectedRouteDirection,
-}) {
-	const handleRouteSwitch = (direction) => {
-		setSelectedRouteDirection(direction);
-		setSelectedRoute(direction.route_id);
+import { useSelector, useDispatch } from "react-redux";
+
+import { selectRoutes } from "../../store/route/routeSelector";
+import { selectSelectedRoute } from "../../store/route/routeSelector";
+import { setSelectedRoute } from "../../store/route/routeSlice";
+
+function RouteSelector() {
+	const dispatch = useDispatch();
+	const routes = useSelector(selectRoutes);
+	const selectedRoute = useSelector(selectSelectedRoute);
+	const handleRouteSwitch = (route_id) => {
+		dispatch(setSelectedRoute(route_id));
 	};
 
 	const handleShowAll = () => {
-		setSelectedRouteDirection(null);
-		setSelectedRoute(null);
+		dispatch(setSelectedRoute(null));
 	};
 
 	return (
 		routes && (
 			<section className="route-selector">
 				<h2 className="route-selector__title">Path</h2>
-				{directions.map((direction, index) => {
-					const thisDirection = index + 1;
-					const thisRouteID = direction.route_id;
+				{routes.map((route, index) => {
+					const thisRouteIndex = index + 1;
+					const thisRouteID = route.route_id;
 					return (
 						<button
 							className={`route-selector__button ${
@@ -31,8 +32,8 @@ function RouteSelector({
 									? "route-selector__button--active"
 									: ""
 							}`}
-							onClick={() => handleRouteSwitch(direction)}
-							key={thisDirection}
+							onClick={() => handleRouteSwitch(thisRouteID)}
+							key={thisRouteIndex}
 						>
 							<h4
 								className={`route-selector__path-text ${
@@ -41,7 +42,7 @@ function RouteSelector({
 										: ""
 								}`}
 							>
-								{thisDirection}
+								{thisRouteIndex}
 							</h4>
 						</button>
 					);

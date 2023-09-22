@@ -3,7 +3,7 @@ import "./HomePage.scss";
 import { useLoadScript } from "@react-google-maps/api";
 import { useLocation } from "react-router";
 import { useState, useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
 	getUserLocation,
@@ -11,6 +11,8 @@ import {
 } from "../../scripts/locationUtils";
 import { setModal } from "../../store/modal/modalSlice";
 import { setStartingPoint } from "../../store/startingPoint/startingPointSlice";
+import { setRoutes } from "../../store/route/routeSlice";
+import { selectSelectedRoute } from "../../store/route/routeSelector";
 
 import Map from "../../components/Map/Map";
 import ControlMenu from "../../components/ControlMenu/ControlMenu";
@@ -21,9 +23,7 @@ function HomePage({ mapRef }) {
 	const dispatch = useDispatch();
 
 	const [isLoading, setIsLoading] = useState(true);
-	const [routes, setRoutes] = useState(null);
-	const [selectedRoute, setSelectedRoute] = useState(null);
-	const [selectedRouteDirection, setSelectedRouteDirection] = useState(null);
+	const selectedRoute = useSelector(selectSelectedRoute);
 
 	const [libraries] = useState(["places"]); // remove map library warning by holding it in state
 	const { isLoaded, loadError } = useLoadScript({
@@ -41,7 +41,7 @@ function HomePage({ mapRef }) {
 					!resetCurrent
 				) {
 					dispatch(setStartingPoint(location.state.passedStartingPoint));
-					setRoutes(location.state.passedRouteData);
+					dispatch(setRoutes(location.state.passedRouteData));
 				} else {
 					const location = await getUserLocation();
 					const { latitude, longitude } = location.coords;
@@ -69,7 +69,7 @@ function HomePage({ mapRef }) {
 				setIsLoading(false);
 			}
 		},
-		[location]
+		[location, dispatch]
 	);
 
 	useEffect(() => {
@@ -87,28 +87,11 @@ function HomePage({ mapRef }) {
 	return (
 		<div className="home">
 			<div className="home__desktop-right-wrapper">
-				{selectedRoute && (
-					<RouteDetailsPanel
-						selectedRoute={selectedRoute}
-						selectedRouteDirection={selectedRouteDirection}
-						routes={routes}
-						mapRef={mapRef}
-					/>
-				)}
-				<Map
-					routes={routes}
-					selectedRoute={selectedRoute}
-					setSelectedRoute={setSelectedRoute}
-					mapRef={mapRef}
-					selectedRouteDirection={selectedRouteDirection}
-					setSelectedRouteDirection={setSelectedRouteDirection}
-				/>
+				{selectedRoute && <RouteDetailsPanel mapRef={mapRef} />}
+				<Map mapRef={mapRef} />
 			</div>
 
-			<ControlMenu
-				setCurrentLocationAsStart={setCurrentLocationAsStart}
-				setRoutes={setRoutes}
-			/>
+			<ControlMenu setCurrentLocationAsStart={setCurrentLocationAsStart} />
 		</div>
 	);
 }

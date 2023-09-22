@@ -1,6 +1,5 @@
 import "./ControlMenuGroup.scss";
 
-import axios from "axios";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -8,6 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { setModal } from "../../store/modal/modalSlice";
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
+import { setRoutesDirectionsPlaces } from "../../store/route/routeSlice";
+import { getRawRoutes } from "../../scripts/queryUtils";
+import { generateRoutes } from "../../scripts/routeUtils";
+import { resetRoute } from "../../store/route/routeSlice";
 
 import ControlTabs from "../ControlTabs/ControlTabs";
 import ControlStartingPoint from "../ControlStartingPoint/ControlStartingPoint";
@@ -20,7 +23,6 @@ import Loading from "../Loading/Loading";
 
 function ControlMenuGroup({
 	setCurrentLocationAsStart,
-	setRoutes,
 	isCollapse,
 	toggleShowHide,
 }) {
@@ -29,61 +31,53 @@ function ControlMenuGroup({
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
 	const [allFormReset, setAllFormReset] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
-	const startingPoint = useSelector(selectStartingPoint)
+	const startingPoint = useSelector(selectStartingPoint);
 
-	const handleQuerySubmit = (e, formValues, mode) => {
+	const handleQuerySubmit = async (e, formValues, mode) => {
 		e.preventDefault();
 		setIsLoading(true);
-		const payload = {
-			query_mode: formValues.query_mode,
-			duration: formValues.duration,
-			longitude: startingPoint.lng,
-			latitude: startingPoint.lat,
-			radius: formValues.radius,
-			opennow_only: formValues.opennow_only,
-			max_route: formValues.max_route,
-		};
-		if (mode === "keyword") {
-			const keyword = Object.values(formValues.query_keyword);
-			if (!keyword[0]) {
-				return;
-			}
-			payload.query_keyword = keyword;
-		}
 
-		if (mode === "mood") {
-			if (formValues.query_mood === "") {
-				return;
-			}
-			payload.query_mood = formValues.query_mood;
-		}
-
-		const token = localStorage.getItem("token");
-		let headers = {};
-		if (token) {
-			headers = {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
+		try {
+			const payload = {
+				query_mode: formValues.query_mode,
+				duration: formValues.duration,
+				longitude: startingPoint.lng,
+				latitude: startingPoint.lat,
+				radius: formValues.radius,
+				opennow_only: formValues.opennow_only,
+				max_route: formValues.max_route,
 			};
+			if (mode === "keyword") {
+				const keyword = Object.values(formValues.query_keyword);
+				if (!keyword[0]) {
+					return;
+				}
+				payload.query_keyword = keyword;
+			}
+
+			if (mode === "mood") {
+				if (formValues.query_mood === "") {
+					return;
+				}
+				payload.query_mood = formValues.query_mood;
+			}
+
+			const rawRoutes = await getRawRoutes(payload);
+			const routes = generateRoutes(rawRoutes, startingPoint);
+
+			dispatch(setRoutesDirectionsPlaces(routes));
+			setAllFormReset(prev => prev + 1);
+		} catch (error) {
+			dispatch(
+				setModal({
+					title: "Error",
+					message: error.response.data.message || error.message,
+				})
+			);
+			dispatch(resetRoute());
+		} finally {
+			setIsLoading(false);
 		}
-		axios
-			.post(process.env.REACT_APP_SERVER_URL + "/query", payload, headers)
-			.then((res) => {
-				setRoutes(res.data);
-				setAllFormReset(allFormReset + 1);
-				setIsLoading(false);
-			})
-			.catch((error) => {
-				dispatch(
-					setModal({
-						title: "Error",
-						message: error.response.data.message || error.message,
-					})
-				);
-				setRoutes([]);
-				setIsLoading(false);
-			});
 	};
 
 	return (

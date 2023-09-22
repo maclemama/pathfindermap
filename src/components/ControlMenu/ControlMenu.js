@@ -3,10 +3,7 @@ import { motion, useDragControls } from "framer-motion";
 import "./ControlMenu.scss";
 import ControlMenuGroup from "../ControlMenuGroup/ControlMenuGroup";
 
-function ControlMenu({
-	setCurrentLocationAsStart,
-	setRoutes,
-}) {
+function ControlMenu({ setCurrentLocationAsStart }) {
 	const [positionY, setPositionY] = useState(-50);
 	const [maxPositionY, setMaxPositionY] = useState(0);
 	const [isCollapse, setIsCollapse] = useState(true);
@@ -51,7 +48,6 @@ function ControlMenu({
 				>
 					<ControlMenuGroup
 						setCurrentLocationAsStart={setCurrentLocationAsStart}
-						setRoutes={setRoutes}
 						isCollapse={isCollapse}
 						toggleShowHide={toggleShowHide}
 					/>
@@ -59,9 +55,8 @@ function ControlMenu({
 			</div>
 
 			<div className="control-menu__wrapper--desktop">
-			<ControlMenuGroup
+				<ControlMenuGroup
 					setCurrentLocationAsStart={setCurrentLocationAsStart}
-					setRoutes={setRoutes}
 					isCollapse={isCollapse}
 					toggleShowHide={toggleShowHide}
 				/>

@@ -1,7 +1,7 @@
 import "./Map.scss";
 
 import { GoogleMap, MarkerF, CircleF } from "@react-google-maps/api";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
@@ -11,14 +11,7 @@ import RouteSelector from "../RouteSelector/RouteSelector";
 import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
 import Routes from "../Routes/Routes";
 
-function Map({
-	routes,
-	selectedRoute,
-	setSelectedRoute,
-	mapRef,
-	setSelectedRouteDirection,
-	selectedRouteDirection,
-}) {
+function Map({ mapRef }) {
 	console.log("Map component re-render");
 	const startingPoint = useSelector(selectStartingPoint);
 	const mapRadius = useSelector(selectMapRadius);
@@ -48,9 +41,8 @@ function Map({
 		}),
 		[]
 	);
-	const [directions, setDirections] = useState([]);
 
-	const onLoad = useCallback((map) => (mapRef.current = map), []);
+	const onLoad = useCallback((map) => (mapRef.current = map), [mapRef]);
 
 	return (
 		<section className="map">
@@ -62,15 +54,7 @@ function Map({
 			>
 				<MarkerF position={startingPoint} icon={markerPrimaryIcon} />
 
-				<Routes
-					routes={routes}
-					mapRef={mapRef}
-					setSelectedRoute={setSelectedRoute}
-					setSelectedRouteDirection={setSelectedRouteDirection}
-					directions={directions}
-					setDirections={setDirections}
-					selectedRouteDirection={selectedRouteDirection}
-				/>
+				<Routes mapRef={mapRef} />
 
 				<CircleF
 					center={startingPoint}
@@ -78,13 +62,7 @@ function Map({
 					options={circleOptions}
 				/>
 			</GoogleMap>
-			<RouteSelector
-				routes={routes}
-				directions={directions}
-				selectedRoute={selectedRoute}
-				setSelectedRoute={setSelectedRoute}
-				setSelectedRouteDirection={setSelectedRouteDirection}
-			/>
+			<RouteSelector />
 		</section>
 	);
 }

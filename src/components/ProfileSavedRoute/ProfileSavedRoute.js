@@ -5,72 +5,49 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 import { setModal } from "../../store/modal/modalSlice";
+import { getSavedRouteIDs } from "../../scripts/routeUtils";
+import { getSavedRoutesDetails } from "../../scripts/routeUtils";
 
 import RouteDetailsPanel from "../RouteDetailsPanel/RouteDetailsPanel";
 
 function ProfileSavedRoute({ mapRef, user }) {
 	const dispatch = useDispatch();
-	const token = localStorage.getItem("token");
 	const [savedRoute, setSavedRoute] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPage, setTotalPage] = useState(null);
 	useEffect(() => {
-		if (token) {
-			axios
-				.get(`${process.env.REACT_APP_SERVER_URL}/route/page/${currentPage}`, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				})
-				.then((res) => {
-					let routeIDs = res.data.data.map((route) => route.id);
-					if (res.data.total_page !== 0) {
-						axios
-							.post(
-								`${process.env.REACT_APP_SERVER_URL}/route/details`,
-								{
-									route: routeIDs,
-								},
-								{
-									headers: {
-										Authorization: `Bearer ${token}`,
-									},
-								}
-							)
-							.then((detailsRes) => {
-								detailsRes.data.sort(
-									(a, b) => new Date(b.created_at) - new Date(a.created_at)
-								);
-								setSavedRoute(detailsRes.data);
-								setIsLoading(false);
-							})
-							.catch((error) => {
-								dispatch(
-									setModal({
-										title: "Error",
-										message: error.response.data.message || error.message,
-									})
-								);
-								setSavedRoute(false);
-								setIsLoading(false);
-							});
-					} else {
-						setSavedRoute(false);
-					}
-				})
-				.catch((error) => {
-					dispatch(
-						setModal({
-							title: "Error",
-							message: error.response.data.message || error.message,
-						})
+		try {
+			const getSavedRoutes = async () => {
+				const routeIDsData = await getSavedRouteIDs(currentPage);
+				const routeIDs = routeIDsData.data.map((route) => route.id);
+				setTotalPage(routeIDsData.total_page);
+
+				if (routeIDsData.total_page !== 0) {
+					let routeDetails = await getSavedRoutesDetails(routeIDs);
+
+					routeDetails.sort(
+						(a, b) => new Date(b.created_at) - new Date(a.created_at)
 					);
-					setSavedRoute(false);
-					setIsLoading(false);
-				});
+					setSavedRoute(routeDetails);
+				} else {
+					setSavedRoute(null);
+				}
+			};
+
+			getSavedRoutes();
+		} catch (error) {
+			dispatch(
+				setModal({
+					title: "Error",
+					message: error.response.data.message || error.message,
+				})
+			);
+			setSavedRoute(null);
+		} finally {
+			setIsLoading(false);
 		}
-	}, [currentPage, token]);
+	}, [currentPage]);
 
 	const handlePageSwitch = (pageNumber) => {
 		if (pageNumber === currentPage) {
@@ -92,6 +69,7 @@ function ProfileSavedRoute({ mapRef, user }) {
 				<h2 className="saved-route__title">📌 Saved Paths</h2>
 				<div className="saved-route__list-page-wrapper saved-route__list-page-wrapper--top">
 					{[...Array(totalPage)].map((nth, index) => {
+						console.log(totalPage);
 						const thisPage = index + 1;
 						return (
 							<button
@@ -117,18 +95,20 @@ function ProfileSavedRoute({ mapRef, user }) {
 					</p>
 				)}
 
-				{savedRoute.map((route) => {
-					return (
-						<RouteDetailsPanel
-							selectedRoute={route.route_id}
-							routes={savedRoute}
-							mapRef={mapRef}
-							user={user}
-							isInProfile={true}
-							key={route.route_id}
-						/>
-					);
-				})}
+				{savedRoute &&
+					savedRoute.map((route) => {
+						console.log(route);
+						return (
+							<RouteDetailsPanel
+								selectedRoute={route.route_id}
+								routes={savedRoute}
+								mapRef={mapRef}
+								user={user}
+								isInProfile={true}
+								key={route.route_id}
+							/>
+						);
+					})}
 			</div>
 			<div className="saved-route__list-page-wrapper">
 				{[...Array(totalPage)].map((nth, index) => {
