@@ -8,6 +8,7 @@ import { getSavedRouteIDs } from "../../scripts/routeUtils";
 import { getSavedRoutesDetails } from "../../scripts/routeUtils";
 
 import RouteDetailsPanel from "../RouteDetailsPanel/RouteDetailsPanel";
+import RouteCard from "../RouteCard/RouteCard";
 
 function ProfileSavedRoute({ mapRef, user }) {
 	const dispatch = useDispatch();
@@ -28,7 +29,7 @@ function ProfileSavedRoute({ mapRef, user }) {
 					routeDetails.sort(
 						(a, b) => new Date(b.created_at) - new Date(a.created_at)
 					);
-					console.log(routeDetails)
+
 					setSavedRoute(routeDetails);
 				} else {
 					setSavedRoute(null);
@@ -69,7 +70,6 @@ function ProfileSavedRoute({ mapRef, user }) {
 				<h2 className="saved-route__title">📌 Saved Paths</h2>
 				<div className="saved-route__list-page-wrapper saved-route__list-page-wrapper--top">
 					{[...Array(totalPage)].map((nth, index) => {
-						console.log(totalPage);
 						const thisPage = index + 1;
 						return (
 							<button
@@ -97,14 +97,15 @@ function ProfileSavedRoute({ mapRef, user }) {
 
 				{savedRoute &&
 					savedRoute.map((route) => {
-						console.log(route);
+						// console.log(route);
 						return (
-							<RouteDetailsPanel
-								mapRef={mapRef}
-								routeDetails={route}
-								isInProfile={true}
-								key={route.route_id}
-							/>
+							// <RouteDetailsPanel
+							// 	mapRef={mapRef}
+							// 	routeDetails={route}
+							// 	isInProfile={true}
+							// 	key={route.route_id}
+							// />
+							<RouteCard routeDetails={route} key={route.route_id} />
 						);
 					})}
 			</div>

@@ -10,14 +10,20 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
-import { selectRoutes } from "../../store/route/routeSelector";
-import { selectPlaces } from "../../store/route/routeSelector";
-import { selectDirectionConfigs } from "../../store/route/routeSelector";
-import { selectSelectedRoute } from "../../store/route/routeSelector";
-import { setSelectedRoute } from "../../store/route/routeSlice";
-import { setSelectedDirection } from "../../store/route/routeSlice";
-import { generateDirection } from "../../scripts/routeUtils";
-import { getRouteCommuniteTime } from "../../scripts/routeUtils";
+import {
+	selectRoutes,
+	selectPlaces,
+	selectDirectionConfigs,
+	selectSelectedRoute,
+} from "../../store/route/routeSelector";
+import {
+	setSelectedRoute,
+	setSelectedDirection,
+} from "../../store/route/routeSlice";
+import {
+	generateDirection,
+	getDirectionDetails,
+} from "../../scripts/routeUtils";
 
 import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
 
@@ -184,11 +190,12 @@ function Routes({ mapRef }) {
 
 	useEffect(() => {
 		if (selectedRoute) {
+			console.log(directions);
 			const directionIdex = directions
 				.map((d) => d.route_id)
 				.indexOf(selectedRoute);
 			const selectedDirection = directions[directionIdex];
-			const routeCommuteTime = getRouteCommuniteTime(selectedDirection);
+			const routeCommuteTime = getDirectionDetails(selectedDirection);
 
 			dispatch(setSelectedDirection(routeCommuteTime));
 			changeMapZoom(selectedDirection);

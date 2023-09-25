@@ -75,12 +75,14 @@ function RouteDetailsPanel({ mapRef, isInProfile, routeDetails }) {
 					(route) => route.route_id === selectedRoute
 				)[0];
 
-				const { walking_distance, walking_time } = selectedDirection;
+				const { walking_distance, walking_time, polyline, summary } = selectedDirection;
 
 				setSelectedRouteDetails({
 					...routeDetails,
 					walking_distance,
 					walking_time,
+					polyline,
+					summary
 				});
 				setSavedRoute(routeDetails.user_saved);
 			}

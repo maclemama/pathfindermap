@@ -66,8 +66,11 @@ export const generateRoutes = (rawRoutes, startingPoint) => {
 	}
 };
 
-export const getRouteCommuniteTime = (routeDirection) => {
-	let result = {};
+export const getDirectionDetails = (routeDirection) => {
+	let result = {
+		polyline: routeDirection.routes[0].overview_polyline,
+		summary: routeDirection.routes[0].summary,
+	};
 	let walkingTime = 0;
 	let walkingDistance = 0;
 
@@ -130,6 +133,8 @@ export const postSavedRoute = async (rawPayload, saveUnsave) => {
 			address,
 			placeId,
 			route_waypoints,
+			polyline,
+			summary,
 		} = rawPayload;
 		const token = localStorage.getItem("token");
 		const apiPath = `${process.env.REACT_APP_SERVER_URL}/route`;
@@ -142,6 +147,8 @@ export const postSavedRoute = async (rawPayload, saveUnsave) => {
 			walking_distance,
 			walking_time,
 			address,
+			polyline,
+			summary,
 		};
 
 		payload.user_saved = saveUnsave === "save";
@@ -156,7 +163,12 @@ export const postSavedRoute = async (rawPayload, saveUnsave) => {
 		});
 		return result.data;
 	} catch (error) {
-		throw error;
+		const { response } = error;
+		if (response) {
+			throw response.data;
+		} else {
+			throw error;
+		}
 	}
 };
 
