@@ -93,7 +93,7 @@ export const getSavedRouteIDs = async (page) => {
 				},
 			}
 		);
-        return data;
+		return data;
 	} catch (error) {
 		throw error;
 	}
@@ -103,18 +103,61 @@ export const getSavedRoutesDetails = async (routeIDs) => {
 	try {
 		const token = localStorage.getItem("token");
 		const { data } = await axios.post(
-            `${process.env.REACT_APP_SERVER_URL}/route/details`,
-            {
-                route: routeIDs,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        )
-        return data;
+			`${process.env.REACT_APP_SERVER_URL}/route/details`,
+			{
+				route: routeIDs,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		return data;
 	} catch (error) {
 		throw error;
 	}
 };
+
+export const postSavedRoute = async (rawPayload, saveUnsave) => {
+	try {
+		const {
+			route_id,
+			longitude,
+			latitude,
+			walking_distance,
+			walking_time,
+			address,
+			placeId,
+			route_waypoints,
+		} = rawPayload;
+		const token = localStorage.getItem("token");
+		const apiPath = `${process.env.REACT_APP_SERVER_URL}/route`;
+		const payload = {
+			id: route_id,
+			place_id: placeId,
+			route_waypoints,
+			longitude,
+			latitude,
+			walking_distance,
+			walking_time,
+			address,
+		};
+
+		payload.user_saved = saveUnsave === "save";
+
+		if (!token) {
+			throw "Please login user account to save path.";
+		}
+		const result = await axios.post(apiPath, payload, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return result.data;
+	} catch (error) {
+		throw error;
+	}
+};
+
+export const deleteSavedRoute = async () => {};

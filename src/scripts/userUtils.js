@@ -77,6 +77,7 @@ export const setUser = async () => {
 
 		return setCurrentUser(user);
 	} catch (error) {
-		throw error;
+		localStorage.removeItem("token");
+		return setCurrentUser(user);
 	}
 };

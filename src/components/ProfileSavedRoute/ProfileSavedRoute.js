@@ -1,7 +1,6 @@
 import "./ProfileSavedRoute.scss";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 
 import { setModal } from "../../store/modal/modalSlice";
@@ -29,6 +28,7 @@ function ProfileSavedRoute({ mapRef, user }) {
 					routeDetails.sort(
 						(a, b) => new Date(b.created_at) - new Date(a.created_at)
 					);
+					console.log(routeDetails)
 					setSavedRoute(routeDetails);
 				} else {
 					setSavedRoute(null);
@@ -100,10 +100,8 @@ function ProfileSavedRoute({ mapRef, user }) {
 						console.log(route);
 						return (
 							<RouteDetailsPanel
-								selectedRoute={route.route_id}
-								routes={savedRoute}
 								mapRef={mapRef}
-								user={user}
+								routeDetails={route}
 								isInProfile={true}
 								key={route.route_id}
 							/>
