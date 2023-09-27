@@ -1,0 +1,52 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.path-item {
+	display: flex;
+	flex-direction: column;
+
+	&__icon-wrapper {
+		display: flex;
+		justify-content: center;
+	}
+	&__location-wrapper {
+		display: flex;
+		border-radius: $element-radius;
+		background-color: $primary-input-background-color;
+		border: $element-border;
+	}
+
+	&__left-wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		border-right: $element-border;
+        width: 30%;
+	}
+
+	&__position-wrapper {
+		width: 100%;
+		border-bottom: $element-border;
+		display: flex;
+		justify-content: center;
+		padding: 0.5rem;
+	}
+
+	&__label-wrapper {
+		padding: 0.5rem;
+	}
+
+    &__name-wrapper {
+        width: 70%;
+        padding: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__icon{
+        width: 2rem;
+        fill:$direction-icon-color;
+    }
+}

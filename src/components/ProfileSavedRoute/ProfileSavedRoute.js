@@ -7,7 +7,6 @@ import { setModal } from "../../store/modal/modalSlice";
 import { getSavedRouteIDs } from "../../scripts/routeUtils";
 import { getSavedRoutesDetails } from "../../scripts/routeUtils";
 
-import RouteDetailsPanel from "../RouteDetailsPanel/RouteDetailsPanel";
 import RouteCard from "../RouteCard/RouteCard";
 
 function ProfileSavedRoute({ mapRef, user }) {
@@ -97,16 +96,7 @@ function ProfileSavedRoute({ mapRef, user }) {
 
 				{savedRoute &&
 					savedRoute.map((route) => {
-						// console.log(route);
-						return (
-							// <RouteDetailsPanel
-							// 	mapRef={mapRef}
-							// 	routeDetails={route}
-							// 	isInProfile={true}
-							// 	key={route.route_id}
-							// />
-							<RouteCard routeDetails={route} key={route.route_id} />
-						);
+						return <RouteCard routeDetails={route} key={route.route_id} />;
 					})}
 			</div>
 			<div className="saved-route__list-page-wrapper">

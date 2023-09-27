@@ -11,8 +11,13 @@ import {
 } from "../../scripts/locationUtils";
 import { setModal } from "../../store/modal/modalSlice";
 import { setStartingPoint } from "../../store/startingPoint/startingPointSlice";
-import { setRoutes } from "../../store/route/routeSlice";
+import {
+	setRoutes,
+	setRoutesDirectionsPlaces,
+	resetRoute,
+} from "../../store/route/routeSlice";
 import { selectSelectedRoute } from "../../store/route/routeSelector";
+import { generateRoutes } from "../../scripts/routeUtils";
 
 import Map from "../../components/Map/Map";
 import ControlMenu from "../../components/ControlMenu/ControlMenu";
@@ -22,7 +27,6 @@ function HomePage({ mapRef }) {
 	const location = useLocation();
 	const dispatch = useDispatch();
 
-	const [isLoading, setIsLoading] = useState(true);
 	const selectedRoute = useSelector(selectSelectedRoute);
 
 	const [libraries] = useState(["places"]); // remove map library warning by holding it in state
@@ -40,9 +44,13 @@ function HomePage({ mapRef }) {
 					location.state.passedStartingPoint &&
 					!resetCurrent
 				) {
-					dispatch(setStartingPoint(location.state.passedStartingPoint));
-					dispatch(setRoutes(location.state.passedRouteData));
+					const routes = generateRoutes(
+						location.state.passedRouteData,
+						location.state.passedStartingPoint
+					);
+					dispatch(setRoutesDirectionsPlaces(routes));
 				} else {
+					dispatch(resetRoute());
 					const location = await getUserLocation();
 					const { latitude, longitude } = location.coords;
 					const matchedPlace = await getGoogleGeocoder({
@@ -59,39 +67,39 @@ function HomePage({ mapRef }) {
 					);
 				}
 			} catch (error) {
+				console.log(error);
 				dispatch(
 					setModal({
 						title: "Error",
 						message: error.response.data.message || error.message,
 					})
 				);
-			} finally {
-				setIsLoading(false);
 			}
 		},
 		[location, dispatch]
 	);
 
 	useEffect(() => {
-		setCurrentLocationAsStart();
-	}, [setCurrentLocationAsStart]);
+		if (isLoaded) {
+			const loadMapAndStartingPoint = async () => {
+				await setCurrentLocationAsStart();
+			};
+			loadMapAndStartingPoint();
+		}
+	}, [setCurrentLocationAsStart, isLoaded]);
 
 	if (loadError) {
 		return <div>Error loading map</div>;
-	}
-
-	if (isLoading || !isLoaded) {
-		return <h1>loading </h1>;
 	}
 
 	return (
 		<div className="home">
 			<div className="home__desktop-right-wrapper">
 				{selectedRoute && <RouteDetailsPanel mapRef={mapRef} />}
-				<Map mapRef={mapRef} />
+				{isLoaded && <Map mapRef={mapRef} />}
 			</div>
 
-			<ControlMenu setCurrentLocationAsStart={setCurrentLocationAsStart} />
+			<ControlMenu setCurrentLocationAsStart={setCurrentLocationAsStart} isLoaded={isLoaded}/>
 		</div>
 	);
 }

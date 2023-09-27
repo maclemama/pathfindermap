@@ -24,20 +24,23 @@ export const generateDirection = async (directionConfigs) => {
 export const generateRoutes = (rawRoutes, startingPoint) => {
 	const places = [];
 	const directionConfigs = [];
+	let copyRoutes = [...rawRoutes];
 
-	if (rawRoutes[0]) {
+	if (copyRoutes[0]) {
 		// loop over routes and get all and set places and direction config data
-		rawRoutes.forEach((route) => {
+		copyRoutes.forEach((route) => {
 			const thisWaypoints = route.route_waypoints;
 			const waypointsLatLng = [];
 			let destination;
-			rawRoutes.created_at = new Date(
-				rawRoutes.created_at
+			copyRoutes.created_at = new Date(
+				copyRoutes.created_at
 			).toLocaleDateString();
 
 			thisWaypoints.forEach((place, index) => {
-				place.route_id = route.route_id;
-				places.push(place);
+				places.push({
+					route_id: route.route_id,
+					...place,
+				});
 
 				const latLng = { lat: place.latitude, lng: place.longitude };
 				if (index + 1 === thisWaypoints.length) {
@@ -59,7 +62,7 @@ export const generateRoutes = (rawRoutes, startingPoint) => {
 		});
 
 		return {
-			routes: rawRoutes,
+			routes: copyRoutes,
 			places: places,
 			directionConfigs: directionConfigs,
 		};
@@ -122,8 +125,9 @@ export const getSavedRoutesDetails = async (routeIDs) => {
 	}
 };
 
-export const postSavedRoute = async (rawPayload, saveUnsave) => {
+export const postSaveRoute = async (rawPayload) => {
 	try {
+		const token = localStorage.getItem("token");
 		const {
 			route_id,
 			longitude,
@@ -136,7 +140,6 @@ export const postSavedRoute = async (rawPayload, saveUnsave) => {
 			polyline,
 			summary,
 		} = rawPayload;
-		const token = localStorage.getItem("token");
 		const apiPath = `${process.env.REACT_APP_SERVER_URL}/route`;
 		const payload = {
 			id: route_id,
@@ -151,10 +154,10 @@ export const postSavedRoute = async (rawPayload, saveUnsave) => {
 			summary,
 		};
 
-		payload.user_saved = saveUnsave === "save";
+		payload.user_saved = true;
 
 		if (!token) {
-			throw "Please login user account to save path.";
+			throw Error("Please login user account to save path.");
 		}
 		const result = await axios.post(apiPath, payload, {
 			headers: {
@@ -172,4 +175,26 @@ export const postSavedRoute = async (rawPayload, saveUnsave) => {
 	}
 };
 
-export const deleteSavedRoute = async () => {};
+export const deleteSavedRoute = async (route_id) => {
+	try {
+		const token = localStorage.getItem("token");
+		const payload = {
+			route_id: route_id,
+		};
+		const apiPath = `${process.env.REACT_APP_SERVER_URL}/route`;
+		const result = await axios.delete(apiPath, {
+			data: payload,
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return result.data;
+	} catch (error) {
+		const { response } = error;
+		if (response) {
+			throw response.data;
+		} else {
+			throw error;
+		}
+	}
+};

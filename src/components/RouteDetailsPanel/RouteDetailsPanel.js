@@ -1,6 +1,5 @@
 import "./RouteDetailsPanel.scss";
 
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,12 +9,11 @@ import { selectSelectedRoute } from "../../store/route/routeSelector";
 import { selectSelectedDirection } from "../../store/route/routeSelector";
 import { selectRoutes } from "../../store/route/routeSelector";
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
-import { getGoogleGeocoder } from "../../scripts/locationUtils";
 import { setModal } from "../../store/modal/modalSlice";
-import { postSavedRoute } from "../../scripts/routeUtils";
+import { postSaveRoute, deleteSavedRoute } from "../../scripts/routeUtils";
 
 import RoutePlacesList from "../RoutePlacesList/RoutePlacesList";
-import SVGIcons from "../SVGIcons/SVGIcons";
+import RouteSaveButton from "../RouteSaveButton/RouteSaveButton";
 
 function RouteDetailsPanel({ mapRef, isInProfile, routeDetails }) {
 	const dispatch = useDispatch();
@@ -75,14 +73,15 @@ function RouteDetailsPanel({ mapRef, isInProfile, routeDetails }) {
 					(route) => route.route_id === selectedRoute
 				)[0];
 
-				const { walking_distance, walking_time, polyline, summary } = selectedDirection;
+				const { walking_distance, walking_time, polyline, summary } =
+					selectedDirection;
 
 				setSelectedRouteDetails({
 					...routeDetails,
 					walking_distance,
 					walking_time,
 					polyline,
-					summary
+					summary,
 				});
 				setSavedRoute(routeDetails.user_saved);
 			}
@@ -93,14 +92,25 @@ function RouteDetailsPanel({ mapRef, isInProfile, routeDetails }) {
 
 	const handleRouteSave = async (saveUnsave) => {
 		try {
-			const result = await postSavedRoute(
-				{ ...selectedRouteDetails, ...startingPoint },
-				saveUnsave
-			);
-			if (result && result[0]) {
-				setSavedRoute(result[0].user_saved);
-			} else {
-				throw Error("Could not perform this action at the moment.");
+			if (saveUnsave === "save") {
+				const result = await postSaveRoute({
+					...selectedRouteDetails,
+					...startingPoint,
+				});
+				if (result && result[0]) {
+					setSavedRoute(result[0].user_saved);
+				} else {
+					throw Error("Could not perform this action at the moment.");
+				}
+			}
+
+			if (saveUnsave === "unsave") {
+				const result = await deleteSavedRoute(selectedRouteDetails.route_id);
+				if (result.success) {
+					setSavedRoute(false);
+				} else {
+					throw Error("Could not perform this action at the moment.");
+				}
 			}
 		} catch (error) {
 			dispatch(
@@ -136,34 +146,17 @@ function RouteDetailsPanel({ mapRef, isInProfile, routeDetails }) {
 				<>
 					<div className="route-panel__top-wrapper">
 						<div className="route-panel__top-left-wrapper">
-							{!!user && !savedRoute && (
-								<button
-									className="route-panel__save-button"
-									onClick={() => handleRouteSave("save")}
-								>
-									<SVGIcons
-										iconName={"heart_empty"}
-										cssClassName={"route-panel__save-icon"}
-									/>
-								</button>
-							)}
-
-							{!!user && savedRoute && (
-								<button
-									className="route-panel__save-button"
-									onClick={() => handleRouteSave("unsave")}
-								>
-									<SVGIcons
-										iconName={"heart_fill"}
-										cssClassName={"route-panel__save-icon"}
-									/>
-								</button>
+							{!!user && (
+								<RouteSaveButton
+									saved={savedRoute}
+									onClickHandler={handleRouteSave}
+								/>
 							)}
 
 							{isInProfile ? (
 								<h2 className="route-panel__title">
-									Path start from {selectedRouteDetails.address}. Saved
-									at {selectedRouteDetails.created_at}
+									Path start from {selectedRouteDetails.address}. Saved at{" "}
+									{selectedRouteDetails.created_at}
 								</h2>
 							) : (
 								<h2 className="route-panel__title">Places in the Path</h2>

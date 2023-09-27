@@ -32,7 +32,11 @@ export const routeSlice = createSlice({
 			state.selectedDirection = action.payload;
 		},
 		resetRoute(state) {
-			state = INITIAL_STATE;
+			state.routes = null;
+			state.selectedRoute = null;
+			state.places = null;
+			state.directionConfigs = null;
+            state.selectedDirection = null;
 		},
 	},
 });

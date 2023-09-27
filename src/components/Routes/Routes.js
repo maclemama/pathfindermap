@@ -190,7 +190,6 @@ function Routes({ mapRef }) {
 
 	useEffect(() => {
 		if (selectedRoute) {
-			console.log(directions);
 			const directionIdex = directions
 				.map((d) => d.route_id)
 				.indexOf(selectedRoute);

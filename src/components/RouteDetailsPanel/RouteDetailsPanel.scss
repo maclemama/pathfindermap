@@ -27,22 +27,6 @@
 		align-items: center;
 	}
 
-	&__save-icon {
-		width: 2rem;
-		fill: red;
-	}
-
-	&__show-map-button {
-		border: $element-border;
-		border-radius: $element-radius;
-		padding: 1rem;
-
-		&:hover {
-			background-color: $secondary-button-background-color;
-			color: $primary-text-light-color;
-		}
-	}
-
 	&__title {
 		font-size: 1.5rem;
 	}
@@ -53,7 +37,6 @@
 		padding-right: 2rem;
 	}
 
-	&__route-distance,
 	&__route-distance {
 		padding: 0.5rem 0.8rem;
 		border-radius: 1rem;

@@ -25,6 +25,7 @@ function ControlMenuGroup({
 	setCurrentLocationAsStart,
 	isCollapse,
 	toggleShowHide,
+	isLoaded,
 }) {
 	const dispatch = useDispatch();
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
@@ -66,7 +67,7 @@ function ControlMenuGroup({
 			const routes = generateRoutes(rawRoutes, startingPoint);
 
 			dispatch(setRoutesDirectionsPlaces(routes));
-			setAllFormReset(prev => prev + 1);
+			setAllFormReset((prev) => prev + 1);
 		} catch (error) {
 			dispatch(
 				setModal({
@@ -116,9 +117,11 @@ function ControlMenuGroup({
 				</motion.button>
 			</div>
 
-			<ControlStartingPoint
-				setCurrentLocationAsStart={setCurrentLocationAsStart}
-			/>
+			{isLoaded && (
+				<ControlStartingPoint
+					setCurrentLocationAsStart={setCurrentLocationAsStart}
+				/>
+			)}
 			<div className="control-menu-group__tab">
 				{activeTab === tabNames[0] && (
 					<RouteSearchPanel
