@@ -1,17 +1,12 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
 .route-place-list {
 	display: flex;
 	overflow-x: scroll;
 	padding-bottom: 1rem;
-	&::-webkit-scrollbar {
-		width: 1rem;
-		height: 1rem;
-	}
 
-	&::-webkit-scrollbar-thumb {
-		background: rgb(175, 175, 175);
-		border-radius: 10px;
-		margin-bottom: 3rem;
-	}
+	@include scrollbar;
 
 	&__wrapper {
 		display: flex;

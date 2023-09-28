@@ -2,12 +2,44 @@
 @use "../../styles/partials/mixin" as *;
 
 .profile {
-	&__saved-route {
-		display: flex;
-		row-gap: $mobile-row-gap;
-		justify-content: center;
-	}
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+
 	@include desktop {
 		background-color: $primary-background-color;
+		display: flex;
 	}
+
+	&__menu {
+		@include desktop {
+			padding: $tablet-row-gap;
+		}
+	}
+
+	&__content{
+		@include desktop {
+			padding: $tablet-row-gap $tablet-row-gap $tablet-row-gap 0;
+			display: flex;
+			flex-direction: column;
+			row-gap: $tablet-row-gap;
+			width: 100%;
+		}
+	}
+
+	&__content-top-wrapper {
+		padding: 1rem 2rem;
+		border-radius: $section-radius;
+		background-color: $primary-section-background-color;
+	}
+
+	&__content-bottom-wrapper{
+		border-radius: $section-radius;
+		background-color: $primary-section-background-color;
+		height: calc(100% - 7rem);
+		width: 100%;
+		padding: 2rem;
+		display: flex;
+	}
+
 }

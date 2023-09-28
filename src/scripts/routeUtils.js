@@ -88,17 +88,23 @@ export const getDirectionDetails = (routeDirection) => {
 	return result;
 };
 
-export const getSavedRouteIDs = async (page) => {
+export const getSavedRouteIDs = async (mode, page, query) => {
 	try {
+		let url = `${process.env.REACT_APP_SERVER_URL}/route`;
+		if (mode === "page") {
+			url += `/page/${page}`;
+		}
+		if (mode === "query") {
+		    
+			url += `?search=${encodeURIComponent(query)}`;
+		}
 		const token = localStorage.getItem("token");
-		const { data } = await axios.get(
-			`${process.env.REACT_APP_SERVER_URL}/route/page/${page}`,
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}
-		);
+		const { data } = await axios.get(url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
 		return data;
 	} catch (error) {
 		throw error;

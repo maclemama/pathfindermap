@@ -2,7 +2,7 @@ import "./FormInputPrefix.scss";
 import SVGIcons from "../SVGIcons/SVGIcons";
 import { useRef, useEffect } from "react";
 
-function FormInputPrefix({ text, svgName, setInputPreflixWidth }) {
+function FormInputPrefix({ text, svgName, setInputPreflixWidth, onClickFunc }) {
 	const elementRef = useRef(null);
 
 	useEffect(() => {
@@ -12,7 +12,7 @@ function FormInputPrefix({ text, svgName, setInputPreflixWidth }) {
 	}, []);
 
 	return (
-		<div className="input-prefix" ref={elementRef} key={text}>
+		<div className="input-prefix" ref={elementRef} key={text} onClick={onClickFunc}>
 			{svgName && (
 				<SVGIcons iconName={svgName} cssClassName={"input-prefix__icon"} />
 			)}

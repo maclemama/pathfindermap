@@ -1,0 +1,95 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.profile-menu {
+	background-color: $primary-panel-background-color;
+	display: flex;
+	justify-content: center;
+	padding: 2rem;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+
+
+	@include desktop {
+		bottom: unset;
+		position: unset;
+
+		border-radius: $section-radius;
+		width: 40rem;
+		height: 100%;
+
+
+		flex-direction: column;
+		padding: $tablet-row-gap 0rem;
+		justify-content: flex-start;
+		align-items: center;
+		row-gap: $tablet-row-gap;
+	}
+
+	&__logo {
+		display: none;
+		height: 3rem;
+		@include desktop {
+			display: block;
+		}
+	}
+
+	&__greeting {
+		display: none;
+
+		@include desktop {
+			display: block;
+			font-size: 2rem;
+		}
+	}
+}
+
+.profile-nav {
+	width: 100%;
+
+	@include desktop {
+		border-top: $element-border;
+		border-bottom: $element-border;
+		padding: $tablet-row-gap $tablet-col-gap;
+	}
+
+	&__list {
+		display: flex;
+
+		@include desktop {
+			flex-direction: column;
+			row-gap: $mobile-row-gap;
+		}
+	}
+
+	&__item {
+		width: 100%;
+	}
+
+	&__tab-button {
+		border-radius: $element-radius;
+		padding: 0.5rem $mobile-col-gap;
+		font-size: 1.6rem;
+		width: 100%;
+
+		&:hover {
+			@include element-shadow;
+		}
+
+		@include desktop {
+			display: flex;
+			font-size: 2rem;
+			column-gap: $tablet-col-gap;
+			align-items: center;
+		}
+
+		&--active {
+			background-color: aquamarine;
+		}
+	}
+
+	&__tab-emoji {
+		font-size: 2.5rem;
+	}
+}

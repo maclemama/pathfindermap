@@ -16,3 +16,15 @@
 }
 
 
+@mixin scrollbar {
+	&::-webkit-scrollbar {
+		width: 1rem;
+		height: 1rem;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: rgb(175, 175, 175);
+		border-radius: 10px;
+		margin-bottom: 3rem;
+	}
+}

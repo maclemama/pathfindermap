@@ -2,7 +2,7 @@ import SVGIcons from "../SVGIcons/SVGIcons";
 import "./RouteSaveButton.scss";
 
 
-function RouteSaveButton({ saved, onClickHandler }) {
+function RouteSaveButton({ saved, onClickHandler, iconName }) {
 	return (
 		<>
 			{!saved && (
@@ -23,7 +23,7 @@ function RouteSaveButton({ saved, onClickHandler }) {
 					onClick={() => onClickHandler("unsave")}
 				>
 					<SVGIcons
-						iconName={"heart_fill"}
+						iconName={ iconName || "heart_fill"}
 						cssClassName={"route-save-button__icon"}
 					/>
 				</button>

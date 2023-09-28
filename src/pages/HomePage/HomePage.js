@@ -2,7 +2,7 @@ import "./HomePage.scss";
 
 import { useLoadScript } from "@react-google-maps/api";
 import { useLocation } from "react-router";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -12,7 +12,6 @@ import {
 import { setModal } from "../../store/modal/modalSlice";
 import { setStartingPoint } from "../../store/startingPoint/startingPointSlice";
 import {
-	setRoutes,
 	setRoutesDirectionsPlaces,
 	resetRoute,
 } from "../../store/route/routeSlice";
@@ -23,9 +22,10 @@ import Map from "../../components/Map/Map";
 import ControlMenu from "../../components/ControlMenu/ControlMenu";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
 
-function HomePage({ mapRef }) {
+function HomePage() {
 	const location = useLocation();
 	const dispatch = useDispatch();
+	const mapRef = useRef();
 
 	const selectedRoute = useSelector(selectSelectedRoute);
 
@@ -99,7 +99,10 @@ function HomePage({ mapRef }) {
 				{isLoaded && <Map mapRef={mapRef} />}
 			</div>
 
-			<ControlMenu setCurrentLocationAsStart={setCurrentLocationAsStart} isLoaded={isLoaded}/>
+			<ControlMenu
+				setCurrentLocationAsStart={setCurrentLocationAsStart}
+				isLoaded={isLoaded}
+			/>
 		</div>
 	);
 }

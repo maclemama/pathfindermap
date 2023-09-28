@@ -1,0 +1,27 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.sort-button {
+	display: flex;
+	border-radius: $element-radius;
+	padding: 0rem 2rem;
+    height: 4rem;
+	align-items: center;
+    border: $element-border;
+
+	&--active {
+		background-color: $secondary-button-background-color;
+	}
+	&:hover {
+		background-color: aquamarine;
+		color: $primary-text-black-color;
+	}
+
+	&__icon {
+		width: 3rem;
+	}
+
+	&__text {
+		width: 100%;
+	}
+}

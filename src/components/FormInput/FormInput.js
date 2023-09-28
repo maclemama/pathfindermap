@@ -8,6 +8,7 @@ function FormInput({
 	inputOnChange,
 	inputOnBlur,
 	inputOnFocus,
+	inputOnKeyDown,
 	prefixComponent,
 	inputPreflixWidth,
 	subfixComponent
@@ -24,6 +25,7 @@ function FormInput({
 				onChange={inputOnChange}
 				onFocus={inputOnFocus}
 				onBlur={inputOnBlur}
+				onKeyDown={inputOnKeyDown}
 				style={{"--prefix-width": `${inputPreflixWidth ? inputPreflixWidth + 10 : 12}px`}}
 			/>
 			{subfixComponent && subfixComponent[0]}

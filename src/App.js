@@ -1,7 +1,7 @@
 import "./App.scss";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { setUser } from "./scripts/userUtils";
@@ -13,7 +13,6 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import Modal from "./components/Modal/Modal";
 
 function App() {
-	const mapRef = useRef();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -30,7 +29,7 @@ function App() {
 				<Header />
 				<main className="main">
 					<Routes>
-						<Route path="/" element={<HomePage mapRef={mapRef} />}></Route>
+						<Route path="/" element={<HomePage/>}></Route>
 						<Route
 							path="/signin"
 							element={<AuthPage action={"signin"} />}
@@ -45,7 +44,7 @@ function App() {
 						></Route>
 						<Route
 							path="/profile"
-							element={<ProfilePage mapRef={mapRef} />}
+							element={<ProfilePage/>}
 						></Route>
 						<Route path="*" element={<AuthPage action={"not-found"} />}></Route>
 					</Routes>

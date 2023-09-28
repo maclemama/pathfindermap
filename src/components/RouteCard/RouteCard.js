@@ -23,7 +23,7 @@ function RouteCard({ routeDetails }) {
 				return `&markers=color:green%7Clabel:${label}%7C${latitude},${longitude}`;
 			};
 
-			let url = `https://maps.googleapis.com/maps/api/staticmap?size=300x300&maptype=roadmap&map_id=f6ca3c1a38d4ecfa&path=weight:3%7Ccolor:orange%7Cenc:${
+			let url = `https://maps.googleapis.com/maps/api/staticmap?size=400x400&maptype=roadmap&map_id=f6ca3c1a38d4ecfa&path=weight:3%7Ccolor:orange%7Cenc:${
 				routeDetails.polyline
 			}&key=${process.env.REACT_APP_GOOGLE_MAP_API_KEY}${markerGenerator(
 				"1",
@@ -111,6 +111,7 @@ function RouteCard({ routeDetails }) {
 							<RouteSaveButton
 								saved={routeDetails.user_saved}
 								onClickHandler={handleRouteSave}
+								iconName={"delete"}
 							/>
 						</div>
 					</div>

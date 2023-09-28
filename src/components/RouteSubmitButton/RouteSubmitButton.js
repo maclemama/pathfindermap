@@ -1,20 +1,14 @@
 import "./RouteSubmitButton.scss";
-import { motion } from "framer-motion";
+import MontionButton from "../MotionButton/MotionButton";
 
 function RouteSubmitButton({ onClickFunc }) {
 	return (
-		<motion.button
-			className="route-submit-button"
-			type="submit"
-			onClick={onClickFunc}
-			whileHover={{
-				scale: 1.05,
-				transition: { duration: 0.3 },
-			}}
-			whileTap={{ scale: 0.9 }}
-		>
-			Find Path
-		</motion.button>
+		<MontionButton
+			onClickFunc={onClickFunc}
+			cssClassName={"route-submit-button"}
+			buttonType={"submit"}
+			buttonContent={["Find Path"]}
+		/>
 	);
 }
 
