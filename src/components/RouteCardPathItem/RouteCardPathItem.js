@@ -1,6 +1,5 @@
 import "./RouteCardPathItem.scss";
 
-import downIcon from "../../assets/icons/down.svg";
 import SVGIcons from "../SVGIcons/SVGIcons";
 
 function RouteCardPathItem({ position, locationName, label }) {

@@ -22,6 +22,8 @@
 		width: 40rem;
 		height: 100vh;
 		row-gap: $tablet-row-gap;
+		overflow-y: scroll;
+		@include scrollbar;
 	}
 
 	&__toggle-wrapper {

@@ -21,7 +21,7 @@ function RouteSelector() {
 	return (
 		routes && (
 			<section className="route-selector">
-				<h2 className="route-selector__title">Path</h2>
+				<h4 className="route-selector__title">Path</h4>
 				{routes.map((route, index) => {
 					const thisRouteIndex = index + 1;
 					const thisRouteID = route.route_id;
@@ -55,7 +55,7 @@ function RouteSelector() {
 					}`}
 					onClick={handleShowAll}
 				>
-					<h2 className="route-selector__show-all-title">Show All</h2>
+					<h4 className="route-selector__show-all-title">Show All</h4>
 				</button>
 			</section>
 		)

@@ -16,7 +16,7 @@
 		position: unset;
 
 		border-radius: $section-radius;
-		width: 40rem;
+		width: 30rem;
 		height: 100%;
 
 
@@ -40,7 +40,17 @@
 
 		@include desktop {
 			display: block;
-			font-size: 2rem;
+			font-size: 1.4rem;
+		}
+	}
+
+	&__signout-button{
+		display: none;
+
+		@include desktop{
+			display: unset;
+			text-decoration: underline;
+			text-decoration-color: blue;
 		}
 	}
 }
@@ -51,7 +61,7 @@
 	@include desktop {
 		border-top: $element-border;
 		border-bottom: $element-border;
-		padding: $tablet-row-gap $tablet-col-gap;
+		padding: $mobile-row-gap $mobile-col-gap;
 	}
 
 	&__list {
@@ -70,7 +80,7 @@
 	&__tab-button {
 		border-radius: $element-radius;
 		padding: 0.5rem $mobile-col-gap;
-		font-size: 1.6rem;
+		font-size: 1.4rem;
 		width: 100%;
 
 		&:hover {
@@ -79,8 +89,7 @@
 
 		@include desktop {
 			display: flex;
-			font-size: 2rem;
-			column-gap: $tablet-col-gap;
+			column-gap: $mobile-col-gap;
 			align-items: center;
 		}
 

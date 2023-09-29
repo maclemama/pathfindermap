@@ -98,10 +98,10 @@ function RouteCard({ routeDetails }) {
 				<div className="route-card__content">
 					<div className="route-card__top-wrapper">
 						<div className="route-card__title-wrapper">
-							<h2 className="route-card__title">
+							<h3 className="route-card__title">
 								{routeDetails.title ||
 									`Path start from ${routeDetails.address}`}
-							</h2>
+							</h3>
 						</div>
 
 						<div className="route-card__top-mid-wrapper">

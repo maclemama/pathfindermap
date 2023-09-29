@@ -1,14 +1,25 @@
 import "./ProfileMenu.scss";
 
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 import { selectCurrentUser } from "../../store/user/userSelector";
+import { signOutUser } from "../../scripts/userUtils";
+
 import logo from "../../assets/logos/logo-no-background.png";
 import MotionButton from "../MotionButton/MotionButton";
 
 function ProfileMenu({ tab, handleSetTab }) {
 	const user = useSelector(selectCurrentUser);
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
+	const handleSignOut = () => {
+		const setUserAction = signOutUser();
+		dispatch(setUserAction);
+		navigate("/");
+	};
+
 	return (
 		user && (
 			<section className="profile-menu">
@@ -68,6 +79,16 @@ function ProfileMenu({ tab, handleSetTab }) {
 						</li>
 					</ul>
 				</nav>
+				<button
+					className="profile-menu__signout-button"
+					onClick={handleSignOut}
+				>
+					<h3
+						className="profile-menu__signout-button-text"
+					>
+						Sign out
+					</h3>
+				</button>
 			</section>
 		)
 	);

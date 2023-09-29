@@ -35,6 +35,13 @@
 	&__signin-button {
 		border-radius: $element-border;
 		margin: 0;
+		@include desktop {
+
+			&--profile {
+				display: none;
+			}
+		}
+
 		&-text {
 			font-size: 1.6rem;
 			font-family: "Poppins";
@@ -47,11 +54,6 @@
 				font-size: 1.8rem;
 				text-decoration: none;
 				margin: 1.5rem 2rem 1.5rem 0.8rem;
-
-				&--profile {
-					text-decoration: underline;
-					text-decoration-color: blue;
-				}
 			}
 		}
 	}

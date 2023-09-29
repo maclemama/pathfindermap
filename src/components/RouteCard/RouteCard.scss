@@ -8,7 +8,7 @@
 	@include element-shadow;
 
 	@include tablet{
-		width: 30rem;
+		width: 24rem;
 	}
 
 	&__photo-wrapper {
@@ -22,13 +22,22 @@
 	}
 
 	&__title-wrapper {
-		padding: $mobile-row-gap;
+		padding: $mobile-row-gap $mobile-row-gap 0.5rem $mobile-row-gap;
+	}
+
+	&__title{
+		font-size: 1.4rem;
+	}
+
+	&__created-at{
+		font-size: 1.2rem;
 	}
 
 	&__top-mid-wrapper {
 		padding: 0 $mobile-row-gap 0.5rem $mobile-row-gap;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 	}
 
 	&__top-lower-wrapper {
@@ -36,6 +45,7 @@
 		border-bottom: $element-border;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 	}
 
 	&__info-wrapper {
@@ -43,21 +53,22 @@
 	}
 
 	&__info {
-		padding: 0.5rem 1rem;
+		padding: 0.5rem 0.8rem;
 		margin-right: 0.5rem;
 		border-radius: 1rem;
 		background-color: $secondary-info-background-color;
 		display: flex;
 		align-items: center;
+		font-size: 1.2rem;
 	}
 
 	&__show-map-button {
 		border: $element-border;
 		border-radius: $element-radius;
-		padding: 1rem;
+		padding: 0.5rem ;
 		background-color: $primary-button-background-color;
 		color: $primary-text-light-color;
-		font-size: 1.6rem;
+		font-size: 1.2rem;
 
 		&:hover {
 			background-color: $secondary-button-background-color;
@@ -81,6 +92,10 @@
 		border-top: $element-border;
 		padding: 0.5rem;
 		row-gap: 0.5rem;
+
+		&-icon{
+			width: 1.6rem;
+		}
 
 		&:hover {
 			background-color: $secondary-button-background-color;
