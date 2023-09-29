@@ -3,15 +3,12 @@
 
 .control-menu-group {
 	background-color: $primary-panel-background-color;
-	padding: $mobile-row-gap $mobile-col-gap;
-	border-radius: $section-radius;
 	width: 100vw;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	row-gap: $mobile-row-gap;
-	@include element-shadow;
-	border: $element-border;
+
 	max-width: 50rem;
 
 	@include tablet {
@@ -20,17 +17,17 @@
 
 	@include desktop {
 		width: 40rem;
-		height: 100vh;
 		row-gap: $tablet-row-gap;
 		overflow-y: scroll;
 		@include scrollbar;
 	}
 
-	&__toggle-wrapper {
-		display: block;
-		@include desktop {
-			display: none;
-		}
+	&__content-wrapper {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		row-gap: $mobile-row-gap;
 	}
 
 	&__home-button {
@@ -47,14 +44,5 @@
 
 	&__logo {
 		height: 3rem;
-	}
-	&__icon {
-		width: 2rem;
-		height: 2rem;
-		display: none;
-
-		&--active {
-			display: block;
-		}
 	}
 }

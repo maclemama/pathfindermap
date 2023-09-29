@@ -1,6 +1,6 @@
 import "./ControlMenuGroup.scss";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "../../store/modal/modalSlice";
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
 import { setRoutesDirectionsPlaces } from "../../store/route/routeSlice";
+import { selectShowRouteControlMenu } from "../../store/layout/layoutSelector";
+import { setShowRouteControlMenu } from "../../store/layout/layoutSlice";
 import { getRawRoutes } from "../../scripts/queryUtils";
 import { generateRoutes } from "../../scripts/routeUtils";
 import { resetRoute } from "../../store/route/routeSlice";
@@ -15,24 +17,19 @@ import { resetRoute } from "../../store/route/routeSlice";
 import ControlTabs from "../ControlTabs/ControlTabs";
 import ControlStartingPoint from "../ControlStartingPoint/ControlStartingPoint";
 import RouteSearchPanel from "../RouteSearchPanel/RouteSearchPanel";
-import SVGIcons from "../SVGIcons/SVGIcons";
 import RouteMoodPanel from "../RouteMoodPanel/RouteMoodPanel";
 import RouteRandomPanel from "../RouteRandomPanel/RouteRandomPanel";
 import logo from "../../assets/logos/logo-no-background.png";
 import Loading from "../Loading/Loading";
 
-function ControlMenuGroup({
-	setCurrentLocationAsStart,
-	isCollapse,
-	toggleShowHide,
-	isLoaded,
-}) {
+function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 	const dispatch = useDispatch();
 	const tabNames = useMemo(() => ["search", "mood", "shuffle"], []);
 	const [activeTab, setActiveTag] = useState(tabNames[0]);
 	const [allFormReset, setAllFormReset] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
 	const startingPoint = useSelector(selectStartingPoint);
+	const isCollapse = useSelector(selectShowRouteControlMenu);
 
 	const handleQuerySubmit = async (e, formValues, mode) => {
 		e.preventDefault();
@@ -68,6 +65,7 @@ function ControlMenuGroup({
 
 			dispatch(setRoutesDirectionsPlaces(routes));
 			setAllFormReset((prev) => prev + 1);
+			dispatch(setShowRouteControlMenu(false));
 		} catch (error) {
 			dispatch(
 				setModal({
@@ -83,70 +81,59 @@ function ControlMenuGroup({
 
 	return (
 		<div className="control-menu-group">
-			<button className="control-menu-group__home-button">
-				<Link to="/">
-					<img
-						src={logo}
-						alt="Pathfinder brand logo"
-						className="control-menu-group__logo"
-					/>
-				</Link>
-			</button>
+			<AnimatePresence>
+				{isCollapse && (
+					<motion.div
+						initial={{ y: -100, opacity: 0 }}
+						animate={{ y: 0, opacity: 1 }}
+						exit={{ y: 100, opacity: 0 }}
+						className={`control-menu-group__content-wrapper ${
+							isCollapse ? "control-menu-group__content-wrapper--hidden" : ""
+						}`}
+					>
+						<button className="control-menu-group__home-button">
+							<Link to="/">
+								<img
+									src={logo}
+									alt="Pathfinder brand logo"
+									className="control-menu-group__logo"
+								/>
+							</Link>
+						</button>
+						
+						{isLoaded && (
+							<ControlStartingPoint
+								setCurrentLocationAsStart={setCurrentLocationAsStart}
+							/>
+						)}
+						<div className="control-menu-group__tab">
+							{activeTab === tabNames[0] && (
+								<RouteSearchPanel
+									handleQuerySubmit={handleQuerySubmit}
+									allFormReset={allFormReset}
+								/>
+							)}
 
-			<div className="control-menu-group__toggle-wrapper">
-				<motion.button
-					whileHover={{
-						scale: 1.4,
-						transition: { duration: 1 },
-					}}
-					whileTap={{ scale: 0.8 }}
-					onClick={toggleShowHide}
-				>
-					<SVGIcons
-						iconName="expand"
-						cssClassName={`control-menu-group__icon ${
-							isCollapse ? "control-menu-group__icon--active" : ""
-						} `}
-					/>
-					<SVGIcons
-						iconName="collapse"
-						cssClassName={`control-menu-group__icon ${
-							isCollapse ? "" : "control-menu-group__icon--active"
-						} `}
-					/>
-				</motion.button>
-			</div>
+							{activeTab === tabNames[1] && (
+								<RouteMoodPanel
+									handleQuerySubmit={handleQuerySubmit}
+									allFormReset={allFormReset}
+								/>
+							)}
 
-			{isLoaded && (
-				<ControlStartingPoint
-					setCurrentLocationAsStart={setCurrentLocationAsStart}
-				/>
-			)}
-			<div className="control-menu-group__tab">
-				{activeTab === tabNames[0] && (
-					<RouteSearchPanel
-						handleQuerySubmit={handleQuerySubmit}
-						allFormReset={allFormReset}
-					/>
+							{activeTab === tabNames[2] && (
+								<RouteRandomPanel handleQuerySubmit={handleQuerySubmit} />
+							)}
+						</div>
+						{isLoading ? <Loading /> : <></>}
+						<ControlTabs
+							tabNames={tabNames}
+							setActiveTag={setActiveTag}
+							activeTab={activeTab}
+						/>
+					</motion.div>
 				)}
-
-				{activeTab === tabNames[1] && (
-					<RouteMoodPanel
-						handleQuerySubmit={handleQuerySubmit}
-						allFormReset={allFormReset}
-					/>
-				)}
-
-				{activeTab === tabNames[2] && (
-					<RouteRandomPanel handleQuerySubmit={handleQuerySubmit} />
-				)}
-			</div>
-			{isLoading ? <Loading /> : <></>}
-			<ControlTabs
-				tabNames={tabNames}
-				setActiveTag={setActiveTag}
-				activeTab={activeTab}
-			/>
+			</AnimatePresence>
 		</div>
 	);
 }

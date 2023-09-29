@@ -4,29 +4,47 @@
 .control-menu {
 	max-width: 100vw;
 	position: fixed;
-	left: 50%;
-	transform: translate(-50%, -100%);
+	bottom: 0;
+	border-radius: $section-radius;
+	padding: $mobile-row-gap;
+	background-color: $primary-panel-background-color;
+	border: $element-border;
 
-	@include desktop {
-		height: 100vh;
-		position: relative;
-		transform: translate(0, 0);
-		transform: none;
-		left: 0;
+	&__icon {
+		width: 2rem;
+		height: 2rem;
+		margin-bottom: $mobile-row-gap;
 	}
 
-	&__wrapper--mobile {
-		@include desktop {
-			display: none;
+	&__toggle {
+		display: none;
+		width: 100%;
+
+		&--active {
+			display: block;
 		}
 	}
 
-	&__wrapper--desktop {
-		display: none;
-        background-color: transparent;
+	&__toggle-wrapper {
+		display: block;
+		width: 100%;
+	}
 
-		@include desktop {
-			display: block;
+	&__toggle-button {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	@include desktop{
+		position: unset;
+
+		&--collapsed{
+			position: fixed;
+			top: 2rem;
+			left: 2rem;
+			height: 7rem;
 		}
 	}
 }

@@ -5,6 +5,7 @@ import { modalReducer } from "./modal/modalSlice";
 import { startingPointlReducer } from "./startingPoint/startingPointSlice";
 import { mapReducer } from "./map/mapSlice";
 import { routeReducer } from "./route/routeSlice";
+import { layoutReducer } from "./layout/layoutSlice";
 
 export const rootReducer = combineReducers({
 	user: userReducer,
@@ -12,4 +13,5 @@ export const rootReducer = combineReducers({
 	startingPoint: startingPointlReducer,
 	map: mapReducer,
 	route: routeReducer,
+	layout: layoutReducer
 });

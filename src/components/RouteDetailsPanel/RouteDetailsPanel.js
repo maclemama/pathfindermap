@@ -174,14 +174,17 @@ function RouteDetailsPanel({ mapRef, isInProfile, routeDetails }) {
 						) : (
 							<div className="route-panel__route-number">
 								{selectedRouteDetails.walking_distance && (
-									<span className="route-panel__route-distance">{`Distance: ${
-										selectedRouteDetails.walking_distance
-									} km${
-										selectedRouteDetails.walking_distance > 1 ? "s" : ""
-									}`}</span>
+										<span className="route-panel__route-distance">
+											<span className="route-panel__route-unit">Distance: </span>
+											{`${selectedRouteDetails.walking_distance} km${
+												selectedRouteDetails.walking_distance > 1 ? "s" : ""
+											}`}
+										</span>
 								)}
 								{selectedRouteDetails.walking_time && (
-									<span className="route-panel__route-distance">{`Walking Duration: ${
+									<span className="route-panel__route-distance">
+										<span className="route-panel__route-unit">Walking Time: </span>
+										{`${
 										selectedRouteDetails.walking_time
 									} min${
 										selectedRouteDetails.walking_time > 1 ? "s" : ""

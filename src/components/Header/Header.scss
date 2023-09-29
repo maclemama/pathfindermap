@@ -5,10 +5,12 @@
 	background-color: $primary-panel-background-color;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	padding: $mobile-row-gap $mobile-col-gap;
 	border: $element-border;
 	border-bottom-left-radius: $section-radius;
 	border-bottom-right-radius: $section-radius;
+	height: 5vh;
 	@include element-shadow;
 
 	@include tablet {
@@ -17,6 +19,7 @@
 
 	@include desktop {
 		position: absolute;
+		height: auto;
 		top: 2rem;
 		right: 3rem;
 		z-index: 1000;
@@ -25,7 +28,7 @@
 	}
 
 	&__logo {
-		height: 3rem;
+		height: 2rem;
 
 		@include desktop {
 			display: none;
@@ -36,7 +39,6 @@
 		border-radius: $element-border;
 		margin: 0;
 		@include desktop {
-
 			&--profile {
 				display: none;
 			}
@@ -59,13 +61,25 @@
 	}
 
 	&__profile-icon {
-		width: 3rem;
+		width: 2rem;
+
+		&-text {
+			font-size: 1.2rem;
+
+			@include tablet {
+				font-size: unset;
+			}
+		}
 	}
 
 	&__profile {
 		display: flex;
 		align-items: center;
-		flex-direction: column;
+
+		@include tablet {
+			flex-direction: column;
+		}
+
 		@include desktop {
 			padding: 1rem;
 		}

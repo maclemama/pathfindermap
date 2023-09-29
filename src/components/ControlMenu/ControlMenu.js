@@ -1,66 +1,69 @@
-import { useState, useRef, useEffect } from "react";
-import { motion, useDragControls } from "framer-motion";
 import "./ControlMenu.scss";
+
+import { useDispatch, useSelector  } from "react-redux";
+import { motion } from "framer-motion";
+
+import { setShowRouteControlMenu } from "../../store/layout/layoutSlice";
+import { selectShowRouteControlMenu } from "../../store/layout/layoutSelector";
+
 import ControlMenuGroup from "../ControlMenuGroup/ControlMenuGroup";
+import SVGIcons from "../SVGIcons/SVGIcons";
+import FormInput from "../FormInput/FormInput";
+import FormInputPrefix from "../FormInputPrefix/FormInputPrefix";
+
 
 function ControlMenu({ setCurrentLocationAsStart, isLoaded }) {
-	const [positionY, setPositionY] = useState(-50);
-	const [maxPositionY, setMaxPositionY] = useState(0);
-	const [isCollapse, setIsCollapse] = useState(true);
-	const controls = useDragControls();
-	const sectionRef = useRef(null);
-
-	useEffect(() => {
-		if (!sectionRef.current) return;
-		const resizeObserver = new ResizeObserver(() => {
-			const newMaxPositionY = sectionRef.current.offsetHeight - 100;
-			setMaxPositionY(newMaxPositionY);
-		});
-		resizeObserver.observe(sectionRef.current);
-		return () => resizeObserver.disconnect();
-	}, []);
+	const dispatch = useDispatch();
+	const isCollapse = useSelector(selectShowRouteControlMenu);
 
 	const toggleShowHide = () => {
-		if (positionY === -50) {
-			setPositionY(maxPositionY);
-			setIsCollapse(true);
-		} else {
-			setPositionY(-50);
-			setIsCollapse(false);
-		}
+		dispatch(setShowRouteControlMenu(!isCollapse));
 	};
 
-	const handleDrag = () => {
-		setIsCollapse(true);
-	};
 
 	return (
-		<section className="control-menu" ref={sectionRef}>
-			<div className="control-menu__wrapper--mobile">
-				<motion.div
-					className="control-menu__dragable-box"
-					animate={{ y: positionY }}
-					transition={{ type: "spring", damping: 20 }}
-					drag={"y"}
-					dragControls={controls}
-					dragConstraints={{ top: 0, bottom: maxPositionY }}
-					onDrag={handleDrag}
+		<section className={`control-menu ${!isCollapse ? "control-menu--collapsed" : ""}`}>
+			<div
+				className="control-menu__toggle-wrapper"
+				onClick={toggleShowHide}
+			>
+				<motion.button
+					whileHover={{
+						scale: 1.05,
+						transition: { duration: 1 },
+					}}
+					whileTap={{ scale: 0.95 }}
+					className="control-menu__toggle-button"
 				>
-					<ControlMenuGroup
-						setCurrentLocationAsStart={setCurrentLocationAsStart}
-						isCollapse={isCollapse}
-						toggleShowHide={toggleShowHide}
-						isLoaded={isLoaded}
-					/>
-				</motion.div>
+					<div
+						className={`control-menu__toggle ${
+							!isCollapse ? "" : "control-menu__toggle--active"
+						} `}
+					>
+						<SVGIcons
+							iconName="collapse"
+							cssClassName="control-menu__icon"
+						/>
+					</div>
+					<div
+						className={`control-menu__toggle ${
+							isCollapse ? "" : "control-menu__toggle--active"
+						} `}
+					>
+						<FormInput
+							inputType={"text"}
+							inputPlaceHolder={"Tap to search"}
+							inputPreflixWidth={40}
+							prefixComponent={[<FormInputPrefix svgName={"search"} />]}
+						/>
+					</div>
+				</motion.button>
 			</div>
-
-			<div className="control-menu__wrapper--desktop">
+			<div className="control-menu__wrapper">
 				<ControlMenuGroup
 					setCurrentLocationAsStart={setCurrentLocationAsStart}
-					isCollapse={isCollapse}
-					toggleShowHide={toggleShowHide}
 					isLoaded={isLoaded}
+					toggleShowHide={toggleShowHide}
 				/>
 			</div>
 		</section>
