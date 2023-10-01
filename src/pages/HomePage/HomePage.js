@@ -15,6 +15,7 @@ import {
 	setRoutesDirectionsPlaces,
 	resetRoute,
 } from "../../store/route/routeSlice";
+import { resetLayout } from "../../store/layout/layoutSlice";
 import { selectSelectedRoute } from "../../store/route/routeSelector";
 import { generateRoutes } from "../../scripts/routeUtils";
 
@@ -51,6 +52,7 @@ function HomePage() {
 					);
 					dispatch(setRoutesDirectionsPlaces(routes));
 				} else {
+					dispatch(resetLayout());
 					dispatch(resetRoute());
 					const location = await getUserLocation();
 					const { latitude, longitude } = location.coords;

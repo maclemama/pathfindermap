@@ -12,12 +12,20 @@ export const layoutSlice = createSlice({
 		setShowRouteDetailsPanel(state, action) {
 			state.showRouteDetailsPanel = action.payload;
 		},
-        setShowRouteControlMenu(state, action) {
+		setShowRouteControlMenu(state, action) {
 			state.showRouteControlMenu = action.payload;
+		},
+		resetLayout(state) {
+			state.showRouteDetailsPanel = false;
+			state.showRouteControlMenu = true;
 		},
 	},
 });
 
-export const { setShowRouteControlMenu,setShowRouteDetailsPanel } = layoutSlice.actions;
+export const {
+	setShowRouteControlMenu,
+	setShowRouteDetailsPanel,
+	resetLayout,
+} = layoutSlice.actions;
 
 export const layoutReducer = layoutSlice.reducer;
