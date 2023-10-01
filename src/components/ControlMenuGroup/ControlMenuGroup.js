@@ -65,7 +65,9 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 
 			dispatch(setRoutesDirectionsPlaces(routes));
 			setAllFormReset((prev) => prev + 1);
-			dispatch(setShowRouteControlMenu(false));
+			if (controlMenuExpanded) {
+				dispatch(setShowRouteControlMenu(false));
+			}
 		} catch (error) {
 			dispatch(
 				setModal({
@@ -87,9 +89,10 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 						initial={{ y: -100, opacity: 0 }}
 						animate={{ y: 0, opacity: 1 }}
 						exit={{ y: -100, opacity: 0 }}
-						
 						className={`control-menu-group__content-wrapper ${
-							controlMenuExpanded ? "control-menu-group__content-wrapper--hidden" : ""
+							controlMenuExpanded
+								? "control-menu-group__content-wrapper--hidden"
+								: ""
 						}`}
 					>
 						<button className="control-menu-group__home-button">
@@ -101,7 +104,7 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 								/>
 							</Link>
 						</button>
-						
+
 						{isLoaded && (
 							<ControlStartingPoint
 								setCurrentLocationAsStart={setCurrentLocationAsStart}

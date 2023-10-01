@@ -12,11 +12,13 @@ function RouteSelector() {
 	const dispatch = useDispatch();
 	const routes = useSelector(selectRoutes);
 	const selectedRoute = useSelector(selectSelectedRoute);
+	const controlMenuExpanded = useSelector(selectShowRouteControlMenu);
 	const handleRouteSwitch = (route_id) => {
 		dispatch(setSelectedRoute(route_id));
-		dispatch(setShowRouteControlMenu(false));
+		if (controlMenuExpanded) {
+			dispatch(setShowRouteControlMenu(false));
+		}
 	};
-	const controlMenuExpanded = useSelector(selectShowRouteControlMenu);
 
 	const handleShowAll = () => {
 		dispatch(setSelectedRoute(null));

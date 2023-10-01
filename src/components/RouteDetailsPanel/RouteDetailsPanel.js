@@ -50,7 +50,9 @@ function RouteDetailsPanel({ mapRef, routeDetails }) {
 				summary,
 			});
 			setSavedRoute(routeDetails.user_saved);
-			dispatch(setShowRouteDetailsPanel(true));
+			if (!routeDetailsPanelExpanded) {
+				dispatch(setShowRouteDetailsPanel(true));
+			}
 			setIsLoading(false);
 		}
 	}, [selectedRoute, selectedDirection, routes, dispatch]);
@@ -92,11 +94,6 @@ function RouteDetailsPanel({ mapRef, routeDetails }) {
 		if (!routeDetailsPanelExpanded) {
 			dispatch(setShowRouteControlMenu(false));
 		}
-	};
-
-	const handleShowControlPanel = () => {
-		dispatch(setShowRouteControlMenu(true));
-		dispatch(setShowRouteDetailsPanel(false));
 	};
 
 	if (isloading) {
