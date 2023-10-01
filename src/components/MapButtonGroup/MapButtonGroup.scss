@@ -1,0 +1,46 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixin" as *;
+
+.map-button-group {
+	position: absolute;
+	top: 0;
+	width: 100%;
+
+	&__search-button {
+		position: absolute;
+		left: 1rem;
+		top: -5rem;
+
+		@include desktop {
+			display: none;
+		}
+	}
+
+	&__route-button {
+		position: absolute;
+		left: 1rem;
+		top: -5rem;
+
+		@include desktop {
+			display: none;
+		}
+	}
+
+	&__start-button {
+		position: absolute;
+		left: 5.5rem;
+		top: -5rem;
+
+		@include desktop {
+			left: unset;
+			right: 1rem;
+			top: -10rem;
+		}
+	}
+
+	&__current-button {
+		position: absolute;
+		right: 1rem;
+		top: -5rem;
+	}
+}

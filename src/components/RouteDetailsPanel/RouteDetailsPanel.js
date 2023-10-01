@@ -1,94 +1,59 @@
 import "./RouteDetailsPanel.scss";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { selectCurrentUser } from "../../store/user/userSelector";
 import { selectSelectedRoute } from "../../store/route/routeSelector";
 import { selectSelectedDirection } from "../../store/route/routeSelector";
 import { selectRoutes } from "../../store/route/routeSelector";
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
+import { selectShowRouteDetailsPanel } from "../../store/layout/layoutSelector";
+import { selectShowRouteControlMenu } from "../../store/layout/layoutSelector";
+import { setShowRouteDetailsPanel } from "../../store/layout/layoutSlice";
+import { setShowRouteControlMenu } from "../../store/layout/layoutSlice";
 import { setModal } from "../../store/modal/modalSlice";
 import { postSaveRoute, deleteSavedRoute } from "../../scripts/routeUtils";
+import SVGIcons from "../SVGIcons/SVGIcons";
 
 import RoutePlacesList from "../RoutePlacesList/RoutePlacesList";
-import RouteSaveButton from "../RouteSaveButton/RouteSaveButton";
+import RouteSummary from "../RouteSummary/RouteSummary";
 
-function RouteDetailsPanel({ mapRef, isInProfile, routeDetails }) {
+function RouteDetailsPanel({ mapRef, routeDetails }) {
 	const dispatch = useDispatch();
 	const user = useSelector(selectCurrentUser);
 	const routes = useSelector(selectRoutes);
 	const selectedRoute = useSelector(selectSelectedRoute);
 	const selectedDirection = useSelector(selectSelectedDirection);
 	const startingPoint = useSelector(selectStartingPoint);
+	const routeDetailsPanelExpanded = useSelector(selectShowRouteDetailsPanel);
+	const controlMenuPanelExpanded = useSelector(selectShowRouteControlMenu);
 	const [selectedRouteDetails, setSelectedRouteDetails] = useState(null);
 	const [isloading, setIsLoading] = useState(true);
 	const [savedRoute, setSavedRoute] = useState(null);
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (selectedRoute && selectedDirection) {
-			if (isInProfile) {
-				// getGoogleGeocoder({
-				// 	location: {
-				// 		lat: routeDetails.latitude,
-				// 		lng: routeDetails.longitude,
-				// 	},
-				// })
-				// 	.then((matchedPlace) => {
-				// 		let postal_town, country, route;
-				// 		matchedPlace.address_components.forEach((addr) => {
-				// 			if (addr.types.includes("postal_town")) {
-				// 				postal_town = addr.long_name;
-				// 			}
-				// 			if (addr.types.includes("country")) {
-				// 				country = addr.long_name;
-				// 			}
-				// 			if (addr.types.includes("route")) {
-				// 				route = addr.short_name;
-				// 			}
-				// 		});
-				// 		routeDetails.starting_address =
-				// 			`${route ? route + ", " : ""}` +
-				// 			`${postal_town ? postal_town + ", " : ""}` +
-				// 			country;
-				// 		routeDetails.place_id = matchedPlace.place_id;
-				// 		setSelectedRouteDetails(routeDetails);
-				// 		setSavedRoute(routeDetails.user_saved);
-				// 	})
-				// 	.catch((error) => {
-				// 		dispatch(
-				// 			setModal({
-				// 				title: "Error",
-				// 				message: error.message,
-				// 			})
-				// 		);
-				// 		setSelectedRouteDetails([]);
-				// 	});
+			routeDetails = routes.filter(
+				(route) => route.route_id === selectedRoute
+			)[0];
 
-				setSelectedRouteDetails(routeDetails);
-			} else {
-				routeDetails = routes.filter(
-					(route) => route.route_id === selectedRoute
-				)[0];
+			const { walking_distance, walking_time, polyline, summary } =
+				selectedDirection;
 
-				const { walking_distance, walking_time, polyline, summary } =
-					selectedDirection;
-
-				setSelectedRouteDetails({
-					...routeDetails,
-					walking_distance,
-					walking_time,
-					polyline,
-					summary,
-				});
-				setSavedRoute(routeDetails.user_saved);
-			}
-
+			setSelectedRouteDetails({
+				...routeDetails,
+				walking_distance,
+				walking_time,
+				polyline,
+				summary,
+			});
+			setSavedRoute(routeDetails.user_saved);
+			dispatch(setShowRouteDetailsPanel(true));
 			setIsLoading(false);
 		}
-	}, [selectedRoute, selectedDirection, routes, isInProfile, dispatch]);
+	}, [selectedRoute, selectedDirection, routes, dispatch]);
 
 	const handleRouteSave = async (saveUnsave) => {
 		try {
@@ -122,18 +87,16 @@ function RouteDetailsPanel({ mapRef, isInProfile, routeDetails }) {
 		}
 	};
 
-	const handleShowMap = () => {
-		navigate("/", {
-			state: {
-				passedStartingPoint: {
-					lat: selectedRouteDetails.latitude,
-					lng: selectedRouteDetails.longitude,
-					placeId: selectedRouteDetails.place_id,
-					address: selectedRouteDetails.starting_address,
-				},
-				passedRouteData: [selectedRouteDetails],
-			},
-		});
+	const toggleShowHide = () => {
+		dispatch(setShowRouteDetailsPanel(!routeDetailsPanelExpanded));
+		if (!routeDetailsPanelExpanded) {
+			dispatch(setShowRouteControlMenu(false));
+		}
+	};
+
+	const handleShowControlPanel = () => {
+		dispatch(setShowRouteControlMenu(true));
+		dispatch(setShowRouteDetailsPanel(false));
 	};
 
 	if (isloading) {
@@ -141,65 +104,73 @@ function RouteDetailsPanel({ mapRef, isInProfile, routeDetails }) {
 	}
 
 	return (
-		<section className="route-panel">
-			{selectedRouteDetails && (
-				<>
-					<div className="route-panel__top-wrapper">
-						<div className="route-panel__top-left-wrapper">
-							{!!user && (
-								<RouteSaveButton
-									saved={savedRoute}
-									onClickHandler={handleRouteSave}
-								/>
-							)}
-
-							{isInProfile ? (
-								<h2 className="route-panel__title">
-									Path start from {selectedRouteDetails.address}. Saved at{" "}
-									{selectedRouteDetails.created_at}
-								</h2>
-							) : (
-								<h2 className="route-panel__title">Places in the Path</h2>
-							)}
+		selectedRouteDetails && (
+			<section
+				className={`route-panel ${
+					controlMenuPanelExpanded ? "route-panel--hidden" : ""
+				}`}
+			>
+				<div className="route-panel__toggle-wrapper" onClick={toggleShowHide}>
+					<motion.button
+						whileHover={{
+							scale: 1.1,
+							transition: { duration: 0.3 },
+						}}
+						whileTap={{ scale: 0.8 }}
+						className="route-panel__toggle-button"
+					>
+						<div
+							className={`route-panel__toggle ${
+								!routeDetailsPanelExpanded ? "" : "route-panel__toggle--active"
+							} `}
+						>
+							<SVGIcons iconName="collapse" cssClassName="route-panel__icon" />
 						</div>
-						{isInProfile ? (
-							<div className="route-panel__top-right-wrapper">
-								<button
-									onClick={handleShowMap}
-									className="route-panel__show-map-button"
-								>
-									Show Map
-								</button>
+						<div
+							className={`route-panel__toggle ${
+								routeDetailsPanelExpanded ? "" : "route-panel__toggle--active"
+							} `}
+						>
+							<SVGIcons iconName="expand" cssClassName="route-panel__icon" />
+							<h4>Expand Path details</h4>
+						</div>
+					</motion.button>
+					{routeDetailsPanelExpanded || (
+						<RouteSummary
+							user={user}
+							handleRouteSave={handleRouteSave}
+							selectedRouteDetails={selectedRouteDetails}
+							savedRoute={savedRoute}
+							isHeader={true}
+						/>
+					)}
+				</div>
+
+				<AnimatePresence>
+					{routeDetailsPanelExpanded && (
+						<motion.div
+							initial={{ y: -100, opacity: 0 }}
+							animate={{ y: 0, opacity: 1 }}
+							exit={{ y: 100, opacity: 0 }}
+							className="route-panel__content-wrapper"
+						>
+							<div className="route-panel__wrapper">
+								<RouteSummary
+									user={user}
+									handleRouteSave={handleRouteSave}
+									selectedRouteDetails={selectedRouteDetails}
+									savedRoute={savedRoute}
+								/>
+								<RoutePlacesList
+									selectedRouteDetails={selectedRouteDetails}
+									mapRef={mapRef}
+								/>
 							</div>
-						) : (
-							<div className="route-panel__route-number">
-								{selectedRouteDetails.walking_distance && (
-										<span className="route-panel__route-distance">
-											<span className="route-panel__route-unit">Distance: </span>
-											{`${selectedRouteDetails.walking_distance} km${
-												selectedRouteDetails.walking_distance > 1 ? "s" : ""
-											}`}
-										</span>
-								)}
-								{selectedRouteDetails.walking_time && (
-									<span className="route-panel__route-distance">
-										<span className="route-panel__route-unit">Walking Time: </span>
-										{`${
-										selectedRouteDetails.walking_time
-									} min${
-										selectedRouteDetails.walking_time > 1 ? "s" : ""
-									}`}</span>
-								)}
-							</div>
-						)}
-					</div>
-					<RoutePlacesList
-						selectedRouteDetails={selectedRouteDetails}
-						mapRef={mapRef}
-					/>
-				</>
-			)}
-		</section>
+						</motion.div>
+					)}
+				</AnimatePresence>
+			</section>
+		)
 	);
 }
 

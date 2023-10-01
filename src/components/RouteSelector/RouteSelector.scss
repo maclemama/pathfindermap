@@ -12,8 +12,12 @@
 	display: flex;
 
 	@include desktop {
-		top: 2rem;
+		top: 10rem;
 		left: 2rem;
+
+		&--with-menu {
+			top: 2rem;
+		}
 	}
 
 	&__title {

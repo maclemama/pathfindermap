@@ -2,58 +2,66 @@
 @use "../../styles/partials/mixin" as *;
 
 .route-panel {
-	background-color: $primary-background-color;
+	background-color: $primary-panel-background-color;
 	border: $element-border;
 	padding: $mobile-row-gap $mobile-col-gap;
 	height: auto;
+	border-radius: $section-radius;
+	z-index: 1;
+	width: 100vw;
 	display: flex;
 	flex-direction: column;
-	row-gap: $mobile-row-gap;
+	justify-content: center;
 
-	&__top-wrapper {
+	&--hidden{
+		display: none;
+
+		@include desktop{
+			display: flex;
+			background-color: $primary-panel-background-color;
+		}
+	}
+
+	@include tablet {
+		width: unset;
+	}
+
+	&__icon {
+		width: 2rem;
+		height: 2rem;
+	}
+
+	&__toggle {
+		display: none;
+		width: 100%;
+		padding-bottom: 0.5rem;
+		&--active {
+			display: block;
+		}
+	}
+
+	&__toggle-wrapper {
+		display: block;
+		width: 100%;
+	}
+
+	&__toggle-button {
+		width: 100%;
 		display: flex;
+		justify-content: center;
 		align-items: center;
-		align-content: center;
-		column-gap: 1rem;
-		justify-content: space-between;
 	}
 
-	&__top-left-wrapper {
+	&__wrapper {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		column-gap: 0.5rem;
-	}
-
-	&__title {
-		font-size: 1.4rem;
-	}
-
-	&__route-number {
-		display: flex;
-		column-gap: 0.5rem;
-		font-size: 1.2rem;
+		row-gap: $mobile-row-gap;
+		width: calc(100vw - $mobile-col-gap - $mobile-col-gap);
 
 		@include tablet {
-			column-gap: 1rem;
+			width: unset;
+			max-width: calc(100vw - $mobile-col-gap - $mobile-col-gap);
 		}
-
-		@include desktop {
-			padding-right: 2rem;
-		}
-	}
-
-	&__route-unit {
-		display: none;
-		@include tablet{
-			display: unset;
-		}
-	}
-
-	&__route-distance {
-		padding: 0.5rem 0.8rem;
-		border-radius: 1rem;
-		border: $element-border;
-		background-color: $primary-info-background-color;
-		color: $primary-text-light-color;
 	}
 }

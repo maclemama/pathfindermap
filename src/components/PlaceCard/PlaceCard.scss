@@ -2,12 +2,16 @@
 @use "../../styles/partials/mixin" as *;
 
 .place-card {
-	width: 25rem;
+	width: 22rem;
 	display: flex;
 	background-color: $primary-card-background-color;
 	flex-direction: column;
 	border-radius: $element-radius;
 	border: $element-border;
+
+	@include desktop {
+		width: 25rem;
+	}
 
 	&__photo-wrapper {
 		margin: 0;
@@ -66,8 +70,8 @@
 	}
 
 	&__photo {
-		width: 25rem;
-		height: 13rem;
+		width: 22rem;
+		height: 10rem;
 		object-fit: cover;
 		border-top-left-radius: $element-radius;
 		border-top-right-radius: $element-radius;

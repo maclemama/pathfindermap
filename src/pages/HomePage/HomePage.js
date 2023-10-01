@@ -21,6 +21,7 @@ import { generateRoutes } from "../../scripts/routeUtils";
 import Map from "../../components/Map/Map";
 import ControlMenu from "../../components/ControlMenu/ControlMenu";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
+import MapButtonGroup from "../../components/MapButtonGroup/MapButtonGroup";
 
 function HomePage() {
 	const location = useLocation();
@@ -95,14 +96,23 @@ function HomePage() {
 	return (
 		<div className="home">
 			<div className="home__desktop-right-wrapper">
-				{selectedRoute && <RouteDetailsPanel mapRef={mapRef} />}
 				{isLoaded && <Map mapRef={mapRef} />}
 			</div>
-
-			<ControlMenu
-				setCurrentLocationAsStart={setCurrentLocationAsStart}
-				isLoaded={isLoaded}
-			/>
+			<div className="home__controls-wrapper">
+				<div className="home__route-wrapper">
+					<div className="home__button-wrapper--desktop">
+						<MapButtonGroup />
+					</div>
+					{selectedRoute && <RouteDetailsPanel mapRef={mapRef} />}
+				</div>
+				<ControlMenu
+					setCurrentLocationAsStart={setCurrentLocationAsStart}
+					isLoaded={isLoaded}
+				/>
+				<div className="home__button-wrapper--mobile">
+					<MapButtonGroup />
+				</div>
+			</div>
 		</div>
 	);
 }

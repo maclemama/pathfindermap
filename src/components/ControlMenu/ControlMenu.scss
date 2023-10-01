@@ -2,13 +2,33 @@
 @use "../../styles/partials/mixin" as *;
 
 .control-menu {
-	max-width: 100vw;
-	position: fixed;
-	bottom: 0;
+	width: 100vw;
 	border-radius: $section-radius;
 	padding: $mobile-row-gap;
 	background-color: $primary-panel-background-color;
 	border: $element-border;
+
+	max-width: 40rem;
+
+	@include desktop{
+		position: unset;
+		border: unset;
+		&--collapsed{
+			position: fixed;
+			top: 2rem;
+			left: 2rem;
+			height: 7rem;
+		}
+	}
+
+	&--hidden{
+		display: none;
+
+		@include desktop{
+			display: unset;
+		}
+	}
+
 
 	&__icon {
 		width: 2rem;
@@ -35,16 +55,5 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}
-
-	@include desktop{
-		position: unset;
-
-		&--collapsed{
-			position: fixed;
-			top: 2rem;
-			left: 2rem;
-			height: 7rem;
-		}
 	}
 }

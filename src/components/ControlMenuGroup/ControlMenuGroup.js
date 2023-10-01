@@ -29,7 +29,7 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 	const [allFormReset, setAllFormReset] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
 	const startingPoint = useSelector(selectStartingPoint);
-	const isCollapse = useSelector(selectShowRouteControlMenu);
+	const controlMenuExpanded = useSelector(selectShowRouteControlMenu);
 
 	const handleQuerySubmit = async (e, formValues, mode) => {
 		e.preventDefault();
@@ -82,13 +82,14 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 	return (
 		<div className="control-menu-group">
 			<AnimatePresence>
-				{isCollapse && (
+				{controlMenuExpanded && (
 					<motion.div
 						initial={{ y: -100, opacity: 0 }}
 						animate={{ y: 0, opacity: 1 }}
-						exit={{ y: 100, opacity: 0 }}
+						exit={{ y: -100, opacity: 0 }}
+						
 						className={`control-menu-group__content-wrapper ${
-							isCollapse ? "control-menu-group__content-wrapper--hidden" : ""
+							controlMenuExpanded ? "control-menu-group__content-wrapper--hidden" : ""
 						}`}
 					>
 						<button className="control-menu-group__home-button">

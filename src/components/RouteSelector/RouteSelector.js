@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectRoutes } from "../../store/route/routeSelector";
 import { selectSelectedRoute } from "../../store/route/routeSelector";
 import { setSelectedRoute } from "../../store/route/routeSlice";
+import { selectShowRouteControlMenu } from "../../store/layout/layoutSelector";
+import { setShowRouteControlMenu } from "../../store/layout/layoutSlice";
 
 function RouteSelector() {
 	const dispatch = useDispatch();
@@ -12,7 +14,9 @@ function RouteSelector() {
 	const selectedRoute = useSelector(selectSelectedRoute);
 	const handleRouteSwitch = (route_id) => {
 		dispatch(setSelectedRoute(route_id));
+		dispatch(setShowRouteControlMenu(false));
 	};
+	const controlMenuExpanded = useSelector(selectShowRouteControlMenu);
 
 	const handleShowAll = () => {
 		dispatch(setSelectedRoute(null));
@@ -20,7 +24,11 @@ function RouteSelector() {
 
 	return (
 		routes && (
-			<section className="route-selector">
+			<section
+				className={`route-selector ${
+					controlMenuExpanded ? "route-selector--with-menu" : ""
+				}`}
+			>
 				<h4 className="route-selector__title">Path</h4>
 				{routes.map((route, index) => {
 					const thisRouteIndex = index + 1;

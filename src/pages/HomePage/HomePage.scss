@@ -11,13 +11,51 @@
 	}
 
 	&__desktop-right-wrapper {
-		height: 95vh;
+		height: 94vh;
 		width: 100vw;
 
 		@include desktop {
 			height: 100vh;
 			display: flex;
 			flex-direction: column-reverse;
+		}
+	}
+
+	&__controls-wrapper {
+		position: fixed;
+		bottom: 0;
+
+		@include desktop {
+			position: unset;
+			background-color: $primary-panel-background-color;
+		}
+	}
+
+	&__route-wrapper{
+		@include desktop{
+			position: fixed;
+			right: 2rem;
+			bottom: 2rem;
+		}
+	}
+
+	&__button-wrapper {
+		&--mobile {
+			position: absolute;
+			top: 0;
+			width: 100%;
+
+			@include desktop {
+				display: none;
+			}
+		}
+
+		&--desktop {
+			display: none;
+
+			@include desktop {
+				display: unset;
+			}
 		}
 	}
 }
