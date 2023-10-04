@@ -61,3 +61,14 @@ button {
 	border: none;
 	padding: 0;
 }
+
+.aria-description{
+	position: absolute;
+	padding: 0;
+	margin: -1px;
+	clip: rect(0,0,0,0);
+	border: 0;
+	overflow: hidden;
+	height: 1px;
+	width: 1px;
+}

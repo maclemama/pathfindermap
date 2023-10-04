@@ -38,7 +38,6 @@ function RouteDetailsPanel({ mapRef, routeDetails }) {
 			routeDetails = routes.filter(
 				(route) => route.route_id === selectedRoute
 			)[0];
-
 			const { walking_distance, walking_time, polyline, summary } =
 				selectedDirection;
 
@@ -47,7 +46,7 @@ function RouteDetailsPanel({ mapRef, routeDetails }) {
 				walking_distance,
 				walking_time,
 				polyline,
-				summary,
+				summary
 			});
 			setSavedRoute(routeDetails.user_saved);
 			if (!routeDetailsPanelExpanded) {

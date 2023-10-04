@@ -1,7 +1,7 @@
 import "./Map.scss";
 
 import { GoogleMap, MarkerF, CircleF } from "@react-google-maps/api";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
@@ -10,11 +10,13 @@ import { selectMapRadius } from "../../store/map/mapSelector";
 import RouteSelector from "../RouteSelector/RouteSelector";
 import markerPrimaryIcon from "../../assets/icons/marker-primary.svg";
 import Routes from "../Routes/Routes";
+import MapMarkerCurrent from "../MapMarkerCurrent/MapMarkerCurrent";
 
-function Map({ mapRef }) {
+function Map({ mapRef, isLoaded }) {
 	console.log("Map component re-render");
 	const startingPoint = useSelector(selectStartingPoint);
 	const mapRadius = useSelector(selectMapRadius);
+	const [mapLoaded, setMapLoaded] = useState(false);
 	const mapOptions = useMemo(
 		() => ({
 			mapId: "f6ca3c1a38d4ecfa",
@@ -42,7 +44,16 @@ function Map({ mapRef }) {
 		[]
 	);
 
-	const onLoad = useCallback((map) => (mapRef.current = map), [mapRef]);
+	const onLoad = useCallback(
+		(map) => {
+			mapRef.current = map;
+			setMapLoaded(true);
+		},
+		[mapRef]
+	);
+	if (!isLoaded) {
+		return;
+	}
 
 	return (
 		<section className="map">
@@ -53,6 +64,8 @@ function Map({ mapRef }) {
 				options={mapOptions}
 			>
 				<MarkerF position={startingPoint} icon={markerPrimaryIcon} />
+
+				{mapLoaded && <MapMarkerCurrent map={mapRef.current} />}
 
 				<Routes mapRef={mapRef} />
 

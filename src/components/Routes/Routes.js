@@ -1,11 +1,6 @@
 import "./Routes.scss";
 
-import {
-	MarkerF,
-	DirectionsRenderer,
-	InfoWindowF,
-	PolylineF,
-} from "@react-google-maps/api";
+import { DirectionsRenderer, PolylineF } from "@react-google-maps/api";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -25,7 +20,7 @@ import {
 	getDirectionDetails,
 } from "../../scripts/routeUtils";
 
-import markerSecondaryIcon from "../../assets/icons/marker-secondary.svg";
+import MapMarkerWaypoint from "../MapMarkerWaypoint/MapMarkerWaypoint";
 
 function Routes({ mapRef }) {
 	const dispatch = useDispatch();
@@ -213,16 +208,12 @@ function Routes({ mapRef }) {
 						lng: place.longitude,
 					};
 					return (
-						<MarkerF
+						<MapMarkerWaypoint
 							position={location}
-							icon={markerSecondaryIcon}
-							visible={showMarker[String(place.route_id)]}
+							map={mapRef.current}
+							placeData={place}
 							key={index}
-						>
-							<InfoWindowF position={location}>
-								<div>{place.name}</div>
-							</InfoWindowF>
-						</MarkerF>
+						/>
 					);
 				})}
 			{directions &&
@@ -249,7 +240,6 @@ function Routes({ mapRef }) {
 									strokeWeight: 6,
 									zIndex: polyLineZIndex[index],
 								}}
-								onMouseOver={() => showSelectedRoute(index, direction)}
 								onClick={() => handleRouteClick(direction.route_id)}
 							/>
 						</div>

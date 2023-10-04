@@ -29,10 +29,14 @@ function ControlMenu({ setCurrentLocationAsStart, isLoaded }) {
 
 	return (
 		<section
+			aria-label="Path search panel"
+			aria-describedby="control-menu-description"
+			aria-description="A control menu for entering path search query parameters and choose from one of three modes including search mode, mood mode and shuffle mode."
 			className={`control-menu ${
 				!controlMenuExpanded ? "control-menu--collapsed" : ""
 			} ${routeDetailsPanelExpanded || (!routeDetailsPanelExpanded && hasSelectedRoute && !controlMenuExpanded)? "control-menu--hidden":""}`}
 		>
+			<p class="aria-description" id="control-menu-description">A control menu for entering path search query parameters and choose from one of three modes including search mode, mood mode and shuffle mode.</p>
 			<div className="control-menu__toggle-wrapper" onClick={toggleShowHide}>
 				<motion.button
 					whileHover={{

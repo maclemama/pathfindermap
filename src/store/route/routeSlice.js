@@ -5,7 +5,8 @@ const INITIAL_STATE = {
 	selectedRoute: null,
 	places: null,
 	directionConfigs: null,
-	selectedDirection:null,
+	selectedDirection: null,
+	highlightedPlace: null,
 };
 
 export const routeSlice = createSlice({
@@ -17,7 +18,8 @@ export const routeSlice = createSlice({
 			state.selectedRoute = null;
 			state.places = action.payload.places;
 			state.directionConfigs = action.payload.directionConfigs;
-            state.selectedDirection = null;
+			state.selectedDirection = null;
+			state.highlightedPlace = null;
 		},
 		setRoutes(state, action) {
 			state.routes = action.payload;
@@ -28,15 +30,19 @@ export const routeSlice = createSlice({
 		setDirectionConfig(state, action) {
 			state.directionConfigs = action.directionConfigs;
 		},
-        setSelectedDirection(state, action) {
+		setSelectedDirection(state, action) {
 			state.selectedDirection = action.payload;
+		},
+		setHighlightedPlace(state, action) {
+			state.highlightedPlace = action.payload;
 		},
 		resetRoute(state) {
 			state.routes = null;
 			state.selectedRoute = null;
 			state.places = null;
 			state.directionConfigs = null;
-            state.selectedDirection = null;
+			state.selectedDirection = null;
+			state.highlightedPlace = null;
 		},
 	},
 });
@@ -47,7 +53,8 @@ export const {
 	setDirectionConfig,
 	resetRoute,
 	setRoutesDirectionsPlaces,
-    setSelectedDirection
+	setSelectedDirection,
+	setHighlightedPlace,
 } = routeSlice.actions;
 
 export const routeReducer = routeSlice.reducer;

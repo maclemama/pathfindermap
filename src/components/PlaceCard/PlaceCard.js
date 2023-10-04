@@ -1,25 +1,30 @@
 import "./PlaceCard.scss";
+
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import {
 	setPlaceSessionData,
 	getPlaceSessionData,
 } from "../../scripts/sessionStorage";
-import { useEffect, useState } from "react";
-import moneyFillIcon from "../../assets/icons/money_fill.svg";
-import moneyEmptyIcon from "../../assets/icons/money_empty.svg";
-import starFillIcon from "../../assets/icons/star_fill.svg";
-import starHalfFillIcon from "../../assets/icons/star_half.svg";
-import starEmptyIcon from "../../assets/icons/star_empty.svg";
+import { selectHighlightedPlace } from "../../store/route/routeSelector";
+import { setHighlightedPlace } from "../../store/route/routeSlice";
+
 import storeIcon from "../../assets/icons/storefront.svg";
 import placeholderPhoto from "../../assets/images/placeholder.png";
-import { Link } from "react-router-dom";
+import { PriceInfo, RatingInfo } from "../PlaceInfo/PlaceInfo";
 
-function PlaceCard({ placeData, mapRef }) {
+function PlaceCard({ placeData, mapRef, routeID }) {
+	const dispatch = useDispatch();
 	const [placeGoogleData, setPlaceGoogleData] = useState(null);
+	const highlighedPlace = useSelector(selectHighlightedPlace);
+	const routePlaceID = routeID + placeData.place_id;
+	const isHighlighted = highlighedPlace === routePlaceID;
 
 	useEffect(() => {
 		const storedPlace = getPlaceSessionData(placeData.place_id);
 		const hasData = storedPlace ? storedPlace : false;
-
 		if (!hasData) {
 			const service = new window.google.maps.places.PlacesService(
 				mapRef.current
@@ -65,9 +70,20 @@ function PlaceCard({ placeData, mapRef }) {
 			setPlaceGoogleData(JSON.parse(hasData));
 		}
 	}, []);
+
+	const handlePlaceCardClick = () => {
+		dispatch(
+			setHighlightedPlace(routePlaceID === highlighedPlace ? "" : routePlaceID)
+		);
+	};
 	return (
 		placeGoogleData && (
-			<article className="place-card">
+			<article
+				className={`place-card ${
+					isHighlighted ? "place-card--highlighted" : ""
+				}`}
+				onClick={handlePlaceCardClick}
+			>
 				<figure className="place-card__photo-wrapper">
 					<img
 						src={
@@ -77,7 +93,7 @@ function PlaceCard({ placeData, mapRef }) {
 						className="place-card__photo"
 					/>
 					<div className="place-card__photo-keyword-overlay">
-						{placeData.query_mood || placeData.query_keyword || "Shuffle Place" }
+						{placeData.query_mood || placeData.query_keyword || "Shuffle Place"}
 					</div>
 				</figure>
 				<div className="place-card__content">
@@ -98,47 +114,13 @@ function PlaceCard({ placeData, mapRef }) {
 							{placeGoogleData.price_level && (
 								<div className="place-card__info">
 									<p className="place-card__info-title">Price:</p>
-									<div className="place-card__rating-icons-wrapper">
-										{[...Array(5)].map((nth, index) => {
-											const rating = Number(placeGoogleData.price_level);
-											return (
-												<img
-													src={
-														rating >= index + 1 ? moneyFillIcon : moneyEmptyIcon
-													}
-													className="place-card__rating-icon"
-													alt={`Store price level for this store is ${rating}`}
-													key={index}
-												/>
-											);
-										})}
-									</div>
+									<PriceInfo price_level={placeGoogleData.price_level}/>
 								</div>
 							)}
 							{placeGoogleData.rating && (
 								<div className="place-card__info">
 									<p className="place-card__info-title">Rating:</p>
-									<div className="place-card__rating-icons-wrapper">
-										{[...Array(5)].map((nth, index) => {
-											const rating = Number(placeGoogleData.rating);
-											let icon;
-											if (rating >= index + 1) {
-												icon = starFillIcon;
-											} else if (rating >= index + 0.5) {
-												icon = starHalfFillIcon;
-											} else {
-												icon = starEmptyIcon;
-											}
-											return (
-												<img
-													src={icon}
-													className="place-card__rating-icon"
-													alt={`Store rating for this store is ${rating}`}
-													key={index}
-												/>
-											);
-										})}
-									</div>
+									<RatingInfo ratingNum={placeGoogleData.rating}/>
 								</div>
 							)}
 						</div>

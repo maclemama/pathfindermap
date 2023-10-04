@@ -31,11 +31,12 @@ function HomePage() {
 
 	const selectedRoute = useSelector(selectSelectedRoute);
 
-	const [libraries] = useState(["places"]); // remove map library warning by holding it in state
+	const [libraries] = useState(["places", "marker"]); // remove map library warning by holding it in state
 	const { isLoaded, loadError } = useLoadScript({
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
 		libraries,
 		language: "en",
+		version:"beta"
 	});
 
 	const setCurrentLocationAsStart = useCallback(
@@ -98,7 +99,7 @@ function HomePage() {
 	return (
 		<div className="home">
 			<div className="home__desktop-right-wrapper">
-				{isLoaded && <Map mapRef={mapRef} />}
+				{isLoaded && <Map mapRef={mapRef} isLoaded={isLoaded}/>}
 			</div>
 			<div className="home__controls-wrapper">
 				<div className="home__route-wrapper">

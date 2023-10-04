@@ -9,6 +9,7 @@ function RoutePlacesList({ selectedRouteDetails, mapRef }) {
 				selectedRouteDetails.route_waypoints &&
 				selectedRouteDetails.route_waypoints[0] &&
 				selectedRouteDetails.route_waypoints.map((placeData, index) => {
+					
 					return (
 						<div className="route-place-list__wrapper" key={placeData.place_id}>
 							{index > 0 && (
@@ -22,6 +23,7 @@ function RoutePlacesList({ selectedRouteDetails, mapRef }) {
 								key={placeData.place_id}
 								placeData={placeData}
 								mapRef={mapRef}
+								routeID={selectedRouteDetails.route_id}
 							/>
 						</div>
 					);
