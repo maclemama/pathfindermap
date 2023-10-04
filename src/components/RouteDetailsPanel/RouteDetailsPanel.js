@@ -49,9 +49,6 @@ function RouteDetailsPanel({ mapRef, routeDetails }) {
 				summary
 			});
 			setSavedRoute(routeDetails.user_saved);
-			if (!routeDetailsPanelExpanded) {
-				dispatch(setShowRouteDetailsPanel(true));
-			}
 			setIsLoading(false);
 		}
 	}, [selectedRoute, selectedDirection, routes, dispatch]);

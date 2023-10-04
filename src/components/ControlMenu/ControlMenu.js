@@ -36,7 +36,7 @@ function ControlMenu({ setCurrentLocationAsStart, isLoaded }) {
 				!controlMenuExpanded ? "control-menu--collapsed" : ""
 			} ${routeDetailsPanelExpanded || (!routeDetailsPanelExpanded && hasSelectedRoute && !controlMenuExpanded)? "control-menu--hidden":""}`}
 		>
-			<p class="aria-description" id="control-menu-description">A control menu for entering path search query parameters and choose from one of three modes including search mode, mood mode and shuffle mode.</p>
+			<p className="aria-description" id="control-menu-description">A control menu for entering path search query parameters and choose from one of three modes including search mode, mood mode and shuffle mode.</p>
 			<div className="control-menu__toggle-wrapper" onClick={toggleShowHide}>
 				<motion.button
 					whileHover={{
