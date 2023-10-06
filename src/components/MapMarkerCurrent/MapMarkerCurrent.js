@@ -6,9 +6,7 @@ import { motion } from "framer-motion";
 function MapMarkerCurrent({ map }) {
 	const [position, setPosition] = useState(null);
 	const [watchID, setWatchID] = useState(null);
-	const handleClick = () => {
-		console.log("click");
-	};
+	const [orientation, setOrientation] = useState(null);
 
 	useEffect(() => {
 		function success(pos) {
@@ -37,10 +35,36 @@ function MapMarkerCurrent({ map }) {
 		}
 		return () => navigator.geolocation.clearWatch(id);
 	}, [navigator]);
-    
+
+	useEffect(() => {
+		let chromeOrientation;
+		if (window.DeviceOrientationEvent) {
+			chromeOrientation = window.addEventListener(
+				"deviceorientationabsolute",
+				function (orientData) {
+					let compass = -(
+						orientData.alpha +
+						(orientData.beta * orientData.gamma) / 90
+					);
+					compass -= Math.floor(compass / 360) * 360; // Wrap to range [0,360]
+					setOrientation(compass);
+					// map.setHeading(compass);
+				},
+				true
+			);
+		}
+
+		return () => {
+			window.removeEventListener(
+				"deviceorientationabsolute",
+				chromeOrientation
+			);
+		};
+	}, []);
+
 	return (
 		position && (
-			<MapMarker position={position} map={map} onClickFuc={handleClick}>
+			<MapMarker position={position} map={map}>
 				<div className="marker-current">
 					<motion.div
 						className="marker-current__wave"
@@ -69,6 +93,12 @@ function MapMarkerCurrent({ map }) {
 							repeatDelay: 1,
 						}}
 					/>
+					{orientation && (
+						<div
+							className="marker-current__compass"
+							style={{ "--compass": Math.round(orientation) + "deg" }}
+						></div>
+					)}
 					<div className="marker-current__dot"></div>
 				</div>
 			</MapMarker>

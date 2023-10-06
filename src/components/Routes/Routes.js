@@ -179,15 +179,22 @@ function Routes({ mapRef }) {
 
 				// reposition map zoom to fit all the locations
 				centerMap(places);
+
+				if(routes.length === 1){
+					dispatch(setSelectedRoute(routes[0].route_id))
+				}
 			}
+		}else{
+			setDirections([]);
 		}
 	}, [routes, centerMap, setDirections]);
 
 	useEffect(() => {
-		if (selectedRoute) {
+		if (selectedRoute && directions[0]) {
 			const directionIdex = directions
 				.map((d) => d.route_id)
 				.indexOf(selectedRoute);
+
 			const selectedDirection = directions[directionIdex];
 			const routeCommuteTime = getDirectionDetails(selectedDirection);
 
