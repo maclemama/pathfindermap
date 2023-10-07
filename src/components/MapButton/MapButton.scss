@@ -12,11 +12,13 @@
 	background-color: $primary-button-background-color;
 	@include element-shadow;
 
-	&:hover {
-		background-color: $active-button-background-color;
+	@include desktop {
+		&:hover {
+			background-color: $primary-text-light-color;
 
-		& > .map-button__icon {
-			fill: unset;
+			& > .map-button__icon {
+				fill: unset;
+			}
 		}
 	}
 
@@ -26,6 +28,7 @@
 
 	&--active {
 		color: $primary-text-light-color;
+		background-color: $active-button-background-color;
 
 		& .control-button__icon-path {
 			fill: $primary-text-light-color;

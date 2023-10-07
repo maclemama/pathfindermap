@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import MapMarker from "../MapMarker/MapMarker";
 import "./MapMarkerCurrent.scss";
 import { motion } from "framer-motion";
+import { useSelector, useDispatch } from "react-redux";
+import { selectNavigationMode } from "../../store/map/mapSelector";
+import MapMarkerCompass from "../MapMarkerCompass/MapMarkerCompass";
+import { setNavigationModeLoading } from "../../store/map/mapSlice";
+import { selectNavigationModeLoading } from "../../store/map/mapSelector";
 
 function MapMarkerCurrent({ map }) {
+	const dispatch = useDispatch();
+	const navigationMode = useSelector(selectNavigationMode);
+	const navigationModeLoading = useSelector(selectNavigationModeLoading);
 	const [position, setPosition] = useState(null);
 	const [watchID, setWatchID] = useState(null);
-	const [orientation, setOrientation] = useState(null);
 
 	useEffect(() => {
 		function success(pos) {
@@ -36,31 +43,9 @@ function MapMarkerCurrent({ map }) {
 		return () => navigator.geolocation.clearWatch(id);
 	}, [navigator]);
 
-	useEffect(() => {
-		let chromeOrientation;
-		if (window.DeviceOrientationEvent) {
-			chromeOrientation = window.addEventListener(
-				"deviceorientationabsolute",
-				function (orientData) {
-					let compass = -(
-						orientData.alpha +
-						(orientData.beta * orientData.gamma) / 90
-					);
-					compass -= Math.floor(compass / 360) * 360; // Wrap to range [0,360]
-					setOrientation(compass);
-					// map.setHeading(compass);
-				},
-				true
-			);
-		}
-
-		return () => {
-			window.removeEventListener(
-				"deviceorientationabsolute",
-				chromeOrientation
-			);
-		};
-	}, []);
+	const handleToggleNavigationLoading = () => {
+		dispatch(setNavigationModeLoading(!navigationModeLoading));
+	};
 
 	return (
 		position && (
@@ -93,11 +78,12 @@ function MapMarkerCurrent({ map }) {
 							repeatDelay: 1,
 						}}
 					/>
-					{orientation && (
-						<div
-							className="marker-current__compass"
-							style={{ "--compass": Math.round(orientation) + "deg" }}
-						></div>
+					{navigationMode && (
+						<MapMarkerCompass
+							map={map}
+							position={position}
+							handleToggleNavigationLoading={handleToggleNavigationLoading}
+						/>
 					)}
 					<div className="marker-current__dot"></div>
 				</div>

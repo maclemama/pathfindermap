@@ -72,7 +72,7 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 			dispatch(
 				setModal({
 					title: "Error",
-					message: error.response.data.message || error.message,
+					message: error.response?.data?.message || error.message,
 				})
 			);
 			dispatch(resetRoute());
