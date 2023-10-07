@@ -1,7 +1,8 @@
 import "./MapMarkerCompass.scss";
 import { useEffect, useState } from "react";
+import {isAndroid, isIOS} from "react-device-detect";
 
-function MapMarkerCompass({ map, handleToggleNavigationLoading, position }) {
+function MapMarkerCompass({ map, handleToggleNavigationLoading }) {
 	const [orientation, setOrientation] = useState(null);
 	const [deviceAngle, setDeviceAngle] = useState(null);
 
@@ -17,14 +18,14 @@ function MapMarkerCompass({ map, handleToggleNavigationLoading, position }) {
 			map.setTilt(orientData.beta);
 			map.setHeading(compass);
 		}
-
 		if (window.DeviceOrientationEvent) {
-			map.setCenter(position);
-			window.addEventListener("deviceorientationabsolute", handler, true);
+            if(isIOS) window.addEventListener("deviceorientation", handler, true);
+            if(isAndroid) window.addEventListener("deviceorientationabsolute", handler, true);
 			handleToggleNavigationLoading();
 		}
 		return () => {
-			window.removeEventListener("deviceorientationabsolute", handler, true);
+			if(isAndroid) window.removeEventListener("deviceorientationabsolute", handler, true);
+            if(isIOS) window.removeEventListener("deviceorientation", handler, true);
 			handleToggleNavigationLoading();
 		};
 	}, []);

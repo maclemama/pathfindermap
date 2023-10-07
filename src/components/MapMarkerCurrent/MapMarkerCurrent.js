@@ -7,6 +7,7 @@ import { selectNavigationMode } from "../../store/map/mapSelector";
 import MapMarkerCompass from "../MapMarkerCompass/MapMarkerCompass";
 import { setNavigationModeLoading } from "../../store/map/mapSlice";
 import { selectNavigationModeLoading } from "../../store/map/mapSelector";
+import { isMobile } from "react-device-detect";
 
 function MapMarkerCurrent({ map }) {
 	const dispatch = useDispatch();
@@ -43,6 +44,12 @@ function MapMarkerCurrent({ map }) {
 		return () => navigator.geolocation.clearWatch(id);
 	}, [navigator]);
 
+	useEffect(() => {
+		if (position) {
+			map.setCenter(position);
+		}
+	}, [position]);
+
 	const handleToggleNavigationLoading = () => {
 		dispatch(setNavigationModeLoading(!navigationModeLoading));
 	};
@@ -78,10 +85,9 @@ function MapMarkerCurrent({ map }) {
 							repeatDelay: 1,
 						}}
 					/>
-					{navigationMode && (
+					{isMobile && navigationMode && (
 						<MapMarkerCompass
 							map={map}
-							position={position}
 							handleToggleNavigationLoading={handleToggleNavigationLoading}
 						/>
 					)}
