@@ -2,9 +2,11 @@
 @use "../../styles/partials/mixin" as *;
 
 .map-button-group {
-	position: absolute;
-	top: 0;
-	width: 100%;
+	&--panel-sticky {
+		position: absolute;
+		top: 0;
+		width: 100%;
+	}
 
 	&__search-button {
 		position: absolute;
@@ -42,5 +44,27 @@
 		position: absolute;
 		right: 1rem;
 		top: -5rem;
+	}
+
+	&__zoomOut-button {
+		position: fixed;
+		right: 1rem;
+		top: calc(50vh - 5rem);
+		z-index: -1;
+
+		@include desktop{
+			right: 3rem;
+		}
+	}
+
+	&__zoomIn-button {
+		position: fixed;
+		right: 1rem;
+		top: 50vh;
+		z-index: -1;
+
+		@include desktop{
+			right: 3rem;
+		}
 	}
 }

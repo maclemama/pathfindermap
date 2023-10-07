@@ -52,15 +52,15 @@ function MapMarkerCurrent({ map }) {
 	};
 
 	useEffect(() => {
-		if (position) {
+		if (position && navigationMode) {
 			map.setCenter(position);
-			console.log(`ismobile ${isMobile}`)
-			if (!isMobile && navigationMode) {
+
+			if (!isMobile) {
 				dispatch(setNavigationModeLoading(false))
 				dispatch(setNavigationMode(false))
 			}
 		}
-	}, [position, navigationMode]);
+	}, [navigationMode]);
 
 	return (
 		position && (

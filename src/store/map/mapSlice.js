@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_STATE = {
 	radius: 3000,
+	mapZoom: 17,
 	navigationMode: false,
 	navigationModeLoading: false,
 };
@@ -19,10 +20,17 @@ export const mapSlice = createSlice({
 		setNavigationModeLoading(state, action) {
 			state.navigationModeLoading = action.payload;
 		},
+		setMapZoom(state, action) {
+			state.mapZoom = action.payload;
+		},
 	},
 });
 
-export const { setMapRadius, setNavigationMode, setNavigationModeLoading } =
-	mapSlice.actions;
+export const {
+	setMapRadius,
+	setNavigationMode,
+	setNavigationModeLoading,
+	setMapZoom,
+} = mapSlice.actions;
 
 export const mapReducer = mapSlice.reducer;

@@ -1,6 +1,7 @@
 import "./MapButtonGroup.scss";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useCallback } from "react";
 
 import {
 	setShowRouteControlMenu,
@@ -22,7 +23,7 @@ import {
 
 import MapButton from "../MapButton/MapButton";
 
-function MapButtonGroup() {
+function MapButtonGroup({ mapRef }) {
 	const dispatch = useDispatch();
 	const controlMenuExpanded = useSelector(selectShowRouteControlMenu);
 	const routeDetailsPanelExpanded = useSelector(selectShowRouteDetailsPanel);
@@ -52,41 +53,74 @@ function MapButtonGroup() {
 		dispatch(setNavigationMode(!navigationMode));
 		dispatch(setNavigationModeLoading(true));
 	};
-	return (
-		<div className="map-button-group">
-			{hasSelectedRoute && (
-				<>
-					<MapButton
-						iconName={"search"}
-						onClickFunc={handleShowControlPanel}
-						cssClassName={"map-button-group__search-button"}
-						isActiveState={false}
-					/>
 
+	const handleZoom = useCallback(
+		(isZoomIn) => {
+			const prevZoom = mapRef.current.zoom;
+			let newZoom;
+			if (isZoomIn) {
+				newZoom = prevZoom !== 0 ? prevZoom - 1 : 0;
+			} else {
+				newZoom = prevZoom + 1;
+			}
+
+			mapRef.current.setZoom(newZoom);
+		},
+		[mapRef]
+	);
+
+	return (
+		<>
+			<div className="map-button-group map-button-group--panel-sticky">
+				{hasSelectedRoute && (
+					<>
+						<MapButton
+							iconName={"search"}
+							onClickFunc={handleShowControlPanel}
+							cssClassName={"map-button-group__search-button"}
+							isActiveState={false}
+						/>
+
+						<MapButton
+							iconName={"start"}
+							onClickFunc={() => console.log("press start")}
+							cssClassName={"map-button-group__start-button"}
+							isActiveState={false}
+						/>
+					</>
+				)}
+				{hasSelectedRoute && controlMenuExpanded && (
 					<MapButton
-						iconName={"start"}
-						onClickFunc={() => console.log("press start")}
-						cssClassName={"map-button-group__start-button"}
+						iconName={"pin_drop"}
+						onClickFunc={handleShowRouteDetailsPanel}
+						cssClassName={"map-button-group__route-button"}
 						isActiveState={false}
 					/>
-				</>
-			)}
-			{hasSelectedRoute && controlMenuExpanded && (
+				)}
 				<MapButton
-					iconName={"pin_drop"}
-					onClickFunc={handleShowRouteDetailsPanel}
-					cssClassName={"map-button-group__route-button"}
-					isActiveState={false}
+					iconName={"near_me"}
+					onClickFunc={handleToggleNavigationMode}
+					cssClassName={"map-button-group__current-button"}
+					isActiveState={navigationMode}
+					isLoadingState={navigationModeLoading}
 				/>
-			)}
-			<MapButton
-				iconName={"near_me"}
-				onClickFunc={handleToggleNavigationMode}
-				cssClassName={"map-button-group__current-button"}
-				isActiveState={navigationMode}
-				isLoadingState={navigationModeLoading}
-			/>
-		</div>
+			</div>
+			<div className="map-button-group map-button-group--map-sticky">
+				<MapButton
+					iconName={"add"}
+					cssClassName={"map-button-group__zoomOut-button"}
+					isActiveState={false}
+					onClickFunc={() => handleZoom(false)}
+				/>
+
+				<MapButton
+					iconName={"minus"}
+					cssClassName={"map-button-group__zoomIn-button"}
+					isActiveState={false}
+					onClickFunc={() => handleZoom(true)}
+				/>
+			</div>
+		</>
 	);
 }
 

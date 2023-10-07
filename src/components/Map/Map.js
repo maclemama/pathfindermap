@@ -1,7 +1,7 @@
 import "./Map.scss";
 
 import { GoogleMap, MarkerF, CircleF } from "@react-google-maps/api";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
@@ -17,6 +17,8 @@ function Map({ mapRef, isLoaded }) {
 	const startingPoint = useSelector(selectStartingPoint);
 	const mapRadius = useSelector(selectMapRadius);
 	const [mapLoaded, setMapLoaded] = useState(false);
+
+
 	const mapOptions = useMemo(
 		() => ({
 			mapId: "f6ca3c1a38d4ecfa",
@@ -51,6 +53,7 @@ function Map({ mapRef, isLoaded }) {
 		},
 		[mapRef]
 	);
+
 	if (!isLoaded) {
 		return;
 	}

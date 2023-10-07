@@ -104,7 +104,7 @@ function HomePage() {
 			<div className="home__controls-wrapper">
 				<div className="home__route-wrapper">
 					<div className="home__button-wrapper--desktop">
-						<MapButtonGroup />
+						<MapButtonGroup mapRef={mapRef}/>
 					</div>
 					{selectedRoute && <RouteDetailsPanel mapRef={mapRef} />}
 				</div>
@@ -113,7 +113,7 @@ function HomePage() {
 					isLoaded={isLoaded}
 				/>
 				<div className="home__button-wrapper--mobile">
-					<MapButtonGroup />
+					<MapButtonGroup mapRef={mapRef}/>
 				</div>
 			</div>
 		</div>
