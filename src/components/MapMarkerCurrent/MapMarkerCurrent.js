@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import MapMarker from "../MapMarker/MapMarker";
 import "./MapMarkerCurrent.scss";
+
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { selectNavigationMode } from "../../store/map/mapSelector";
-import MapMarkerCompass from "../MapMarkerCompass/MapMarkerCompass";
-import { setNavigationModeLoading } from "../../store/map/mapSlice";
-import { selectNavigationModeLoading } from "../../store/map/mapSelector";
 import { isMobile } from "react-device-detect";
+
+import { selectNavigationMode } from "../../store/map/mapSelector";
+import { setNavigationModeLoading, setNavigationMode } from "../../store/map/mapSlice";
+import { selectNavigationModeLoading } from "../../store/map/mapSelector";
+
+import MapMarkerCompass from "../MapMarkerCompass/MapMarkerCompass";
 
 function MapMarkerCurrent({ map }) {
 	const dispatch = useDispatch();
@@ -44,15 +47,20 @@ function MapMarkerCurrent({ map }) {
 		return () => navigator.geolocation.clearWatch(id);
 	}, [navigator]);
 
-	useEffect(() => {
-		if (position) {
-			map.setCenter(position);
-		}
-	}, [position]);
-
 	const handleToggleNavigationLoading = () => {
 		dispatch(setNavigationModeLoading(!navigationModeLoading));
 	};
+
+	useEffect(() => {
+		if (position) {
+			map.setCenter(position);
+			console.log(`ismobile ${isMobile}`)
+			if (!isMobile && navigationMode) {
+				dispatch(setNavigationModeLoading(false))
+				dispatch(setNavigationMode(false))
+			}
+		}
+	}, [position, navigationMode]);
 
 	return (
 		position && (

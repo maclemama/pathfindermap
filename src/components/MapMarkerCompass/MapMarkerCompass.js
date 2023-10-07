@@ -12,7 +12,7 @@ function MapMarkerCompass({ map, handleToggleNavigationLoading }) {
 				orientData.alpha +
 				(orientData.beta * orientData.gamma) / 90
 			);
-			compass -= Math.floor(compass / 360) * 360; // Wrap to range [0,360]
+			compass -= Math.floor(compass / 360) * 360;
 			setOrientation(compass);
 			setDeviceAngle(orientData);
 			map.setTilt(orientData.beta);

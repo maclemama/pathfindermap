@@ -1,7 +1,6 @@
 import "./MapButtonGroup.scss";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
 
 import {
 	setShowRouteControlMenu,
@@ -30,9 +29,6 @@ function MapButtonGroup() {
 	const hasSelectedRoute = useSelector(selectSelectedRoute);
 	const navigationMode = useSelector(selectNavigationMode);
 	const navigationModeLoading = useSelector(selectNavigationModeLoading);
-	const [activeButton, setActiveButton] = useState({
-		navigationButton: false,
-	});
 
 	const handleShowRouteDetailsPanel = () => {
 		if (!routeDetailsPanelExpanded) {
@@ -55,10 +51,6 @@ function MapButtonGroup() {
 	const handleToggleNavigationMode = () => {
 		dispatch(setNavigationMode(!navigationMode));
 		dispatch(setNavigationModeLoading(true));
-		setActiveButton({
-			...activeButton,
-			navigationButton: !activeButton.navigationButton,
-		});
 	};
 	return (
 		<div className="map-button-group">
@@ -91,7 +83,7 @@ function MapButtonGroup() {
 				iconName={"near_me"}
 				onClickFunc={handleToggleNavigationMode}
 				cssClassName={"map-button-group__current-button"}
-				isActiveState={activeButton.navigationButton}
+				isActiveState={navigationMode}
 				isLoadingState={navigationModeLoading}
 			/>
 		</div>
