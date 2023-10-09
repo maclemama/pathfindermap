@@ -3,28 +3,27 @@
 
 .marker-waypoint {
 	position: relative;
-    width: 100%;
+	width: 100%;
 	&__info-card {
-		background-color:$primary-card-background-color;
+		background-color: $primary-card-background-color;
 		border-radius: $element-radius;
 		position: absolute;
 		bottom: 1.5rem;
 		left: 50%;
 		transform: translate(-50%, 0%) rotateY(180deg);
 		border: 1rem solid rgb(85, 135, 127);
-        min-height: 5rem;
-        padding: 0.5rem;
-        display: flex;
-        flex-direction: column;
-        row-gap: 0.5rem;
-        &--highlighted {
+		min-height: 5rem;
+		padding: 0.5rem;
+		display: flex;
+		flex-direction: column;
+		row-gap: 0.5rem;
+		&--highlighted {
 			border: 1rem solid aquamarine;
 		}
-
 	}
 
 	&__figure-card {
-		background-color:$primary-card-background-color;
+		background-color: $primary-card-background-color;
 		height: 5.2rem;
 		width: 5.2rem;
 		border-radius: 50%;
@@ -34,7 +33,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		border: 1rem solid rgb(85,135,127);
+		border: 1rem solid rgb(85, 135, 127);
 		font-size: 2rem;
 
 		&--highlighted {
@@ -43,12 +42,17 @@
 	}
 
 	&__location-name {
-		font-size: 1.6rem;
+		font-size: 1.2rem;
+		text-shadow: -1px 1px 1px rgb(225, 255, 213);
 		position: absolute;
 		width: 20rem;
 		overflow: hidden;
 		top: 1.5rem;
 		left: 6.5rem;
 		font-weight: bold;
+
+		@include desktop {
+			font-size: 1.4rem;
+		}
 	}
 }
