@@ -7,7 +7,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { isMobile } from "react-device-detect";
 
 import { selectNavigationMode } from "../../store/map/mapSelector";
-import { setNavigationModeLoading, setNavigationMode } from "../../store/map/mapSlice";
+import {
+	setNavigationModeLoading,
+	setNavigationMode,
+} from "../../store/map/mapSlice";
 import { selectNavigationModeLoading } from "../../store/map/mapSelector";
 
 import MapMarkerCompass from "../MapMarkerCompass/MapMarkerCompass";
@@ -51,16 +54,14 @@ function MapMarkerCurrent({ map }) {
 		dispatch(setNavigationModeLoading(!navigationModeLoading));
 	};
 
-	useEffect(() => {
-		if (position && navigationMode) {
-			map.setCenter(position);
+	if (position && navigationMode) {
+		map.setCenter(position);
 
-			if (!isMobile) {
-				dispatch(setNavigationModeLoading(false))
-				dispatch(setNavigationMode(false))
-			}
+		if (!isMobile) {
+			dispatch(setNavigationModeLoading(false));
+			dispatch(setNavigationMode(false));
 		}
-	}, [navigationMode]);
+	}
 
 	return (
 		position && (
