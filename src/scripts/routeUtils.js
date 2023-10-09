@@ -14,8 +14,13 @@ export const generateDirection = async (directionConfigs) => {
 				waypoints: route.waypoints,
 				optimizeWaypoints: false,
 			});
-			result.route_id = route.route_id;
-			return result;
+			const { walking_distance, walking_time } = getDirectionDetails(result);
+			return {
+				...result,
+				route_id: route.route_id,
+				walking_distance,
+				walking_time,
+			};
 		})
 	);
 	return directionsData;
@@ -95,7 +100,6 @@ export const getSavedRouteIDs = async (mode, page, query) => {
 			url += `/page/${page}`;
 		}
 		if (mode === "query") {
-		    
 			url += `?search=${encodeURIComponent(query)}`;
 		}
 		const token = localStorage.getItem("token");

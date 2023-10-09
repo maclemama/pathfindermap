@@ -39,7 +39,6 @@ function MapMarkerWaypoint({ position, map, placeData }) {
 	useEffect(() => {
 		const storedPlace = getPlaceSessionData(placeData.place_id);
 		const hasData = storedPlace ? storedPlace : false;
-		console.log(`marker hasData ? ${hasData}`);
 		if (!hasData) {
 			const service = new window.google.maps.places.PlacesService(map);
 			service.getDetails(

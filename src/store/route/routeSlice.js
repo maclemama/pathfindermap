@@ -5,6 +5,7 @@ const INITIAL_STATE = {
 	selectedRoute: null,
 	places: null,
 	directionConfigs: null,
+	walkingInfo:null,
 	selectedDirection: null,
 	highlightedPlace: null,
 };
@@ -36,6 +37,9 @@ export const routeSlice = createSlice({
 		setHighlightedPlace(state, action) {
 			state.highlightedPlace = action.payload;
 		},
+		setWalkingInfo(state, action){
+			state.walkingInfo = action.payload;
+		},
 		resetRoute(state) {
 			state.routes = null;
 			state.selectedRoute = null;
@@ -43,6 +47,7 @@ export const routeSlice = createSlice({
 			state.directionConfigs = null;
 			state.selectedDirection = null;
 			state.highlightedPlace = null;
+			state.walkingInfo = null;
 		},
 	},
 });
@@ -55,6 +60,7 @@ export const {
 	setRoutesDirectionsPlaces,
 	setSelectedDirection,
 	setHighlightedPlace,
+	setWalkingInfo,
 } = routeSlice.actions;
 
 export const routeReducer = routeSlice.reducer;

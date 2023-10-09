@@ -5,18 +5,24 @@ import { useSelector, useDispatch } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { selectCurrentUser } from "../../store/user/userSelector";
-import { selectSelectedRoute } from "../../store/route/routeSelector";
-import { selectSelectedDirection } from "../../store/route/routeSelector";
-import { selectRoutes } from "../../store/route/routeSelector";
+import {
+	selectSelectedRoute,
+	selectSelectedDirection,
+	selectRoutes,
+} from "../../store/route/routeSelector";
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
-import { selectShowRouteDetailsPanel } from "../../store/layout/layoutSelector";
-import { selectShowRouteControlMenu } from "../../store/layout/layoutSelector";
-import { setShowRouteDetailsPanel } from "../../store/layout/layoutSlice";
-import { setShowRouteControlMenu } from "../../store/layout/layoutSlice";
+import {
+	selectShowRouteDetailsPanel,
+	selectShowRouteControlMenu,
+} from "../../store/layout/layoutSelector";
+import {
+	setShowRouteDetailsPanel,
+	setShowRouteControlMenu,
+} from "../../store/layout/layoutSlice";
 import { setModal } from "../../store/modal/modalSlice";
 import { postSaveRoute, deleteSavedRoute } from "../../scripts/routeUtils";
-import SVGIcons from "../SVGIcons/SVGIcons";
 
+import SVGIcons from "../SVGIcons/SVGIcons";
 import RoutePlacesList from "../RoutePlacesList/RoutePlacesList";
 import RouteSummary from "../RouteSummary/RouteSummary";
 
@@ -37,7 +43,7 @@ function RouteDetailsPanel({ mapRef, routeDetails }) {
 		if (selectedRoute && selectedDirection) {
 			routeDetails = routes.filter(
 				(route) => route.route_id === selectedRoute
-			)[0];
+			)?.[0];
 			const { walking_distance, walking_time, polyline, summary } =
 				selectedDirection;
 
@@ -46,7 +52,7 @@ function RouteDetailsPanel({ mapRef, routeDetails }) {
 				walking_distance,
 				walking_time,
 				polyline,
-				summary
+				summary,
 			});
 			setSavedRoute(routeDetails.user_saved);
 			setIsLoading(false);

@@ -11,14 +11,8 @@ import {
 	selectDirectionConfigs,
 	selectSelectedRoute,
 } from "../../store/route/routeSelector";
-import {
-	setSelectedRoute,
-	setSelectedDirection,
-} from "../../store/route/routeSlice";
-import {
-	generateDirection,
-	getDirectionDetails,
-} from "../../scripts/routeUtils";
+import { setSelectedRoute, setWalkingInfo } from "../../store/route/routeSlice";
+import { generateDirection } from "../../scripts/routeUtils";
 
 import MapMarkerWaypoint from "../MapMarkerWaypoint/MapMarkerWaypoint";
 
@@ -174,17 +168,25 @@ function Routes({ mapRef }) {
 				const fetchDirections = async () => {
 					const directionsData = await generateDirection(directionConfigs);
 					setDirections(directionsData);
+					const walkingInfo = directionsData.map(
+						({ walking_time, walking_distance, route_id }) => ({
+							walking_distance,
+							walking_time,
+							route_id,
+						})
+					);
+					dispatch(setWalkingInfo(walkingInfo));
 				};
 				fetchDirections();
 
 				// reposition map zoom to fit all the locations
 				centerMap(places);
 
-				if(routes.length === 1){
-					dispatch(setSelectedRoute(routes[0].route_id))
+				if (routes.length === 1) {
+					dispatch(setSelectedRoute(routes[0].route_id));
 				}
 			}
-		}else{
+		} else {
 			setDirections([]);
 		}
 	}, [routes, centerMap, setDirections]);
@@ -196,9 +198,6 @@ function Routes({ mapRef }) {
 				.indexOf(selectedRoute);
 
 			const selectedDirection = directions[directionIdex];
-			const routeCommuteTime = getDirectionDetails(selectedDirection);
-
-			dispatch(setSelectedDirection(routeCommuteTime));
 			changeMapZoom(selectedDirection);
 			showSelectedRoute(directionIdex, selectedDirection);
 		} else {

@@ -15,11 +15,21 @@ export function selectSelectedRoute(state) {
 }
 
 export function selectSelectedDirection(state) {
-	return state.route.selectedDirection;
+	const walkingInfo = state.route.walkingInfo;
+	const selectedRoute = state.route.selectedRoute;
+	let result = null;
+	walkingInfo.forEach(route => {
+		if(route.route_id === selectedRoute) result = route;
+	});
+	return result;
 }
 
 export function selectHighlightedPlace(state) {
 	return state.route.highlightedPlace;
+}
+
+export function selectWalkingInfo(state) {
+	return state.route.walkingInfo;
 }
 
 export function selectSelectedPlaces(state) {

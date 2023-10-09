@@ -3,7 +3,7 @@
 
 .route-selector {
 	position: absolute;
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 	top: 1rem;
 	left: 1rem;
 	background-color: $primary-panel-background-color;
@@ -14,18 +14,44 @@
 	@include desktop {
 		top: 10rem;
 		left: 2rem;
+		font-size: 1.4rem;
 
 		&--with-menu {
 			top: 2rem;
 		}
 	}
 
-	&__title {
-		padding: 1rem;
+	&__left-wrapper {
 		border-right: $element-border;
 	}
+
+	&__icon {
+		width: 1.4rem;
+	}
+
+	&__icon-wrapper {
+		padding: 0.5rem;
+		display: flex;
+		justify-content: center;
+	}
+
+	&__title {
+		padding: 0.8rem;
+
+		@include desktop {
+			padding: 1rem;
+		}
+	}
+
+	&__button-wrapper {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
 	&__button {
-		padding: 1rem;
+		padding: 0;
 		border-right: $element-border;
 
 		&--active {
@@ -34,17 +60,43 @@
 		}
 	}
 
+	&__path-text-wrapper {
+		width: 100%;
+		border-bottom: $element-border;
+	}
+
 	&__path-text {
-		font-size: 1.4rem;
+		margin: 0.8rem;
+		font-size: 1.2rem;
+
+		@include desktop {
+			margin: 1rem;
+			font-size: 1.4rem;
+		}
+	}
+
+	&__path-walking-info {
+		padding: 0.5rem;
+		font-size: 1rem;
+
+		@include desktop {
+			font-size: 1.2rem;
+		}
 	}
 
 	&__show-all-button {
-		padding: 1rem;
+		padding: 0.8rem;
+		font-size: 1.2rem;
 		border-top-right-radius: $section-radius;
 		border-bottom-right-radius: $section-radius;
 		&--active {
 			background-color: $primary-info-background-color;
 			color: $primary-text-light-color;
+		}
+
+		@include desktop {
+			padding: 1rem;
+			font-size: 1.4rem;
 		}
 	}
 }
