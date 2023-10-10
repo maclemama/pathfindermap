@@ -5,8 +5,21 @@ export const generateDirection = async (directionConfigs) => {
 	const directionsService = new google.maps.DirectionsService();
 	/* eslint-enable */
 
+	const polylineColors = [
+		"#FF5733",
+		"#8A2BE2",
+		"#00FF7F",
+		"#FFD700",
+		"#FF1493",
+		"#32CD32",
+		"#9400D3",
+		"#00BFFF",
+		"#FF4500",
+		"#4B0082",
+	]
+
 	const directionsData = await Promise.all(
-		directionConfigs.map(async (route) => {
+		directionConfigs.map(async (route, index) => {
 			const result = await directionsService.route({
 				origin: route.origin,
 				destination: route.destination,
@@ -20,6 +33,7 @@ export const generateDirection = async (directionConfigs) => {
 				route_id: route.route_id,
 				walking_distance,
 				walking_time,
+				polylineColor: polylineColors[index]
 			};
 		})
 	);
