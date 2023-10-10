@@ -53,6 +53,7 @@ function ProfileMenu({ tab, handleSetTab }) {
 										<div className="profile-nav__tab-text">Saved Paths</div>
 									</>,
 								]}
+								key={1}
 							/>
 						</li>
 
@@ -75,6 +76,7 @@ function ProfileMenu({ tab, handleSetTab }) {
 										<div className="profile-nav__tab-text">Account Setting</div>
 									</>,
 								]}
+								key={2}
 							/>
 						</li>
 					</ul>

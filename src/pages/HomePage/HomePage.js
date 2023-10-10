@@ -28,7 +28,7 @@ function HomePage() {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const mapRef = useRef();
-
+	
 	const selectedRoute = useSelector(selectSelectedRoute);
 
 	const [libraries] = useState(["places", "marker"]); // remove map library warning by holding it in state
@@ -43,8 +43,7 @@ function HomePage() {
 		async (resetCurrent) => {
 			try {
 				if (
-					location.state &&
-					location.state.passedStartingPoint &&
+					location?.state?.passedStartingPoint &&
 					!resetCurrent
 				) {
 					const routes = generateRoutes(
@@ -52,6 +51,7 @@ function HomePage() {
 						location.state.passedStartingPoint
 					);
 					dispatch(setRoutesDirectionsPlaces(routes));
+					window.history.replaceState(null,"")
 				} else {
 					dispatch(resetLayout());
 					dispatch(resetRoute());

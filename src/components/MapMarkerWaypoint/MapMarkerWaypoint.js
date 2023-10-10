@@ -41,43 +41,45 @@ function MapMarkerWaypoint({ position, map, placeData }) {
 		const hasData = storedPlace ? storedPlace : false;
 		if (!hasData) {
 			const service = new window.google.maps.places.PlacesService(map);
-			service.getDetails(
-				{
-					placeId: placeData.place_id,
-				},
-				(data, status) => {
-					if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-						let result = {
-							open_now:
-								data.current_opening_hours &&
-								data.current_opening_hours.open_now,
-							current_opening_hours:
-								data.current_opening_hours &&
-								data.current_opening_hours.periods &&
-								data.current_opening_hours.periods[0],
-							formatted_address: data.formatted_address,
-							formatted_phone_number: data.formatted_phone_number,
-							icon: data.icon,
-							name: data.name,
-							price_level: data.price_level,
-							rating: data.rating,
-							google_map_url: data.url,
-							website: data.website,
-						};
+			if (service) {
+				service.getDetails(
+					{
+						placeId: placeData.place_id,
+					},
+					(data, status) => {
+						if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+							let result = {
+								open_now:
+									data.current_opening_hours &&
+									data.current_opening_hours.open_now,
+								current_opening_hours:
+									data.current_opening_hours &&
+									data.current_opening_hours.periods &&
+									data.current_opening_hours.periods[0],
+								formatted_address: data.formatted_address,
+								formatted_phone_number: data.formatted_phone_number,
+								icon: data.icon,
+								name: data.name,
+								price_level: data.price_level,
+								rating: data.rating,
+								google_map_url: data.url,
+								website: data.website,
+							};
 
-						const photo =
-							data.photos &&
-							data.photos[0] &&
-							data.photos[0].getUrl({ maxWidth: 500, maxHeight: 500 });
-						if (photo) {
-							result.photo = photo;
+							const photo =
+								data.photos &&
+								data.photos[0] &&
+								data.photos[0].getUrl({ maxWidth: 500, maxHeight: 500 });
+							if (photo) {
+								result.photo = photo;
+							}
+
+							setPlaceSessionData(placeData.place_id, JSON.stringify(result));
+							setPlaceGoogleData(result);
 						}
-
-						setPlaceSessionData(placeData.place_id, JSON.stringify(result));
-						setPlaceGoogleData(result);
 					}
-				}
-			);
+				);
+			}
 		} else {
 			setPlaceGoogleData(JSON.parse(hasData));
 		}

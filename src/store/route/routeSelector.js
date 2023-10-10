@@ -18,9 +18,11 @@ export function selectSelectedDirection(state) {
 	const walkingInfo = state.route.walkingInfo;
 	const selectedRoute = state.route.selectedRoute;
 	let result = null;
-	walkingInfo.forEach(route => {
-		if(route.route_id === selectedRoute) result = route;
-	});
+	if (walkingInfo && selectedRoute) {
+		walkingInfo.forEach((route) => {
+			if (route.route_id === selectedRoute) result = route;
+		});
+	}
 	return result;
 }
 

@@ -8,7 +8,7 @@ import {
 	selectDirectionConfigs,
 	selectSelectedRoute,
 } from "../store/route/routeSelector";
-import { setSelectedRoute, setWalkingInfo } from "../store/route/routeSlice";
+import { setSelectedRoute, setWalkingInfo, resetRoute } from "../store/route/routeSlice";
 import { generateDirection } from "../scripts/routeUtils";
 import { centerMap, changeMapZoom } from "../scripts/mapUtils";
 
@@ -30,7 +30,7 @@ export const useShowRoute = (mapRef) => {
 			changeMapZoom(selectedDirection, mapRef);
 			setIsShowAllRoute(false);
 		} else {
-			places && centerMap(places, startingPoint, mapRef);
+			places && startingPoint && centerMap(places, startingPoint, mapRef);
 			setIsShowAllRoute(true);
 		}
 	}, [
@@ -43,7 +43,7 @@ export const useShowRoute = (mapRef) => {
 	]);
 
 	useEffect(() => {
-		if (routes) {
+		if (routes && startingPoint && mapRef) {
 			if (routes[0]) {
 				const fetchDirections = async () => {
 					const directionsData = await generateDirection(directionConfigs);
@@ -62,6 +62,7 @@ export const useShowRoute = (mapRef) => {
 				fetchDirections();
 				setIsShowAllRoute(true);
 				// reposition map zoom to fit all the locations
+                console.log(startingPoint)
 				centerMap(places, startingPoint, mapRef);
 
 				if (routes.length === 1) {
@@ -70,6 +71,8 @@ export const useShowRoute = (mapRef) => {
 			}
 		} else {
 			setDirections([]);
+            // dispatch(resetRoute());
+
 		}
 	}, [routes]);
 
