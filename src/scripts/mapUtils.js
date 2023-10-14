@@ -1,18 +1,19 @@
-export const centerMap = (markers, startingPoint, mapRef) => {
+export const centerMap = (markers, startingPoint, mapRef, rawLatLngFormat) => {
 	/* eslint-disable */
 	const bounds = new google.maps.LatLngBounds();
 
 	markers.forEach((marker) => {
-		bounds.extend(
-			new google.maps.LatLng(marker.latitude, marker.longitude)
-		);
+		const markerLatLng = rawLatLngFormat
+			? marker
+			: new google.maps.LatLng(marker.latitude, marker.longitude);
+		bounds.extend(markerLatLng);
 	});
 
 	bounds.extend(startingPoint);
 	/* eslint-enable */
 	mapRef.current.fitBounds(bounds);
 	mapRef.current.setTilt(30);
-}
+};
 
 export const changeMapZoom = (direction, mapRef) => {
 	// set selected route to display route details in route details panel
@@ -37,4 +38,4 @@ export const changeMapZoom = (direction, mapRef) => {
 	/* eslint-enable */
 	mapRef.current.fitBounds(bounds);
 	mapRef.current.setTilt(30);
-}
+};

@@ -10,6 +10,7 @@ import {
 import { setSelectedRoute } from "../../store/route/routeSlice";
 import { selectShowRouteControlMenu } from "../../store/layout/layoutSelector";
 import { setShowRouteControlMenu } from "../../store/layout/layoutSlice";
+import { selectWalkingMode } from "../../store/map/mapSelector";
 
 import SVGIcons from "../SVGIcons/SVGIcons";
 
@@ -18,6 +19,7 @@ function RouteSelector() {
 	const routes = useSelector(selectRoutes);
 	const selectedRoute = useSelector(selectSelectedRoute);
 	const walkingInfo = useSelector(selectWalkingInfo);
+	const walkingMode = useSelector(selectWalkingMode);
 	const controlMenuExpanded = useSelector(selectShowRouteControlMenu);
 	const handleRouteSwitch = (route_id) => {
 		dispatch(setSelectedRoute(route_id));
@@ -32,6 +34,8 @@ function RouteSelector() {
 
 	return (
 		routes &&
+		routes.length > 1 &&
+		!walkingMode &&
 		walkingInfo && (
 			<section
 				className={`route-selector ${

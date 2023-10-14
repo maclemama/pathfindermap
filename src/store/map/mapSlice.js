@@ -5,6 +5,15 @@ const INITIAL_STATE = {
 	mapZoom: 17,
 	navigationMode: false,
 	navigationModeLoading: false,
+	walkingMode: false,
+	walkingModeLoading: false,
+	walkingCurrentDestination: {
+		position: null,
+		isFinalStop: null,
+		positionIndex:null,
+		isArrived:null
+	},
+	walkingNextDestinationDistance: null,
 };
 
 export const mapSlice = createSlice({
@@ -23,6 +32,18 @@ export const mapSlice = createSlice({
 		setMapZoom(state, action) {
 			state.mapZoom = action.payload;
 		},
+		setWalkingMode(state, action) {
+			state.walkingMode = action.payload;
+		},
+		setWalkingModeLoading(state, action) {
+			state.walkingModeLoading = action.payload;
+		},
+		setWalkingCurrentDestination(state, action) {
+			state.walkingCurrentDestination = action.payload;
+		},
+		setWalkingNextDestinationDistance(state, action){
+			state.walkingNextDestinationDistance = action.payload;
+		}
 	},
 });
 
@@ -31,6 +52,10 @@ export const {
 	setNavigationMode,
 	setNavigationModeLoading,
 	setMapZoom,
+	setWalkingMode,
+	setWalkingModeLoading,
+	setWalkingCurrentDestination,
+	setWalkingNextDestinationDistance
 } = mapSlice.actions;
 
 export const mapReducer = mapSlice.reducer;

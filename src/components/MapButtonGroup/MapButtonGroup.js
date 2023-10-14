@@ -11,14 +11,22 @@ import {
 	selectShowRouteControlMenu,
 	selectShowRouteDetailsPanel,
 } from "../../store/layout/layoutSelector";
-import { selectSelectedRoute } from "../../store/route/routeSelector";
+import {
+	selectSelectedRoute,
+	selectRoutes,
+} from "../../store/route/routeSelector";
+import { setSelectedRoute } from "../../store/route/routeSlice";
 import {
 	setNavigationMode,
 	setNavigationModeLoading,
+	setWalkingMode,
+	setWalkingModeLoading,
 } from "../../store/map/mapSlice";
 import {
 	selectNavigationMode,
 	selectNavigationModeLoading,
+	selectWalkingMode,
+	selectWalkingModeLoading,
 } from "../../store/map/mapSelector";
 
 import MapButton from "../MapButton/MapButton";
@@ -30,6 +38,9 @@ function MapButtonGroup({ mapRef }) {
 	const hasSelectedRoute = useSelector(selectSelectedRoute);
 	const navigationMode = useSelector(selectNavigationMode);
 	const navigationModeLoading = useSelector(selectNavigationModeLoading);
+	const walkingMode = useSelector(selectWalkingMode);
+	const walkingModeLoading = useSelector(selectWalkingModeLoading);
+	const routes = useSelector(selectRoutes);
 
 	const handleShowRouteDetailsPanel = () => {
 		if (!routeDetailsPanelExpanded) {
@@ -69,6 +80,14 @@ function MapButtonGroup({ mapRef }) {
 		[mapRef]
 	);
 
+	const handleToggleWalkingMode = () => {
+		if(walkingMode){
+			dispatch(setSelectedRoute(null));
+		}
+		dispatch(setWalkingModeLoading(true));
+		dispatch(setWalkingMode(!walkingMode));
+	};
+
 	return (
 		<>
 			<div className="map-button-group map-button-group--panel-sticky">
@@ -82,10 +101,10 @@ function MapButtonGroup({ mapRef }) {
 						/>
 
 						<MapButton
-							iconName={"start"}
-							onClickFunc={() => console.log("press start")}
+							iconName={"walk"}
+							onClickFunc={handleToggleWalkingMode}
 							cssClassName={"map-button-group__start-button"}
-							isActiveState={false}
+							isActiveState={walkingMode}
 						/>
 					</>
 				)}
@@ -98,7 +117,7 @@ function MapButtonGroup({ mapRef }) {
 					/>
 				)}
 				<MapButton
-					iconName={"near_me"}
+					iconName={"compass"}
 					onClickFunc={handleToggleNavigationMode}
 					cssClassName={"map-button-group__current-button"}
 					isActiveState={navigationMode}

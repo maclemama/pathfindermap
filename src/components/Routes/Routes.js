@@ -1,16 +1,17 @@
 import "./Routes.scss";
 
-import { DirectionsRenderer, PolylineF } from "@react-google-maps/api";
+import { DirectionsRenderer, PolylineF, MarkerF } from "@react-google-maps/api";
 import { useDispatch } from "react-redux";
 
 import { setSelectedRoute } from "../../store/route/routeSlice";
 import { useShowRoute } from "../../scripts/mapHooks";
 
 import MapMarkerWaypoint from "../MapMarkerWaypoint/MapMarkerWaypoint";
+import RouteWalkingPolyline from "../RouteWalkingPolyline/RouteWalkingPolyline";
 
 function Routes({ mapRef }) {
 	const dispatch = useDispatch();
-	const [places, directions, selectedRoute, isShowAllRoute] =
+	const [places, directions, selectedRoute, isShowAllRoute, walkingDirection] =
 		useShowRoute(mapRef);
 
 	const handleRouteClick = (route_id) => {
@@ -67,6 +68,9 @@ function Routes({ mapRef }) {
 						</div>
 					);
 				})}
+			{walkingDirection && (
+				<RouteWalkingPolyline walkingDirection={walkingDirection} mapRef={mapRef}/>
+			)}
 		</>
 	);
 }

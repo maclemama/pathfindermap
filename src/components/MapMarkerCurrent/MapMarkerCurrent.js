@@ -6,12 +6,18 @@ import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import { isMobile } from "react-device-detect";
 
-import { selectNavigationMode } from "../../store/map/mapSelector";
 import {
 	setNavigationModeLoading,
 	setNavigationMode,
+	setWalkingCurrentDestination,
+	setWalkingNextDestinationDistance,
 } from "../../store/map/mapSlice";
-import { selectNavigationModeLoading } from "../../store/map/mapSelector";
+import {
+	selectNavigationModeLoading,
+	selectWalkingCurrentDestination,
+	selectNavigationMode,
+	selectWalkingMode,
+} from "../../store/map/mapSelector";
 
 import MapMarkerCompass from "../MapMarkerCompass/MapMarkerCompass";
 
@@ -19,8 +25,35 @@ function MapMarkerCurrent({ map }) {
 	const dispatch = useDispatch();
 	const navigationMode = useSelector(selectNavigationMode);
 	const navigationModeLoading = useSelector(selectNavigationModeLoading);
+	const walkingMode = useSelector(selectWalkingMode);
+	const walkingCurrentDestination = useSelector(
+		selectWalkingCurrentDestination
+	);
 	const [position, setPosition] = useState(null);
 	const [watchID, setWatchID] = useState(null);
+
+	if (walkingMode) {
+		const destinationPosition = walkingCurrentDestination?.position;
+
+		if (position && destinationPosition) {
+			const distance =
+				window.google.maps.geometry.spherical.computeDistanceBetween(
+					position,
+					destinationPosition
+				);
+
+			if (distance < 5) {
+				dispatch(
+					setWalkingCurrentDestination({
+						...walkingCurrentDestination,
+						isArrived: true,
+					})
+				);
+			}
+
+			dispatch(setWalkingNextDestinationDistance(Math.floor(distance)));
+		}
+	}
 
 	useEffect(() => {
 		function success(pos) {

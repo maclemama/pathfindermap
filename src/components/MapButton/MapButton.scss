@@ -30,8 +30,8 @@
 		color: $primary-text-light-color;
 		background-color: $active-button-background-color;
 
-		& .control-button__icon-path {
-			fill: $primary-text-light-color;
+		&  > .map-button__icon {
+			fill: black;
 		}
 	}
 }
