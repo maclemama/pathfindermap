@@ -17,6 +17,14 @@ function DirectionInfoBox({ currentStep, positionIndex, isEnded }) {
 
 	return (
 		<div className="direction-info">
+			<p className="direction-info__text">
+				{isEnded
+					? "Arrived destination"
+					: `Step ${positionIndex + 1}: ${currentStep.instructions.replace(
+							/(<([^>]+)>)/gi,
+							""
+					  )}`}
+			</p>
 			<div className="direction-info__top-wrapper">
 				<div className="direction-info__animation-wrapper">
 					<motion.div
@@ -56,14 +64,6 @@ function DirectionInfoBox({ currentStep, positionIndex, isEnded }) {
 					</div>
 				</div>
 			</div>
-			<p className="direction-info__text">
-				{isEnded
-					? "Arrived destination"
-					: `Step ${positionIndex + 1}: ${currentStep.instructions.replace(
-							/(<([^>]+)>)/gi,
-							""
-					  )}`}
-			</p>
 		</div>
 	);
 }
