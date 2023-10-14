@@ -33,15 +33,3 @@ export function selectHighlightedPlace(state) {
 export function selectWalkingInfo(state) {
 	return state.route.walkingInfo;
 }
-
-export function selectSelectedPlaces(state) {
-	const selectedRoute = state.route.selectedRoute;
-
-	if (selectedRoute) {
-		return state.route.places
-			.filter((place) => selectedRoute === place.route_id)
-			.map((place) => place.route_id + place.place_id);
-	} else {
-		return state.route.places.map((place) => place.route_id + place.place_id);
-	}
-}

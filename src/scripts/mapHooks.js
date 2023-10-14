@@ -51,7 +51,6 @@ export const useShowRoute = (mapRef) => {
 	useEffect(() => {
 		if (walkingMode && !walkingDirection) {
 			setWalkingDirection(walkingDetails);
-			console.log(walkingDetails);
 			dispatch(setWalkingModeLoading(false));
 			isShowAllRoute = false;
 		} else {

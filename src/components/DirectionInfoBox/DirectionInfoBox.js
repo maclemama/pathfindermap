@@ -2,9 +2,11 @@ import "./DirectionInfoBox.scss";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { selectWalkingNextDestinationDistance } from "../../store/map/mapSelector";
+import { selectShowRouteControlMenu } from "../../store/layout/layoutSelector";
 import SVGIcons from "../SVGIcons/SVGIcons";
 
 function DirectionInfoBox({ currentStep, positionIndex, isEnded }) {
+	const controlMenuExpanded = useSelector(selectShowRouteControlMenu);
 	const nextDestinationDistance = useSelector(
 		selectWalkingNextDestinationDistance
 	);
@@ -16,7 +18,11 @@ function DirectionInfoBox({ currentStep, positionIndex, isEnded }) {
 	);
 
 	return (
-		<div className="direction-info">
+		<div
+			className={`direction-info ${
+				controlMenuExpanded ? "direction-info--with-menu" : ""
+			}`}
+		>
 			<p className="direction-info__text">
 				{isEnded
 					? "Arrived destination"

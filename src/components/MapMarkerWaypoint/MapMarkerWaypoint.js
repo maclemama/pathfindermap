@@ -9,8 +9,8 @@ import {
 	setPlaceSessionData,
 } from "../../scripts/sessionStorage";
 import {
-	selectSelectedPlaces,
 	selectHighlightedPlace,
+	selectSelectedRoute,
 } from "../../store/route/routeSelector";
 import { setHighlightedPlace } from "../../store/route/routeSlice";
 
@@ -21,12 +21,13 @@ import { PriceInfo, RatingInfo } from "../PlaceInfo/PlaceInfo";
 function MapMarkerWaypoint({ position, map, placeData }) {
 	const dispatch = useDispatch();
 	const [markerFlipped, setMarkerFlipped] = useState(false);
-	const selectedPlaces = useSelector(selectSelectedPlaces);
+	const selectedRoute = useSelector(selectSelectedRoute);
 	const highlighedPlace = useSelector(selectHighlightedPlace);
 	const [placeGoogleData, setPlaceGoogleData] = useState(null);
 
 	const routePlaceID = placeData.route_id + placeData.place_id;
-	const markerVisibility = selectedPlaces.includes(routePlaceID);
+	const markerVisibility =
+		placeData.route_id === selectedRoute || !selectedRoute;
 	const isHighlighted = highlighedPlace === routePlaceID;
 
 	const handleMarkerClick = () => {
