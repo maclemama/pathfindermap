@@ -8,6 +8,7 @@
 	flex-direction: column;
 	align-items: center;
 	row-gap: $mobile-row-gap;
+	position:relative;
 
 	@include desktop {
 		row-gap: $tablet-row-gap;

@@ -129,7 +129,7 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 								<RouteRandomPanel handleQuerySubmit={handleQuerySubmit} />
 							)}
 						</div>
-						{isLoading ? <Loading /> : <></>}
+						<div className="">{isLoading ? <Loading /> : <></>}</div>
 						<ControlTabs
 							tabNames={tabNames}
 							setActiveTag={setActiveTag}
