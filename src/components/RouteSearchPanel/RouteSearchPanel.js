@@ -7,7 +7,7 @@ import FormInputPrefix from "../FormInputPrefix/FormInputPrefix";
 import FormInputSubfix from "../FormInputSubfix/FormInputSubfix";
 import RouteSubmitButton from "../RouteSubmitButton/RouteSubmitButton";
 
-function RouteSearchPanel({ handleQuerySubmit, allFormReset }) {
+function RouteSearchPanel({ handleQuerySubmit, allFormReset, isLoading }) {
 	const defaultFormValue = {
 		query_mode: "keyword",
 		query_keyword: [""],
@@ -17,14 +17,22 @@ function RouteSearchPanel({ handleQuerySubmit, allFormReset }) {
 		max_route: 5,
 	};
 	const [formValues, setFormValues] = useState(defaultFormValue);
+	const [disableSubmit, setDisableSubmit] = useState(true);
 	const maxNumberOfSearch = 4;
 	const numberOfSearch = formValues.query_keyword.length;
 
+	const filledValue = (queryAry) => {
+		return queryAry.some((query) => query != "");
+	};
+
 	const handleSearchInputChange = (e, index) => {
 		const { value } = e.target;
-		const newFormValus = { ...formValues };
-		newFormValus.query_keyword[index] = value;
-		setFormValues(newFormValus);
+		const newFormValues = { ...formValues };
+		newFormValues.query_keyword[index] = value;
+		setFormValues(newFormValues);
+		const filledValues = filledValue(newFormValues.query_keyword);
+		if (!isLoading && disableSubmit && filledValues) setDisableSubmit(false);
+		if (!filledValues) setDisableSubmit(true);
 	};
 
 	const handleCloseSearchInput = (index) => {
@@ -32,6 +40,8 @@ function RouteSearchPanel({ handleQuerySubmit, allFormReset }) {
 			let newFormValues = { ...formValues };
 			newFormValues.query_keyword.splice(index, 1);
 			setFormValues(newFormValues);
+
+			if (!filledValue(newFormValues.query_keyword)) setDisableSubmit(true);
 		}
 	};
 
@@ -42,10 +52,9 @@ function RouteSearchPanel({ handleQuerySubmit, allFormReset }) {
 	};
 
 	useEffect(() => {
-		if (allFormReset > 0) {
-			setFormValues(defaultFormValue);
-		}
-	}, [allFormReset]);
+		if (allFormReset > 0) setFormValues(defaultFormValue);
+		if (isLoading) setDisableSubmit(true);
+	}, [allFormReset, isLoading]);
 
 	return (
 		<section className="route-search">
@@ -100,12 +109,10 @@ function RouteSearchPanel({ handleQuerySubmit, allFormReset }) {
 				>
 					Add New Stop
 				</button>
-				<RouteControls
-					formValues={formValues}
-					setFormValues={setFormValues}
-				/>
+				<RouteControls formValues={formValues} setFormValues={setFormValues} />
 				<RouteSubmitButton
 					onClickFunc={(e) => handleQuerySubmit(e, formValues, "keyword")}
+					disabled={disableSubmit}
 				/>
 			</div>
 		</section>

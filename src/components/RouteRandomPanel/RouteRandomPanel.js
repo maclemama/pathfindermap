@@ -3,7 +3,7 @@ import RouteSubmitButton from "../RouteSubmitButton/RouteSubmitButton";
 import RouteControls from "../RouteControls/RouteControls";
 import { useState } from "react";
 
-function RouteRandomPanel({ handleQuerySubmit, setMapRadius }) {
+function RouteRandomPanel({ handleQuerySubmit, setMapRadius, isLoading }) {
 	const defaultFormValue = {
 		query_mode: "random",
 		radius: 3000,
@@ -27,6 +27,7 @@ function RouteRandomPanel({ handleQuerySubmit, setMapRadius }) {
 				/>
 				<RouteSubmitButton
 					onClickFunc={(e) => handleQuerySubmit(e, formValues, "random")}
+					disabled={isLoading}
 				/>
 			</div>
 		</section>

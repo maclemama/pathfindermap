@@ -1,17 +1,17 @@
-import "./MotionButton.scss";
 import { motion } from "framer-motion";
 
-function MotionButton({onClickFunc, cssClassName, buttonType, buttonContent}) {
+function MotionButton({onClickFunc, cssClassName, buttonType, buttonContent, disabled}) {
 	return (
 		<motion.button
-			className={cssClassName}
+			className={`motion-bottom ${cssClassName} ${disabled ? "motion-bottom--disable" : ""}`}
 			type={buttonType}
 			onClick={onClickFunc}
-			whileHover={{
+			whileHover={!disabled ? {
 				scale: 1.05,
 				transition: { duration: 0.3 },
-			}}
-			whileTap={{ scale: 0.9 }}
+			}:{}}
+			whileTap={!disabled ? { scale: 0.9 }:{}}
+			disabled={disabled}
 		>
 			{buttonContent.map(content=>content)}
 		</motion.button>

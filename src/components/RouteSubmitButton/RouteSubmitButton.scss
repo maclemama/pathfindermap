@@ -13,4 +13,16 @@
 		background-color: $primary-cta-button-color;
 		color: $primary-text-light-color;
 	}
+
+	&--disabled{
+		background-color: gray;
+		color: $primary-text-light-color;
+		border:unset;
+
+		&:hover {
+			background-color:gray;
+			color: $primary-text-light-color;
+			cursor: not-allowed;
+		}
+	}
 }

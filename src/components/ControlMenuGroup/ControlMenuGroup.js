@@ -104,7 +104,7 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 								/>
 							</Link>
 						</button>
-
+						<div className="">{isLoading ? <Loading /> : <></>}</div>
 						{isLoaded && (
 							<ControlStartingPoint
 								setCurrentLocationAsStart={setCurrentLocationAsStart}
@@ -115,6 +115,7 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 								<RouteSearchPanel
 									handleQuerySubmit={handleQuerySubmit}
 									allFormReset={allFormReset}
+									isLoading={isLoading}
 								/>
 							)}
 
@@ -122,14 +123,14 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 								<RouteMoodPanel
 									handleQuerySubmit={handleQuerySubmit}
 									allFormReset={allFormReset}
+									isLoading={isLoading}
 								/>
 							)}
 
 							{activeTab === tabNames[2] && (
-								<RouteRandomPanel handleQuerySubmit={handleQuerySubmit} />
+								<RouteRandomPanel handleQuerySubmit={handleQuerySubmit} isLoading={isLoading} />
 							)}
 						</div>
-						<div className="">{isLoading ? <Loading /> : <></>}</div>
 						<ControlTabs
 							tabNames={tabNames}
 							setActiveTag={setActiveTag}

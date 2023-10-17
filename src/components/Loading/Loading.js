@@ -40,8 +40,8 @@ function Loading() {
 	const loadingContainer = {
 		display: "flex",
 		position: "absolute",
-		top: "1.3rem",
-		right: "1rem",
+		top: "0",
+		right: "2rem",
         zIndex:1000
 	};
 

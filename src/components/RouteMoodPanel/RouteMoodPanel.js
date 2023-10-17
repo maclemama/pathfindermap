@@ -7,7 +7,12 @@ import SVGIcons from "../SVGIcons/SVGIcons";
 import FormInputPrefix from "../FormInputPrefix/FormInputPrefix";
 import RouteSubmitButton from "../RouteSubmitButton/RouteSubmitButton";
 
-function RouteMoodPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
+function RouteMoodPanel({
+	handleQuerySubmit,
+	setMapRadius,
+	allFormReset,
+	isLoading,
+}) {
 	const defaultFormValue = {
 		query_mode: "mood",
 		query_mood: "",
@@ -18,23 +23,23 @@ function RouteMoodPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 	};
 
 	const [formValues, setFormValues] = useState(defaultFormValue);
+	const [disableSubmit, setDisableSubmit] = useState(true);
 
 	const handleSearchInputChange = (e) => {
 		const { value } = e.target;
 		const newFormValus = { ...formValues };
 		newFormValus.query_mood = value;
 		setFormValues(newFormValus);
+		if (!isLoading && disableSubmit && value !== "") setDisableSubmit(false);
+		if (value == "") setDisableSubmit(true);
 	};
 
-    const inputPrefix = [
-        <FormInputPrefix text={"Mood"} />,
-    ]
+	const inputPrefix = [<FormInputPrefix text={"Mood"} />];
 
-	useEffect(()=>{
-		if(allFormReset > 0){
-			setFormValues(defaultFormValue);
-		}
-	},[allFormReset])
+	useEffect(() => {
+		if (allFormReset > 0) setFormValues(defaultFormValue);
+		if (isLoading) setDisableSubmit(true);
+	}, [allFormReset, isLoading]);
 
 	return (
 		<section className="route-mood">
@@ -51,9 +56,7 @@ function RouteMoodPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 						<FormInput
 							inputType={"text"}
 							inputName={`route-mood__input`}
-							inputOnChange={(e) =>
-								handleSearchInputChange(e)
-							}
+							inputOnChange={(e) => handleSearchInputChange(e)}
 							inputValue={formValues.query_mood}
 							prefixComponent={inputPrefix}
 							inputPreflixWidth={65}
@@ -68,6 +71,7 @@ function RouteMoodPanel({ handleQuerySubmit, setMapRadius, allFormReset }) {
 				/>
 				<RouteSubmitButton
 					onClickFunc={(e) => handleQuerySubmit(e, formValues, "mood")}
+					disabled={disableSubmit}
 				/>
 			</div>
 		</section>
