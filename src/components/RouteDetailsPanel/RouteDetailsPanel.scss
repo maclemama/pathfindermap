@@ -24,6 +24,7 @@
 
 	@include tablet {
 		width: unset;
+		max-width: calc(100vw - 4rem)
 	}
 
 	&__icon {
