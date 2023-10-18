@@ -12,7 +12,6 @@ import RouteSaveButton from "../RouteSaveButton/RouteSaveButton";
 import RouteCardPathItem from "../RouteCardPathItem/RouteCardPathItem";
 import expandIcon from "../../assets/icons/expand.svg";
 import collapseIcon from "../../assets/icons/collapse.svg";
-import { async } from "q";
 
 function RouteCard({ routeDetails }) {
 	const dispatch = useDispatch();
