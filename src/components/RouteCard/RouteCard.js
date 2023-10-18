@@ -1,22 +1,25 @@
 import "./RouteCard.scss";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { deleteSavedRoute } from "../../scripts/routeUtils";
 import { setModal } from "../../store/modal/modalSlice";
+import { signGoogleURL } from "../../scripts/userUtils";
 
 import RouteSaveButton from "../RouteSaveButton/RouteSaveButton";
 import RouteCardPathItem from "../RouteCardPathItem/RouteCardPathItem";
 import expandIcon from "../../assets/icons/expand.svg";
 import collapseIcon from "../../assets/icons/collapse.svg";
+import { async } from "q";
 
 function RouteCard({ routeDetails }) {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [savedRoute, setSavedRoute] = useState(routeDetails.user_saved);
 	const [togglePath, setTogglePath] = useState(false);
+	const [mapPreviewURL, setMapPreviewURL] = useState(null);
 	const createMapPreviewURL = useCallback(() => {
 		if (routeDetails) {
 			const markerGenerator = (label, latitude, longitude) => {
@@ -45,7 +48,15 @@ function RouteCard({ routeDetails }) {
 		}
 	}, [routeDetails]);
 
-	const mapPreviewURL = createMapPreviewURL();
+
+	useEffect(()=>{
+		const getMapURL = async ()=>{
+			const url = await signGoogleURL(createMapPreviewURL());
+			setMapPreviewURL(url);
+		}
+
+		getMapURL();
+	},[])
 
 	const handleRouteSave = async (saveUnsave) => {
 		try {

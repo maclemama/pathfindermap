@@ -45,12 +45,9 @@ export const signUpUser = async (first_name, last_name, email, password) => {
 
 export const verifyUser = async (verification_code) => {
 	try {
-		await axios.post(
-			`${process.env.REACT_APP_SERVER_URL}/user/verify`,
-			{
-				verification_code: verification_code,
-			}
-		);
+		await axios.post(`${process.env.REACT_APP_SERVER_URL}/user/verify`, {
+			verification_code: verification_code,
+		});
 		return;
 	} catch (error) {
 		throw error;
@@ -79,5 +76,28 @@ export const setUser = async () => {
 	} catch (error) {
 		localStorage.removeItem("token");
 		return setCurrentUser(user);
+	}
+};
+
+export const signGoogleURL = async (unsignedURL) => {
+	const token = localStorage.getItem("token");
+
+	try {
+		if (token) {
+			const { data } = await axios.post(
+				process.env.REACT_APP_SERVER_URL + "/user/sign-google-url",
+				{ url: unsignedURL },
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			return data.url;
+		}
+	} catch (error) {
+		console.log(error);
+		throw error;
 	}
 };
