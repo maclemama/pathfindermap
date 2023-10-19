@@ -9,11 +9,16 @@
 	border: $element-border;
 
 	max-width: 40rem;
+	max-height: 95vh;
+	overflow-y: auto;
 
-	@include desktop{
+	@include desktop {
 		position: unset;
 		border: unset;
-		&--collapsed{
+		max-height: 100vh;
+		@include scrollbar;
+
+		&--collapsed {
 			position: fixed;
 			top: 2rem;
 			left: 2rem;
@@ -22,14 +27,13 @@
 		}
 	}
 
-	&--hidden{
+	&--hidden {
 		display: none;
 
-		@include desktop{
+		@include desktop {
 			display: unset;
 		}
 	}
-
 
 	&__icon {
 		width: 2rem;
