@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_STATE = {
 	showRouteDetailsPanel: false,
-	showRouteControlMenu: true,
+	showRouteControlMenu: false,
 };
 
 export const layoutSlice = createSlice({
@@ -15,9 +15,9 @@ export const layoutSlice = createSlice({
 		setShowRouteControlMenu(state, action) {
 			state.showRouteControlMenu = action.payload;
 		},
-		resetLayout(state) {
+		resetLayout(state, action) {
 			state.showRouteDetailsPanel = false;
-			state.showRouteControlMenu = true;
+			state.showRouteControlMenu = !action.payload;
 		},
 	},
 });
