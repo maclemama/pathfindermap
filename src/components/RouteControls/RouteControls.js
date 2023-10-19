@@ -20,7 +20,7 @@ function RouteControls({ formValues, setFormValues }) {
 	return (
 		<div className="route-controls">
 			<div className="route-controls__input-group-wrapper">
-				<label className="route-controls__input-label">Search Radius</label>
+				<label className="route-controls__input-label">Max Search Area</label>
 				<div className="route-controls__input-wrapper">
 					<div className="route-controls__input-middle-wrapper">
 						<Slider
@@ -43,7 +43,7 @@ function RouteControls({ formValues, setFormValues }) {
 				</div>
 			</div>
 			<div className="route-controls__input-group-wrapper">
-				<label className="route-controls__input-label">Walking Time</label>
+				<label className="route-controls__input-label">Max Walking Time</label>
 				<div className="route-controls__input-wrapper">
 					<div className="route-controls__input-middle-wrapper">
 						<Slider
@@ -68,7 +68,7 @@ function RouteControls({ formValues, setFormValues }) {
 				</div>
 			</div>
 			<div className="route-controls__input-group-wrapper">
-				<label className="route-controls__input-label">No of Routes</label>
+				<label className="route-controls__input-label">Max No of Paths</label>
 				<div className="route-controls__input-wrapper">
 					<div className="route-controls__input-middle-wrapper">
 						<Slider

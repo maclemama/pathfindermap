@@ -3,11 +3,11 @@
 
 .control-menu {
 	width: 100vw;
-	border-radius: $section-radius;
 	padding: $mobile-row-gap;
 	background-color: $primary-panel-background-color;
 	border: $element-border;
-
+	border-top-left-radius: $section-radius;
+	border-top-right-radius: $section-radius;
 	max-width: 40rem;
 	max-height: 95vh;
 	overflow-y: auto;
@@ -15,6 +15,7 @@
 	@include desktop {
 		position: unset;
 		border: unset;
+		border-radius: $section-radius;
 		max-height: 100vh;
 		@include scrollbar;
 
