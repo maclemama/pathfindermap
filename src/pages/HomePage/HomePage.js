@@ -4,6 +4,7 @@ import { useLoadScript } from "@react-google-maps/api";
 import { useLocation } from "react-router";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { isMobile } from "react-device-detect";
 
 import {
 	getUserLocation,
@@ -53,7 +54,7 @@ function HomePage() {
 					dispatch(setRoutesDirectionsPlaces(routes));
 					window.history.replaceState(null,"")
 				} else {
-					dispatch(resetLayout());
+					dispatch(resetLayout(isMobile));
 					dispatch(resetRoute());
 					const location = await getUserLocation();
 					const { latitude, longitude } = location.coords;

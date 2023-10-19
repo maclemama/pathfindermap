@@ -13,6 +13,8 @@ html {
 body {
 	font-size: 1.4rem;
 	margin: 0;
+	height: 100%;
+	overflow: hidden;
 }
 
 // Page Header
@@ -55,19 +57,19 @@ a:visited {
 	color: inherit;
 }
 
-
 button {
 	background-color: transparent;
 	border: none;
 	padding: 0;
 	cursor: pointer;
+	color: unset;
 }
 
-.aria-description{
+.aria-description {
 	position: absolute;
 	padding: 0;
 	margin: -1px;
-	clip: rect(0,0,0,0);
+	clip: rect(0, 0, 0, 0);
 	border: 0;
 	overflow: hidden;
 	height: 1px;

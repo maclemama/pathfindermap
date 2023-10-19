@@ -1,11 +1,12 @@
 @use "../../styles/partials/variables" as *;
 @use "../../styles/partials/mixin" as *;
 
-.tabs{
-    display: flex;
-    justify-content: center;
-    column-gap: 6rem;
-    padding: 1rem;
+.tabs {
+	display: flex;
+	justify-content: center;
+	column-gap: 6rem;
 
- 
+	@include desktop {
+		padding: 1rem;
+	}
 }

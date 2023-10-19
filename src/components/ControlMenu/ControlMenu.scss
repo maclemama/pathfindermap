@@ -3,17 +3,23 @@
 
 .control-menu {
 	width: 100vw;
-	border-radius: $section-radius;
 	padding: $mobile-row-gap;
 	background-color: $primary-panel-background-color;
 	border: $element-border;
-
+	border-top-left-radius: $section-radius;
+	border-top-right-radius: $section-radius;
 	max-width: 40rem;
+	max-height: 85vh;
+	overflow-y: auto;
 
-	@include desktop{
+	@include desktop {
 		position: unset;
 		border: unset;
-		&--collapsed{
+		border-radius: $section-radius;
+		max-height: 100vh;
+		@include scrollbar;
+
+		&--collapsed {
 			position: fixed;
 			top: 2rem;
 			left: 2rem;
@@ -22,14 +28,13 @@
 		}
 	}
 
-	&--hidden{
+	&--hidden {
 		display: none;
 
-		@include desktop{
+		@include desktop {
 			display: unset;
 		}
 	}
-
 
 	&__icon {
 		width: 2rem;
