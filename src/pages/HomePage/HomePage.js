@@ -19,6 +19,7 @@ import {
 import { resetLayout } from "../../store/layout/layoutSlice";
 import { selectSelectedRoute } from "../../store/route/routeSelector";
 import { generateRoutes } from "../../scripts/routeUtils";
+import { setAllowedGeolocation } from "../../store/map/mapSlice";
 
 import Map from "../../components/Map/Map";
 import ControlMenu from "../../components/ControlMenu/ControlMenu";
@@ -29,7 +30,7 @@ function HomePage() {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const mapRef = useRef();
-	
+
 	const selectedRoute = useSelector(selectSelectedRoute);
 
 	const [libraries] = useState(["places", "marker"]); // remove map library warning by holding it in state
@@ -37,42 +38,36 @@ function HomePage() {
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
 		libraries,
 		language: "en",
-		version:"beta"
+		version: "beta",
 	});
 
 	const setCurrentLocationAsStart = useCallback(
 		async (resetCurrent) => {
 			try {
-				if (
-					location?.state?.passedStartingPoint &&
-					!resetCurrent
-				) {
+				if (location?.state?.passedStartingPoint && !resetCurrent) {
 					const routes = generateRoutes(
 						location.state.passedRouteData,
 						location.state.passedStartingPoint
 					);
 					dispatch(setRoutesDirectionsPlaces(routes));
-					window.history.replaceState(null,"")
+					window.history.replaceState(null, "");
 				} else {
-					dispatch(resetLayout(isMobile));
-					dispatch(resetRoute());
 					const location = await getUserLocation();
-					const { latitude, longitude } = location.coords;
-					const matchedPlace = await getGoogleGeocoder({
-						location: { lat: latitude, lng: longitude },
-					});
+					const matchedPlace = await getGoogleGeocoder(location);
 
 					dispatch(
 						setStartingPoint({
-							lat: latitude,
-							lng: longitude,
-							placeId: matchedPlace.place_id,
-							address: matchedPlace.formatted_address,
+							lat: location?.location?.lat,
+							lng: location?.location?.lng,
+							placeId: matchedPlace?.place_id,
+							address: matchedPlace?.formatted_address,
 						})
 					);
+					dispatch(setAllowedGeolocation(location.allowedGeolocation));
+					dispatch(resetLayout(isMobile));
+					dispatch(resetRoute());
 				}
 			} catch (error) {
-				console.log(error);
 				dispatch(
 					setModal({
 						title: "Error",
@@ -100,12 +95,12 @@ function HomePage() {
 	return (
 		<div className="home">
 			<div className="home__desktop-right-wrapper">
-				{isLoaded && <Map mapRef={mapRef} isLoaded={isLoaded}/>}
+				{isLoaded && <Map mapRef={mapRef} />}
 			</div>
 			<div className="home__controls-wrapper">
 				<div className="home__route-wrapper">
 					<div className="home__button-wrapper--desktop">
-						<MapButtonGroup mapRef={mapRef}/>
+						<MapButtonGroup mapRef={mapRef} />
 					</div>
 					{selectedRoute && <RouteDetailsPanel mapRef={mapRef} />}
 				</div>
@@ -114,7 +109,7 @@ function HomePage() {
 					isLoaded={isLoaded}
 				/>
 				<div className="home__button-wrapper--mobile">
-					<MapButtonGroup mapRef={mapRef}/>
+					<MapButtonGroup mapRef={mapRef} />
 				</div>
 			</div>
 		</div>

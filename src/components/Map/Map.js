@@ -12,7 +12,7 @@ import Routes from "../Routes/Routes";
 import MapMarkerCurrent from "../MapMarkerCurrent/MapMarkerCurrent";
 import MapRadius from "../MapRadius/MapRadius";
 
-function Map({ mapRef, isLoaded }) {
+function Map({ mapRef }) {
 	console.log("Map component re-render");
 	const startingPoint = useSelector(selectStartingPoint);
 	const [mapLoaded, setMapLoaded] = useState(false);
@@ -30,15 +30,12 @@ function Map({ mapRef, isLoaded }) {
 
 	const onLoad = useCallback(
 		(map) => {
+			console.log("map load!")
 			mapRef.current = map;
 			setMapLoaded(true);
 		},
 		[mapRef]
 	);
-
-	if (!isLoaded) {
-		return;
-	}
 
 	return (
 		<section className="map">
