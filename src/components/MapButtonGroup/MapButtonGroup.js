@@ -11,10 +11,7 @@ import {
 	selectShowRouteControlMenu,
 	selectShowRouteDetailsPanel,
 } from "../../store/layout/layoutSelector";
-import {
-	selectSelectedRoute,
-	selectRoutes,
-} from "../../store/route/routeSelector";
+import { selectSelectedRoute } from "../../store/route/routeSelector";
 import { setSelectedRoute } from "../../store/route/routeSlice";
 import {
 	setNavigationMode,
@@ -26,7 +23,7 @@ import {
 	selectNavigationMode,
 	selectNavigationModeLoading,
 	selectWalkingMode,
-	selectWalkingModeLoading,
+	selectAllowGeolocation,
 } from "../../store/map/mapSelector";
 
 import MapButton from "../MapButton/MapButton";
@@ -39,8 +36,7 @@ function MapButtonGroup({ mapRef }) {
 	const navigationMode = useSelector(selectNavigationMode);
 	const navigationModeLoading = useSelector(selectNavigationModeLoading);
 	const walkingMode = useSelector(selectWalkingMode);
-	const walkingModeLoading = useSelector(selectWalkingModeLoading);
-	const routes = useSelector(selectRoutes);
+	const allowedGeolocation = useSelector(selectAllowGeolocation);
 
 	const handleShowRouteDetailsPanel = () => {
 		if (!routeDetailsPanelExpanded) {
@@ -81,7 +77,7 @@ function MapButtonGroup({ mapRef }) {
 	);
 
 	const handleToggleWalkingMode = () => {
-		if(walkingMode){
+		if (walkingMode) {
 			dispatch(setSelectedRoute(null));
 		}
 		dispatch(setWalkingModeLoading(true));
@@ -100,12 +96,14 @@ function MapButtonGroup({ mapRef }) {
 							isActiveState={false}
 						/>
 
-						<MapButton
-							iconName={"walk"}
-							onClickFunc={handleToggleWalkingMode}
-							cssClassName={"map-button-group__start-button"}
-							isActiveState={walkingMode}
-						/>
+						{allowedGeolocation && (
+							<MapButton
+								iconName={"walk"}
+								onClickFunc={handleToggleWalkingMode}
+								cssClassName={"map-button-group__start-button"}
+								isActiveState={walkingMode}
+							/>
+						)}
 					</>
 				)}
 				{hasSelectedRoute && controlMenuExpanded && (
@@ -116,13 +114,15 @@ function MapButtonGroup({ mapRef }) {
 						isActiveState={false}
 					/>
 				)}
-				<MapButton
-					iconName={"compass"}
-					onClickFunc={handleToggleNavigationMode}
-					cssClassName={"map-button-group__current-button"}
-					isActiveState={navigationMode}
-					isLoadingState={navigationModeLoading}
-				/>
+				{allowedGeolocation && (
+					<MapButton
+						iconName={"compass"}
+						onClickFunc={handleToggleNavigationMode}
+						cssClassName={"map-button-group__current-button"}
+						isActiveState={navigationMode}
+						isLoadingState={navigationModeLoading}
+					/>
+				)}
 			</div>
 			<div className="map-button-group map-button-group--map-sticky">
 				<MapButton
