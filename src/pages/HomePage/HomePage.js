@@ -25,6 +25,7 @@ import Map from "../../components/Map/Map";
 import ControlMenu from "../../components/ControlMenu/ControlMenu";
 import RouteDetailsPanel from "../../components/RouteDetailsPanel/RouteDetailsPanel";
 import MapButtonGroup from "../../components/MapButtonGroup/MapButtonGroup";
+import SVGIcons from "../../components/SVGIcons/SVGIcons";
 
 function HomePage() {
 	const location = useLocation();
@@ -40,6 +41,7 @@ function HomePage() {
 		language: "en",
 		version: "beta",
 	});
+	const [mapLoaded, setMapLoaded] = useState(false);
 
 	const setCurrentLocationAsStart = useCallback(
 		async (resetCurrent) => {
@@ -88,14 +90,33 @@ function HomePage() {
 		}
 	}, [setCurrentLocationAsStart, isLoaded]);
 
-	if (loadError) {
-		return <div>Error loading map</div>;
-	}
+	const onMapLoaded = (map) => {
+		mapRef.current = map;
+	};
+
+	const onMapTitesLoaded = () => {
+		setMapLoaded(true);
+	};
 
 	return (
 		<div className="home">
 			<div className="home__desktop-right-wrapper">
-				{isLoaded && <Map mapRef={mapRef} />}
+				{isLoaded && (
+					<Map
+						mapRef={mapRef}
+						onMapLoad={onMapLoaded}
+						mapLoaded={mapLoaded}
+						onMapTitesLoaded={onMapTitesLoaded}
+					/>
+				)}
+				{!mapLoaded && (
+					<div className="home__loading">
+						<div className="home__loading-spinner"></div>
+						<div className="home__loading-icon-wrapper">
+							<SVGIcons iconName={"run"} cssClassName={"home__loading-icon"} />
+						</div>
+					</div>
+				)}
 			</div>
 			<div className="home__controls-wrapper">
 				<div className="home__route-wrapper">

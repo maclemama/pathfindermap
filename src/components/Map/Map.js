@@ -1,7 +1,7 @@
 import "./Map.scss";
 
 import { GoogleMap, MarkerF } from "@react-google-maps/api";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
@@ -12,10 +12,8 @@ import Routes from "../Routes/Routes";
 import MapMarkerCurrent from "../MapMarkerCurrent/MapMarkerCurrent";
 import MapRadius from "../MapRadius/MapRadius";
 
-function Map({ mapRef }) {
-	console.log("Map component re-render");
+function Map({ mapRef, onMapLoaded, mapLoaded, onMapTitesLoaded }) {
 	const startingPoint = useSelector(selectStartingPoint);
-	const [mapLoaded, setMapLoaded] = useState(false);
 
 	const mapOptions = useMemo(
 		() => ({
@@ -28,22 +26,14 @@ function Map({ mapRef }) {
 		[]
 	);
 
-	const onLoad = useCallback(
-		(map) => {
-			console.log("map load!")
-			mapRef.current = map;
-			setMapLoaded(true);
-		},
-		[mapRef]
-	);
-
 	return (
 		<section className="map">
 			<GoogleMap
 				mapContainerClassName="map__container"
 				center={startingPoint}
-				onLoad={onLoad}
+				onLoad={onMapLoaded}
 				options={mapOptions}
+				onTilesLoaded={onMapTitesLoaded}
 			>
 				<MarkerF position={startingPoint} icon={markerPrimaryIcon} />
 
