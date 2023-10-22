@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const INITIAL_STATE = {
 	radius: 3000,
 	mapZoom: 17,
+	allowedGeolocation: false,
 	navigationMode: false,
 	navigationModeLoading: false,
 	walkingMode: false,
@@ -43,6 +44,9 @@ export const mapSlice = createSlice({
 		},
 		setWalkingNextDestinationDistance(state, action){
 			state.walkingNextDestinationDistance = action.payload;
+		},
+		setAllowedGeolocation(state, action){
+			state.allowedGeolocation = action.payload;
 		}
 	},
 });
@@ -55,7 +59,8 @@ export const {
 	setWalkingMode,
 	setWalkingModeLoading,
 	setWalkingCurrentDestination,
-	setWalkingNextDestinationDistance
+	setWalkingNextDestinationDistance,
+	setAllowedGeolocation
 } = mapSlice.actions;
 
 export const mapReducer = mapSlice.reducer;

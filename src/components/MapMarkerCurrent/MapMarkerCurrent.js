@@ -17,6 +17,7 @@ import {
 	selectWalkingCurrentDestination,
 	selectNavigationMode,
 	selectWalkingMode,
+	selectAllowGeolocation
 } from "../../store/map/mapSelector";
 
 import MapMarkerCompass from "../MapMarkerCompass/MapMarkerCompass";
@@ -29,6 +30,7 @@ function MapMarkerCurrent({ map }) {
 	const walkingCurrentDestination = useSelector(
 		selectWalkingCurrentDestination
 	);
+	const allowedGeolocation = useSelector(selectAllowGeolocation);
 	const [position, setPosition] = useState(null);
 	const [watchID, setWatchID] = useState(null);
 
@@ -76,12 +78,12 @@ function MapMarkerCurrent({ map }) {
 		};
 
 		let id;
-		if (!watchID && navigator.geolocation) {
+		if (!watchID && navigator.geolocation && allowedGeolocation) {
 			id = navigator.geolocation.watchPosition(success, error, options);
 			setWatchID(id);
 		}
 		return () => navigator.geolocation.clearWatch(id);
-	}, [navigator]);
+	}, [navigator, allowedGeolocation]);
 
 	const handleToggleNavigationLoading = () => {
 		dispatch(setNavigationModeLoading(!navigationModeLoading));

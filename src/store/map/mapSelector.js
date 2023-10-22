@@ -9,3 +9,4 @@ export const selectWalkingCurrentDestination = (state) =>
 	state.map.walkingCurrentDestination;
 export const selectWalkingNextDestinationDistance = (state) =>
 	state.map.walkingNextDestinationDistance;
+export const selectAllowGeolocation = (state) => state.map.allowedGeolocation;
