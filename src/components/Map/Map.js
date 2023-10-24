@@ -1,7 +1,7 @@
 import "./Map.scss";
 
 import { GoogleMap, MarkerF } from "@react-google-maps/api";
-import { useMemo } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
@@ -12,8 +12,9 @@ import Routes from "../Routes/Routes";
 import MapMarkerCurrent from "../MapMarkerCurrent/MapMarkerCurrent";
 import MapRadius from "../MapRadius/MapRadius";
 
-function Map({ mapRef, onMapLoaded, mapLoaded, onMapTitesLoaded }) {
+function Map({ mapRef, mapLoaded, onMapTitesLoaded }) {
 	const startingPoint = useSelector(selectStartingPoint);
+	const [mapModal, setMapModal] = useState([]);
 
 	const mapOptions = useMemo(
 		() => ({
@@ -26,24 +27,38 @@ function Map({ mapRef, onMapLoaded, mapLoaded, onMapTitesLoaded }) {
 		[]
 	);
 
+	const onMapLoaded = (map) => {
+		mapRef.current = map;
+	};
+
 	return (
 		<section className="map">
 			<GoogleMap
 				mapContainerClassName="map__container"
 				center={startingPoint}
-				onLoad={onMapLoaded}
+				onLoad={(map) => onMapLoaded(map)}
 				options={mapOptions}
 				onTilesLoaded={onMapTitesLoaded}
 			>
 				<MarkerF position={startingPoint} icon={markerPrimaryIcon} />
 
-				{mapLoaded && <MapMarkerCurrent map={mapRef.current} />}
+				{mapLoaded && (
+					<MapMarkerCurrent
+						map={mapRef.current}
+						setMapModal={setMapModal}
+						mapModal={mapModal}
+					/>
+				)}
 
 				<Routes mapRef={mapRef} />
 
 				<MapRadius startingPoint={startingPoint} />
 			</GoogleMap>
 			<RouteSelector />
+			{mapModal?.[0] &&
+				mapModal.map((modal, index) => (
+					<Fragment key={index}>{modal}</Fragment>
+				))}
 		</section>
 	);
 }
