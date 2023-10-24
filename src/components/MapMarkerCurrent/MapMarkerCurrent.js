@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import MapMarker from "../MapMarker/MapMarker";
 import "./MapMarkerCurrent.scss";
 
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { isMobile } from "react-device-detect";
+import { isMobile, isAndroid, isIOS } from "react-device-detect";
 
 import {
 	setNavigationModeLoading,
@@ -17,12 +17,13 @@ import {
 	selectWalkingCurrentDestination,
 	selectNavigationMode,
 	selectWalkingMode,
-	selectAllowGeolocation
+	selectAllowGeolocation,
 } from "../../store/map/mapSelector";
 
 import MapMarkerCompass from "../MapMarkerCompass/MapMarkerCompass";
+import CustomModal from "../Modal/CustomModal";
 
-function MapMarkerCurrent({ map }) {
+function MapMarkerCurrent({ map, setMapModal, mapModal }) {
 	const dispatch = useDispatch();
 	const navigationMode = useSelector(selectNavigationMode);
 	const navigationModeLoading = useSelector(selectNavigationModeLoading);
@@ -98,47 +99,149 @@ function MapMarkerCurrent({ map }) {
 		}
 	}
 
+	const handleModalClose = () => {
+		setMapModal([]);
+		handleToggleNavigationLoading();
+	};
+
+	const orientationHandler = useCallback(
+		(orientData) => {
+			let newAngle;
+			if (isAndroid) {
+				newAngle = -(
+					orientData.alpha +
+					(orientData.beta * orientData.gamma) / 90
+				);
+				newAngle -= Math.floor(newAngle / 360) * 360;
+			}
+			if (isIOS) {
+				newAngle =
+					Math.floor(orientData.webkitCompassHeading) ||
+					Math.floor(Math.abs(orientData.alpha - 360));
+			}
+			
+			const newBeta = Math.floor(orientData.beta);
+
+			map.moveCamera({
+				heading: newAngle,
+				tilt: newBeta,
+			});
+		},
+		[map]
+	);
+
+	const handleIOSPermission = () => {
+		DeviceOrientationEvent.requestPermission()
+			.then((response) => {
+				if (response === "granted") {
+					window.addEventListener(
+						"deviceorientation",
+						orientationHandler,
+						true
+					);
+					setMapModal([]);
+				}
+			})
+			.catch((err) =>
+				setMapModal([
+					<CustomModal
+						customModal={{
+							title: "Error",
+							message: `${err?.message ? err?.message : JSON.stringify(err)}`,
+							confirmText: "OK",
+						}}
+						customModalFunc={handleModalClose}
+						customModalCloseFun={handleModalClose}
+					/>,
+				])
+			);
+	};
+
+	useEffect(() => {
+		if (navigationMode) {
+			if (isAndroid) {
+				window.addEventListener(
+					"deviceorientationabsolute",
+					orientationHandler,
+					true
+				);
+			}
+
+			if (isIOS && !mapModal?.[0]) {
+				setMapModal([
+					<CustomModal
+						customModal={{
+							title: "Permission Required",
+							message:
+								"In order to display your current compass orientation, additional permission is required, do you want to proceed?",
+							confirmText: "Confirm",
+							cancelText: "Cancel",
+						}}
+						customModalFunc={handleIOSPermission}
+						customModalCloseFun={handleModalClose}
+					/>,
+				]);
+			}
+
+			handleToggleNavigationLoading();
+			return () => {
+				if (isAndroid) {
+					window.removeEventListener(
+						"deviceorientationabsolute",
+						orientationHandler,
+						true
+					);
+				}
+				if (isIOS) {
+					window.removeEventListener(
+						"deviceorientation",
+						orientationHandler,
+						true
+					);
+				}
+				handleToggleNavigationLoading();
+			};
+		}
+	}, [navigationMode]);
+
 	return (
-		position && (
-			<MapMarker position={position} map={map}>
-				<div className="marker-current">
-					<motion.div
-						className="marker-current__wave"
-						animate={{
-							scale: [1, 1.2, 1.6],
-							opacity: [1, 0.8, 0],
-						}}
-						transition={{
-							duration: 1.5,
-							ease: "easeInOut",
-							repeat: Infinity,
-							repeatDelay: 1,
-						}}
-					/>
-					<motion.div
-						className="marker-current__wave"
-						animate={{
-							delay: 0.5,
-							scale: [1, 1.6, 2.2],
-							opacity: [1, 0.5, 0],
-						}}
-						transition={{
-							duration: 1.5,
-							ease: "easeInOut",
-							repeat: Infinity,
-							repeatDelay: 1,
-						}}
-					/>
-					{isMobile && navigationMode && (
-						<MapMarkerCompass
-							map={map}
-							handleToggleNavigationLoading={handleToggleNavigationLoading}
+		<>
+			{position && (
+				<MapMarker position={position} map={map}>
+					<div className="marker-current">
+						<motion.div
+							className="marker-current__wave"
+							animate={{
+								scale: [1, 1.2, 1.6],
+								opacity: [1, 0.8, 0],
+							}}
+							transition={{
+								duration: 1.5,
+								ease: "easeInOut",
+								repeat: Infinity,
+								repeatDelay: 1,
+							}}
 						/>
-					)}
-					<div className="marker-current__dot"></div>
-				</div>
-			</MapMarker>
-		)
+						<motion.div
+							className="marker-current__wave"
+							animate={{
+								delay: 0.5,
+								scale: [1, 1.6, 2.2],
+								opacity: [1, 0.5, 0],
+							}}
+							transition={{
+								duration: 1.5,
+								ease: "easeInOut",
+								repeat: Infinity,
+								repeatDelay: 1,
+							}}
+						/>
+						{isMobile && navigationMode && <MapMarkerCompass />}
+						<div className="marker-current__dot"></div>
+					</div>
+				</MapMarker>
+			)}
+		</>
 	);
 }
 

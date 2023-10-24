@@ -90,10 +90,6 @@ function HomePage() {
 		}
 	}, [setCurrentLocationAsStart, isLoaded]);
 
-	const onMapLoaded = (map) => {
-		mapRef.current = map;
-	};
-
 	const onMapTitesLoaded = () => {
 		setMapLoaded(true);
 	};
@@ -104,7 +100,6 @@ function HomePage() {
 				{isLoaded && (
 					<Map
 						mapRef={mapRef}
-						onMapLoad={onMapLoaded}
 						mapLoaded={mapLoaded}
 						onMapTitesLoaded={onMapTitesLoaded}
 					/>
