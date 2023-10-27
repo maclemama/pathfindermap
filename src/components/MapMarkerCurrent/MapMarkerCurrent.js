@@ -45,7 +45,7 @@ function MapMarkerCurrent({ map, setMapModal, mapModal }) {
 					destinationPosition
 				);
 
-			if (distance < 15) {
+			if (distance < 15 && !walkingCurrentDestination.isArrived) {
 				dispatch(
 					setWalkingCurrentDestination({
 						...walkingCurrentDestination,
@@ -53,7 +53,6 @@ function MapMarkerCurrent({ map, setMapModal, mapModal }) {
 					})
 				);
 			}
-
 			dispatch(setWalkingNextDestinationDistance(Math.floor(distance)));
 		}
 	}
@@ -119,11 +118,11 @@ function MapMarkerCurrent({ map, setMapModal, mapModal }) {
 					Math.floor(orientData.webkitCompassHeading) ||
 					Math.floor(Math.abs(orientData.alpha - 360));
 			}
-			
+
 			const newBeta = Math.floor(orientData.beta);
 
 			map.moveCamera({
-				heading: (newAngle + 10) > 360 ? newAngle + 10 -360 : newAngle +10,
+				heading: newAngle + 10 > 360 ? newAngle + 10 - 360 : newAngle + 10,
 				tilt: newBeta,
 			});
 		},
