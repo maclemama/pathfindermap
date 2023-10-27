@@ -104,7 +104,7 @@ function MapMarkerCurrent({ map, setMapModal, mapModal }) {
 		handleToggleNavigationLoading();
 	};
 
-	const orientationHandler = useCallback(
+	const orientationEventHandler = useCallback(
 		(orientData) => {
 			let newAngle;
 			if (isAndroid) {
@@ -123,7 +123,7 @@ function MapMarkerCurrent({ map, setMapModal, mapModal }) {
 			const newBeta = Math.floor(orientData.beta);
 
 			map.moveCamera({
-				heading: newAngle,
+				heading: (newAngle + 10) > 360 ? newAngle + 10 -360 : newAngle +10,
 				tilt: newBeta,
 			});
 		},
@@ -136,7 +136,7 @@ function MapMarkerCurrent({ map, setMapModal, mapModal }) {
 				if (response === "granted") {
 					window.addEventListener(
 						"deviceorientation",
-						orientationHandler,
+						orientationEventHandler,
 						true
 					);
 					setMapModal([]);
@@ -162,7 +162,7 @@ function MapMarkerCurrent({ map, setMapModal, mapModal }) {
 			if (isAndroid) {
 				window.addEventListener(
 					"deviceorientationabsolute",
-					orientationHandler,
+					orientationEventHandler,
 					true
 				);
 			}
@@ -188,14 +188,14 @@ function MapMarkerCurrent({ map, setMapModal, mapModal }) {
 				if (isAndroid) {
 					window.removeEventListener(
 						"deviceorientationabsolute",
-						orientationHandler,
+						orientationEventHandler,
 						true
 					);
 				}
 				if (isIOS) {
 					window.removeEventListener(
 						"deviceorientation",
-						orientationHandler,
+						orientationEventHandler,
 						true
 					);
 				}
