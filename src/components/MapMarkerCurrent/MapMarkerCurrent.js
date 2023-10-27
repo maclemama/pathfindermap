@@ -45,7 +45,7 @@ function MapMarkerCurrent({ map, setMapModal, mapModal }) {
 					destinationPosition
 				);
 
-			if (distance < 5) {
+			if (distance < 15) {
 				dispatch(
 					setWalkingCurrentDestination({
 						...walkingCurrentDestination,

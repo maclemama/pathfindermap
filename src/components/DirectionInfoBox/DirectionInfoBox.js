@@ -11,13 +11,11 @@ function DirectionInfoBox({ currentStep, positionIndex, isEnded }) {
 		selectWalkingNextDestinationDistance
 	);
 
-	const distancePercentage = Math.floor(
+	const distancePercentage = Number(Math.floor(
 		((Number(currentStep?.distance.value) - Number(nextDestinationDistance)) /
 			Number(currentStep?.distance.value)) *
 			100
-	);
-
-	console.log(distancePercentage);
+	));
 
 	return (
 		<div
