@@ -11,8 +11,8 @@ const INITIAL_STATE = {
 	walkingCurrentDestination: {
 		position: null,
 		isFinalStop: null,
-		positionIndex:null,
-		isArrived:null
+		positionIndex: null,
+		isArrived: null,
 	},
 	walkingNextDestinationDistance: null,
 };
@@ -42,12 +42,22 @@ export const mapSlice = createSlice({
 		setWalkingCurrentDestination(state, action) {
 			state.walkingCurrentDestination = action.payload;
 		},
-		setWalkingNextDestinationDistance(state, action){
+		setWalkingNextDestinationDistance(state, action) {
 			state.walkingNextDestinationDistance = action.payload;
 		},
-		setAllowedGeolocation(state, action){
+		setAllowedGeolocation(state, action) {
 			state.allowedGeolocation = action.payload;
-		}
+		},
+		resetWalkingMode(state) {
+			state.walkingMode = false;
+			state.walkingCurrentDestination = {
+				position: null,
+				isFinalStop: false,
+				positionIndex: null,
+				isArrived: false,
+			};
+			state.walkingNextDestinationDistance = null;
+		},
 	},
 });
 
@@ -60,7 +70,8 @@ export const {
 	setWalkingModeLoading,
 	setWalkingCurrentDestination,
 	setWalkingNextDestinationDistance,
-	setAllowedGeolocation
+	setAllowedGeolocation,
+	resetWalkingMode,
 } = mapSlice.actions;
 
 export const mapReducer = mapSlice.reducer;

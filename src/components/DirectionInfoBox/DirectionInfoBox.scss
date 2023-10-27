@@ -42,7 +42,7 @@
 		width: 2.5rem;
 		height: 2.5rem;
 		position: absolute;
-		left: calc(var(--destination) - 2.5rem);
+		left: var(--distance);
 		bottom: 0;
 	}
 

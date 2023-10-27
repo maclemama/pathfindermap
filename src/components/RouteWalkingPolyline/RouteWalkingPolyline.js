@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { PolylineF } from "@react-google-maps/api";
+import { useEffect } from "react";
 
 import { setWalkingCurrentDestination } from "../../store/map/mapSlice";
 import { selectWalkingCurrentDestination } from "../../store/map/mapSelector";
@@ -14,7 +15,6 @@ function RouteWalkingPolyline({ walkingDirection, mapRef }) {
 	const { steps } = walkingDirection;
 	const currentStep = steps[positionIndex];
 	const isEnded = isFinalStop && isArrived;
-
 	if (!position || isArrived) {
 		const newPosition = {
 			position: null,
@@ -32,9 +32,8 @@ function RouteWalkingPolyline({ walkingDirection, mapRef }) {
 
 		if (isArrived && !isFinalStop) {
 			newPosition.positionIndex = positionIndex + 1;
-			newPositionEndPoint = steps?.[newPosition.positionIndex]?.end_point;
-			if (newPosition.positionIndex + 1 === steps.length)
-				newPosition.isFinalStop = true;
+			newPositionEndPoint = steps?.[positionIndex + 1]?.end_point;
+			if (positionIndex + 1 === steps.length) newPosition.isFinalStop = true;
 		}
 
 		if (newPositionEndPoint) {

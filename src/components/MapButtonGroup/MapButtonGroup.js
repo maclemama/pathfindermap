@@ -18,6 +18,7 @@ import {
 	setNavigationModeLoading,
 	setWalkingMode,
 	setWalkingModeLoading,
+	resetWalkingMode,
 } from "../../store/map/mapSlice";
 import {
 	selectNavigationMode,
@@ -79,6 +80,7 @@ function MapButtonGroup({ mapRef }) {
 	const handleToggleWalkingMode = () => {
 		if (walkingMode) {
 			dispatch(setSelectedRoute(null));
+			dispatch(resetWalkingMode());
 		}
 		dispatch(setWalkingModeLoading(true));
 		dispatch(setWalkingMode(!walkingMode));

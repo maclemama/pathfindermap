@@ -10,6 +10,7 @@ import { selectStartingPoint } from "../../store/startingPoint/startingPointSele
 import { setRoutesDirectionsPlaces } from "../../store/route/routeSlice";
 import { selectShowRouteControlMenu } from "../../store/layout/layoutSelector";
 import { setShowRouteControlMenu } from "../../store/layout/layoutSlice";
+import { resetWalkingMode } from "../../store/map/mapSlice";
 import { getRawRoutes } from "../../scripts/queryUtils";
 import { generateRoutes } from "../../scripts/routeUtils";
 import { resetRoute } from "../../store/route/routeSlice";
@@ -34,7 +35,8 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 	const handleQuerySubmit = async (e, formValues, mode) => {
 		e.preventDefault();
 		setIsLoading(true);
-
+		dispatch(resetWalkingMode());
+		
 		try {
 			const payload = {
 				query_mode: formValues.query_mode,
@@ -128,7 +130,10 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 							)}
 
 							{activeTab === tabNames[2] && (
-								<RouteRandomPanel handleQuerySubmit={handleQuerySubmit} isLoading={isLoading} />
+								<RouteRandomPanel
+									handleQuerySubmit={handleQuerySubmit}
+									isLoading={isLoading}
+								/>
 							)}
 						</div>
 						<ControlTabs
