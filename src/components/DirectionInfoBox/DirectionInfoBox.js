@@ -17,6 +17,8 @@ function DirectionInfoBox({ currentStep, positionIndex, isEnded }) {
 			100
 	);
 
+	console.log(distancePercentage);
+
 	return (
 		<div
 			className={`direction-info ${
