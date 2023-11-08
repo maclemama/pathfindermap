@@ -45,7 +45,7 @@ function ProfilePage() {
 							<h2 className="saved-route__title">⚙️ Account Setting</h2>
 						</div>
 						<div className="profile__content-bottom-wrapper">
-							setting
+							Coming Soon! 
 						</div>
 					</>
 				)}
