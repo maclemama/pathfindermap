@@ -11,7 +11,8 @@ function FormInput({
 	inputOnKeyDown,
 	prefixComponent,
 	inputPreflixWidth,
-	subfixComponent
+	subfixComponent,
+	cssClassName
 }) {
 	return (
 		<div className="form-input__wrapper">
@@ -19,7 +20,7 @@ function FormInput({
 			<input
 				type={inputType}
 				name={inputName}
-				className="form-input"
+				className={`form-input ${cssClassName ? cssClassName : ""}`}
 				placeholder={inputPlaceHolder}
 				value={inputValue}
 				onChange={inputOnChange}

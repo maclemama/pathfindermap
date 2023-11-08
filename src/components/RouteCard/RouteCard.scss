@@ -2,10 +2,11 @@
 @use "../../styles/partials/mixin" as *;
 
 .route-card {
-	
+	max-width: calc(100% - 1rem);
 	border-radius: $element-radius;
 	border: $element-border;
 	@include element-shadow;
+	
 
 	@include tablet{
 		width: 24rem;

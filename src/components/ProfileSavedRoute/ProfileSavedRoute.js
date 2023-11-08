@@ -1,6 +1,6 @@
 import "./ProfileSavedRoute.scss";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { setModal } from "../../store/modal/modalSlice";
@@ -119,19 +119,22 @@ function ProfileSavedRoute() {
 						inputOnChange={handleSearchChange}
 						inputValue={searchValue}
 						prefixComponent={[<FormInputPrefix svgName={"search"} />]}
+						cssClassName={"saved-route__search-input"}
 					/>
-					<SortButton
-						iconName={sorting.created_at ? "arrow_up" : "arrow_down"}
-						text={"Saved Time"}
-						active={sorting.active_sort === "created_at"}
-						onClickFunc={() => handleSort("created_at")}
-					/>
-					<SortButton
-						iconName={sorting.walking_distance ? "arrow_up" : "arrow_down"}
-						text={"Distance"}
-						active={sorting.active_sort === "walking_distance"}
-						onClickFunc={() => handleSort("walking_distance")}
-					/>
+					<div className="saved-route__controls-sort-button-wrapper">
+						<SortButton
+							iconName={sorting.created_at ? "arrow_up" : "arrow_down"}
+							text={"Saved Time"}
+							active={sorting.active_sort === "created_at"}
+							onClickFunc={() => handleSort("created_at")}
+						/>
+						<SortButton
+							iconName={sorting.walking_distance ? "arrow_up" : "arrow_down"}
+							text={"Distance"}
+							active={sorting.active_sort === "walking_distance"}
+							onClickFunc={() => handleSort("walking_distance")}
+						/>
+					</div>
 				</div>
 				<div className="saved-route__controls-page-wrapper">
 					{[...Array(totalPage)].map((nth, index) => {

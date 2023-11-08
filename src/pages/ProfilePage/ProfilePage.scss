@@ -38,8 +38,12 @@
 		background-color: $primary-section-background-color;
 		height: calc(100% - 7rem);
 		width: 100%;
-		padding: 2rem;
 		display: flex;
+		padding: .5rem 2rem 2rem 2rem;
+
+		@include tablet{
+			padding: 2rem;
+		}
 	}
 
 }
