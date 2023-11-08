@@ -6,7 +6,7 @@
 	flex-direction: column;
 	row-gap: 2rem;
 	border-radius: $section-radius;
-	width: 100% ;
+	width: 100%;
 
 	&__list {
 		display: flex;
@@ -14,7 +14,7 @@
 		column-gap: $tablet-col-gap;
 		row-gap: $tablet-row-gap;
 		align-items: flex-start;
-	
+
 		height: 80vh;
 		overflow-y: scroll;
 		overflow-x: hidden;
@@ -36,19 +36,50 @@
 		}
 	}
 
-	&__controls{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+	&__controls {
+		position: relative;
+		margin-bottom: 0.5rem;
 
-		&-sort-wrapper{
+		@include tablet {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: unset;
+		}
+
+		&-sort-wrapper {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			row-gap: 1rem;
+
+			@include tablet {
+				width: unset;
+				flex-direction: row;
+				column-gap: 1rem;
+			}
+		}
+
+		&-sort-button-wrapper {
 			display: flex;
 			column-gap: 1rem;
+
+			@include tablet {
+			}
 		}
 
 		&-page-wrapper {
-			&--top {
-				padding: 0rem;
+			position: absolute;
+			bottom: -1.5rem;
+			right: 0;
+			display: flex;
+			column-gap: 1rem;
+
+			@include tablet {
+				position: unset;
+				&--top {
+					padding: 0rem;
+				}
 			}
 		}
 
