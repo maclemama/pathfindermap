@@ -1,6 +1,7 @@
 import "./App.scss";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ReactGA from "react-ga4";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
@@ -14,6 +15,7 @@ import Modal from "./components/Modal/Modal";
 
 function App() {
 	const dispatch = useDispatch();
+	ReactGA.initialize(process.env.REACT_APP_GA_MEASUREMENT_ID);
 
 	useEffect(() => {
 		const userCheck = async () => {
@@ -29,7 +31,7 @@ function App() {
 				<Header />
 				<main className="main">
 					<Routes>
-						<Route path="/" element={<HomePage/>}></Route>
+						<Route path="/" element={<HomePage />}></Route>
 						<Route
 							path="/signin"
 							element={<AuthPage action={"signin"} />}
@@ -42,10 +44,7 @@ function App() {
 							path="/user/verify/:verification_code"
 							element={<AuthPage action={"verify"} />}
 						></Route>
-						<Route
-							path="/profile"
-							element={<ProfilePage/>}
-						></Route>
+						<Route path="/profile" element={<ProfilePage />}></Route>
 						<Route path="*" element={<AuthPage action={"not-found"} />}></Route>
 					</Routes>
 					<Modal />

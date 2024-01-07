@@ -3,6 +3,7 @@ import "./RouteDetailsPanel.scss";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
+import ReactGA from "react-ga4";
 
 import { selectCurrentUser } from "../../store/user/userSelector";
 import {
@@ -56,6 +57,10 @@ function RouteDetailsPanel({ mapRef, routeDetails }) {
 			});
 			setSavedRoute(routeDetails.user_saved);
 			setIsLoading(false);
+			ReactGA.event({
+				category: "select-path",
+				action: "click"
+			  });
 		}
 	}, [selectedRoute, selectedDirection, routes, dispatch]);
 
@@ -68,6 +73,10 @@ function RouteDetailsPanel({ mapRef, routeDetails }) {
 				});
 				if (result && result[0]) {
 					setSavedRoute(result[0].user_saved);
+					ReactGA.event({
+						category: "saved-path",
+						action: "click",
+					});
 				} else {
 					throw Error("Could not perform this action at the moment.");
 				}
@@ -77,6 +86,10 @@ function RouteDetailsPanel({ mapRef, routeDetails }) {
 				const result = await deleteSavedRoute(selectedRouteDetails.route_id);
 				if (result.success) {
 					setSavedRoute(false);
+					ReactGA.event({
+						category: "unsaved-path",
+						action: "click",
+					});
 				} else {
 					throw Error("Could not perform this action at the moment.");
 				}

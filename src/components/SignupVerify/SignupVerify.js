@@ -2,6 +2,7 @@ import "./SignupVerify.scss";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ReactGA from "react-ga4";
 
 import { verifyUser } from "../../scripts/userUtils";
 
@@ -16,6 +17,10 @@ function SignupVerify({ verification_code }) {
 			try {
 				await verifyUser(verification_code);
 				setSuccess(true);
+				ReactGA.event({
+					category: "membership",
+					action: "member-verified",
+				});
 				setTimeout(() => {
 					navigate("/signin");
 				}, 2000);
