@@ -59,10 +59,12 @@ export const useShowRoute = (mapRef) => {
 					const directionsData = await generateDirection(directionConfigs);
 					setDirections(directionsData);
 					const walkingInfo = directionsData.map(
-						({ walking_time, walking_distance, route_id }) => ({
+						({ walking_time, walking_distance, route_id, polyline, summary }) => ({
 							walking_distance,
 							walking_time,
 							route_id,
+							summary,
+							polyline
 						})
 					);
 					dispatch(setWalkingInfo(walkingInfo));
