@@ -2,6 +2,7 @@ import "./Signup.scss";
 
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
+import ReactGA from "react-ga4";
 
 import { signUpUser } from "../../scripts/userUtils";
 
@@ -20,6 +21,10 @@ function Signup() {
 		const password = event.target.password.value;
 		try {
 			await signUpUser(first_name, last_name, email, password);
+			ReactGA.event({
+				category: "membership",
+				action: "member-registration",
+			});
 			navigate("/user/verify/email_sent");
 		} catch (error) {
 			setError(error.response.data.message);

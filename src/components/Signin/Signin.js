@@ -3,6 +3,7 @@ import "./Signin.scss";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import ReactGA from "react-ga4";
 
 import { signInUser } from "../../scripts/userUtils";
 
@@ -22,6 +23,10 @@ function Signin() {
 		try {
 			const setUserAction = await signInUser(email, password);
 			dispatch(setUserAction);
+			ReactGA.event({
+				category: "membership",
+				action: "member-login",
+			});
 
 			navigate("/profile");
 		} catch (error) {

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import ReactGA from "react-ga4";
 
 import { selectStartingPoint } from "../store/startingPoint/startingPointSelector";
 import {
@@ -53,18 +54,28 @@ export const useShowRoute = (mapRef) => {
 			setWalkingDirection(walkingDetails);
 			dispatch(setWalkingModeLoading(false));
 			isShowAllRoute = false;
+			ReactGA.event({
+				category: "walking-mode",
+				action: "start-walking",
+			});
 		} else {
 			if (routes && routes[0] && startingPoint && mapRef) {
 				const fetchDirections = async () => {
 					const directionsData = await generateDirection(directionConfigs);
 					setDirections(directionsData);
 					const walkingInfo = directionsData.map(
-						({ walking_time, walking_distance, route_id, polyline, summary }) => ({
+						({
+							walking_time,
+							walking_distance,
+							route_id,
+							polyline,
+							summary,
+						}) => ({
 							walking_distance,
 							walking_time,
 							route_id,
 							summary,
-							polyline
+							polyline,
 						})
 					);
 					dispatch(setWalkingInfo(walkingInfo));
@@ -81,6 +92,10 @@ export const useShowRoute = (mapRef) => {
 				setDirections([]);
 			}
 			setWalkingDirection(null);
+			ReactGA.event({
+				category: "walking-mode",
+				action: "stop-walking",
+			});
 		}
 	}, [routes, walkingMode]);
 

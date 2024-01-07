@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import ReactGA from "react-ga4";
 
 import { setModal } from "../../store/modal/modalSlice";
 import { selectStartingPoint } from "../../store/startingPoint/startingPointSelector";
@@ -69,6 +70,13 @@ function ControlMenuGroup({ setCurrentLocationAsStart, isLoaded }) {
 			setAllFormReset((prev) => prev + 1);
 			if (controlMenuExpanded) {
 				dispatch(setShowRouteControlMenu(false));
+			}
+
+			if(rawRoutes){
+				ReactGA.event({
+					category: "search-path",
+					action: "search"
+				  });
 			}
 		} catch (error) {
 			dispatch(
