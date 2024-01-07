@@ -27,13 +27,15 @@ export const generateDirection = async (directionConfigs) => {
 				waypoints: route.waypoints,
 				optimizeWaypoints: false,
 			});
-			const { walking_distance, walking_time } = getDirectionDetails(result);
+			const { walking_distance, walking_time, polyline, summary } = getDirectionDetails(result);
 			return {
 				...result,
 				route_id: route.route_id,
 				walking_distance,
 				walking_time,
-				polylineColor: polylineColors[index]
+				polylineColor: polylineColors[index],
+				polyline,
+				summary
 			};
 		})
 	);
@@ -90,8 +92,8 @@ export const generateRoutes = (rawRoutes, startingPoint) => {
 
 export const getDirectionDetails = (routeDirection) => {
 	let result = {
-		polyline: routeDirection.routes[0].overview_polyline,
-		summary: routeDirection.routes[0].summary,
+		polyline: routeDirection?.routes[0]?.overview_polyline,
+		summary: routeDirection?.routes[0]?.summary,
 	};
 	let walkingTime = 0;
 	let walkingDistance = 0;
